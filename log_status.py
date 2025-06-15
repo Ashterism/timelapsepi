@@ -18,6 +18,6 @@ log = {
     "temperature_C": status.get("data", {}).get("batteryTemperature", "Unknown")
 }
 
-with open(os.path.expanduser("~/status.json"), "w") as f:
+with open(os.path.expanduser("~/timelapse/status.json"), "w") as f:
     f.write(str(log))
 
