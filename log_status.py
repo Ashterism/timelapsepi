@@ -1,6 +1,7 @@
 from pijuice import PiJuice
 from datetime import datetime
 import os
+import json
 
 pj = PiJuice(1, 0x14)  # Explicitly define bus and address
 
@@ -19,5 +20,4 @@ log = {
 }
 
 with open(os.path.expanduser("~/timelapse/status.json"), "w") as f:
-    f.write(str(log))
-
+    f.write(json.dumps(log, indent=2))
