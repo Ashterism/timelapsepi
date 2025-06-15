@@ -9,7 +9,7 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 # Load local status.json
-with open("/home/ash/status.json") as f:
+with open("/home/ash/timelapse/status.json") as f:
     status_data = json.load(f)
 
 # Add upload timestamp
