@@ -13,6 +13,7 @@ pj = PiJuice(1, 0x14)
 status = pj.status.GetStatus()
 charge = pj.status.GetChargeLevel()
 
+
 # Extract data
 power_input = status.get("data", {}).get("powerInput", "Unknown")
 raw_power_status = status.get("data", {}).get("powerStatus")
