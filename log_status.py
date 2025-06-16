@@ -14,9 +14,8 @@ status = pj.status.GetStatus()
 charge = pj.status.GetChargeLevel()
 battery_temp = pj.status.GetBatteryTemperature()
 battery_voltage = pj.status.GetBatteryVoltage()
-gpio_voltage = pj.status.GetGpioVoltage()
-gpio_current = pj.status.GetGpioCurrent()
-
+gpio_voltage_raw = pj.status.GetIoVoltage()
+gpio_current_raw = pj.status.GetIoCurrent()
 
 # Raspberry Pi system stats
 def get_cpu_temp():
@@ -48,14 +47,18 @@ def get_throttling():
     except:
         return "Unavailable"
 
+# Convert GPIO voltage/current to V/A
+gpio_voltage_V = gpio_voltage_raw.get("data", 0) / 1000 if isinstance(gpio_voltage_raw.get("data"), (int, float)) else "Unavailable"
+gpio_current_A = gpio_current_raw.get("data", 0) / 1000 if isinstance(gpio_current_raw.get("data"), (int, float)) else "Unavailable"
+
 # Build log
 log = {
     "timestamp": datetime.now().isoformat(),
     "battery_level": charge.get("data", "N/A"),
     "battery_temp_C": battery_temp.get("data", "N/A"),
     "battery_voltage_mV": battery_voltage.get("data", "N/A"),
-    "gpio_voltage_V": gpio_voltage.get("data", "Unavailable"),
-    "gpio_current_A": gpio_current.get("data", "Unavailable"),
+    "gpio_voltage_V": gpio_voltage_V,
+    "gpio_current_A": gpio_current_A,
     "power_input_usb": status.get("data", {}).get("powerInput", "Unknown"),
     "power_input_gpio": status.get("data", {}).get("powerInput5vIo", "Unknown"),
     "power_status": status.get("data", {}).get("battery", "Unknown"),
