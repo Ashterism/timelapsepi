@@ -11,6 +11,7 @@ os.makedirs(log_dir, exist_ok=True)
 # Setup PiJuice
 pj = PiJuice(1, 0x14)
 status = pj.status.GetStatus()
+print(json.dumps(status, indent=2))
 charge = pj.status.GetChargeLevel()
 
 # Extract PiJuice data
