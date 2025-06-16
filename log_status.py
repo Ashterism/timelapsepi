@@ -10,23 +10,10 @@ os.makedirs(log_dir, exist_ok=True)
 
 # Setup PiJuice
 pj = PiJuice(1, 0x14)
-
-# Collect PiJuice status data
 status = pj.status.GetStatus()
 charge = pj.status.GetChargeLevel()
-battery_temp_raw = pj.status.GetBatteryTemperature()
-
-# Parse PiJuice data
-battery_level = charge.get("data", "N/A")
-battery_temp = battery_temp_raw.get("data", "Unknown")
-power_input = status.get("data", {}).get("powerInput", "Unknown")
-raw_power_status = status.get("data", {}).get("powerStatus")
-power_status = raw_power_status if raw_power_status else "Not managed by PiJuice"
-
-gpio_power_input = status.get("data", {}).get("gpioPowerInput", "Unavailable")
-gpio_voltage = status.get("data", {}).get("gpioVoltage", "Unavailable")
-gpio_current = status.get("data", {}).get("gpioCurrent", "Unavailable")
-usb_power_input = status.get("data", {}).get("usbPowerInput", "Unavailable")
+battery_temp = pj.status.GetBatteryTemperature()
+battery_voltage = pj.status.GetBatteryVoltage()
 
 # Raspberry Pi system stats
 def get_cpu_temp():
@@ -61,14 +48,12 @@ def get_throttling():
 # Build log
 log = {
     "timestamp": datetime.now().isoformat(),
-    "battery_level": battery_level,
-    "battery_temp_C": battery_temp,
-    "power_input": power_input,
-    "power_input_gpio": gpio_power_input,
-    "gpio_voltage_V": gpio_voltage,
-    "gpio_current_A": gpio_current,
-    "power_input_usb": usb_power_input,
-    "power_status": power_status,
+    "battery_level": charge.get("data", "N/A"),
+    "battery_temp_C": battery_temp.get("data", "N/A"),
+    "battery_voltage_mV": battery_voltage.get("data", "N/A"),
+    "power_input_usb": status.get("data", {}).get("powerInput", "Unknown"),
+    "power_input_gpio": status.get("data", {}).get("powerInput5vIo", "Unknown"),
+    "power_status": status.get("data", {}).get("battery", "Unknown"),
     "cpu_temp_C": get_cpu_temp(),
     "cpu_load": get_load_avg(),
     "uptime_s": get_uptime(),
