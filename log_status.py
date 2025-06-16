@@ -2,26 +2,59 @@ from pijuice import PiJuice
 from datetime import datetime
 import os
 import json
+import subprocess
 
-pj = PiJuice(1, 0x14)  # Explicitly define bus and address
+pj = PiJuice(1, 0x14)
 
 status = pj.status.GetStatus()
 charge = pj.status.GetChargeLevel()
 
-print("STATUS:", status)
-print("CHARGE:", charge)
-
 power_input = status.get("data", {}).get("powerInput", "Unknown")
 raw_power_status = status.get("data", {}).get("powerStatus")
 power_status = raw_power_status if raw_power_status else "Not managed by PiJuice"
-temperature = status.get("data", {}).get("batteryTemperature", "Unknown")
+battery_temp = status.get("data", {}).get("batteryTemperature", "Unknown")
+battery_level = charge.get("data", "N/A")
+
+# Raspberry Pi system stats
+def get_cpu_temp():
+    try:
+        output = subprocess.check_output(["vcgencmd", "measure_temp"]).decode()
+        return float(output.replace("temp=", "").replace("'C\n", ""))
+    except:
+        return "Unavailable"
+
+def get_load_avg():
+    try:
+        with open("/proc/loadavg", "r") as f:
+            return f.read().strip().split()[:3]
+    except:
+        return ["-", "-", "-"]
+
+def get_uptime():
+    try:
+        with open("/proc/uptime", "r") as f:
+            uptime_seconds = float(f.readline().split()[0])
+            return int(uptime_seconds)
+    except:
+        return "Unavailable"
+
+def get_throttling():
+    try:
+        output = subprocess.check_output(["vcgencmd", "get_throttled"]).decode()
+        return output.strip().split("=")[1]
+    except:
+        return "Unavailable"
 
 log = {
     "timestamp": datetime.now().isoformat(),
-    "battery_level": charge.get("data", "N/A"),
+    "battery_level": battery_level,
     "power_input": power_input,
     "power_status": power_status,
-    "temperature_C": temperature
+    "temperature_C": battery_temp,
+    "cpu_temp_C": get_cpu_temp(),
+    "cpu_load": get_load_avg(),
+    "uptime_s": get_uptime(),
+    "throttled": get_throttling()
 }
 
 with open(os.path.expanduser("~/timelapse/status.json"), "w") as f:
