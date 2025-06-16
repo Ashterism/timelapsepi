@@ -49,6 +49,8 @@ log = {
     "timestamp": datetime.now().isoformat(),
     "battery_level": battery_level,
     "power_input": power_input,
+    "power_input_gpio": status.get("data", {}).get("gpioPowerInput", "Unavailable"),
+    "power_input_usb": status.get("data", {}).get("usbPowerInput", "Unavailable"),
     "power_status": power_status,
     "temperature_C": battery_temp,
     "cpu_temp_C": get_cpu_temp(),
@@ -56,6 +58,7 @@ log = {
     "uptime_s": get_uptime(),
     "throttled": get_throttling()
 }
+
 
 with open(os.path.expanduser("~/timelapse/status.json"), "w") as f:
     f.write(json.dumps(log, indent=2))
