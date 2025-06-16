@@ -14,6 +14,9 @@ status = pj.status.GetStatus()
 charge = pj.status.GetChargeLevel()
 battery_temp = pj.status.GetBatteryTemperature()
 battery_voltage = pj.status.GetBatteryVoltage()
+gpio_voltage = pj.status.GetGpioVoltage()
+gpio_current = pj.status.GetGpioCurrent()
+
 
 # Raspberry Pi system stats
 def get_cpu_temp():
@@ -51,6 +54,8 @@ log = {
     "battery_level": charge.get("data", "N/A"),
     "battery_temp_C": battery_temp.get("data", "N/A"),
     "battery_voltage_mV": battery_voltage.get("data", "N/A"),
+    "gpio_voltage_V": gpio_voltage.get("data", "Unavailable"),
+    "gpio_current_A": gpio_current.get("data", "Unavailable"),
     "power_input_usb": status.get("data", {}).get("powerInput", "Unknown"),
     "power_input_gpio": status.get("data", {}).get("powerInput5vIo", "Unknown"),
     "power_status": status.get("data", {}).get("battery", "Unknown"),
