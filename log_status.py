@@ -14,7 +14,6 @@ pj = PiJuice(1, 0x14)
 # Collect PiJuice status data
 status = pj.status.GetStatus()
 charge = pj.status.GetChargeLevel()
-power = pj.status.GetPowerInput()
 battery_temp_raw = pj.status.GetBatteryTemperature()
 
 # Parse PiJuice data
@@ -24,10 +23,10 @@ power_input = status.get("data", {}).get("powerInput", "Unknown")
 raw_power_status = status.get("data", {}).get("powerStatus")
 power_status = raw_power_status if raw_power_status else "Not managed by PiJuice"
 
-gpio_power_input = power.get("data", {}).get("gpioPowerInput", "Unavailable")
-gpio_voltage = power.get("data", {}).get("gpioVoltage", "Unavailable")
-gpio_current = power.get("data", {}).get("gpioCurrent", "Unavailable")
-usb_power_input = power.get("data", {}).get("usbPowerInput", "Unavailable")
+gpio_power_input = status.get("data", {}).get("gpioPowerInput", "Unavailable")
+gpio_voltage = status.get("data", {}).get("gpioVoltage", "Unavailable")
+gpio_current = status.get("data", {}).get("gpioCurrent", "Unavailable")
+usb_power_input = status.get("data", {}).get("usbPowerInput", "Unavailable")
 
 # Raspberry Pi system stats
 def get_cpu_temp():
