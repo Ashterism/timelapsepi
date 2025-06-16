@@ -87,3 +87,8 @@ This ensures offline resilience — no data is lost if Wi-Fi drops.
 The _local/ folder is ignored using .gitignore to prevent flooding the repo with data files:
 
 > _local/
+
+## Set default behaviour for git merge
+To avoid conflicts preventing the autoupdate function working run this on the pi:
+
+> git config pull.rebase false
