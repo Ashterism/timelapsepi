@@ -1,5 +1,7 @@
 # timelapsepi
 
+also see: https://github.com/PiSupply/PiJuice/blob/master/Software/README.md
+
 # TimelapsePi Status Logger
 
 This project logs power, battery, and system data from a Raspberry Pi using PiJuice, and uploads it to Firebase for display on a remote status dashboard (e.g. [Ashterix | Pi Status](https://ashterix.com/status)).
