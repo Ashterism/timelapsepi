@@ -13,13 +13,16 @@ pj = PiJuice(1, 0x14)
 status = pj.status.GetStatus()
 charge = pj.status.GetChargeLevel()
 
-
-# Extract data
+# Extract PiJuice data
 power_input = status.get("data", {}).get("powerInput", "Unknown")
 raw_power_status = status.get("data", {}).get("powerStatus")
 power_status = raw_power_status if raw_power_status else "Not managed by PiJuice"
 battery_temp = status.get("data", {}).get("batteryTemperature", "Unknown")
 battery_level = charge.get("data", "N/A")
+gpio_power_input = status.get("data", {}).get("gpioPowerInput", "Unavailable")
+gpio_voltage = status.get("data", {}).get("gpioVoltage", "Unavailable")
+gpio_current = status.get("data", {}).get("gpioCurrent", "Unavailable")
+usb_power_input = status.get("data", {}).get("usbPowerInput", "Unavailable")
 
 # Raspberry Pi system stats
 def get_cpu_temp():
@@ -50,14 +53,16 @@ def get_throttling():
         return output.strip().split("=")[1]
     except:
         return "Unavailable"
-    
-#Build log
+
+# Build log
 log = {
     "timestamp": datetime.now().isoformat(),
     "battery_level": battery_level,
     "power_input": power_input,
-    "power_input_gpio": status.get("data", {}).get("gpioPowerInput", "Unavailable"),
-    "power_input_usb": status.get("data", {}).get("usbPowerInput", "Unavailable"),
+    "power_input_gpio": gpio_power_input,
+    "gpio_voltage_V": gpio_voltage,
+    "gpio_current_A": gpio_current,
+    "power_input_usb": usb_power_input,
     "power_status": power_status,
     "temperature_C": battery_temp,
     "cpu_temp_C": get_cpu_temp(),
