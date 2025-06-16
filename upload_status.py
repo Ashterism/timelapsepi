@@ -1,22 +1,35 @@
+import os
+import json
 import firebase_admin
 from firebase_admin import credentials, firestore
 from datetime import datetime
-import json
+
+
+# Set log directory
+log_dir = "/home/ash/timelapse/_local/logs"
+os.makedirs(log_dir, exist_ok=True)
 
 # Load Firebase credentials
 cred = credentials.Certificate("/home/ash/firebase-creds.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-# Load local status.json
-with open("/home/ash/timelapse/status.json") as f:
-    status_data = json.load(f)
+# Upload all log files
+for filename in os.listdir(log_dir):
+    if not filename.endswith(".json"):
+        continue
 
-# Add upload timestamp
-status_data["uploaded"] = datetime.utcnow().isoformat()
+    filepath = os.path.join(log_dir, filename)
+    
+    try:
+        with open(filepath, "r") as f:
+            data = json.load(f)
 
-# Push to Firestore
-doc_ref = db.collection("status_logs").document()
-doc_ref.set(status_data)
+        data["uploaded"] = datetime.utcnow().isoformat()
+        db.collection("status_logs").add(data)
 
-print("✅ Status uploaded to Firebase.")
+        os.remove(filepath)
+        print(f"✅ Uploaded and removed {filename}")
+
+    except Exception as e:
+        print(f"❌ Failed to upload {filename}: {e}")

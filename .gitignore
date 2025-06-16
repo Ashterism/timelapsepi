@@ -1,3 +1,7 @@
+
+# Exclude local-only folders
+_local/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

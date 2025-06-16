@@ -4,11 +4,16 @@ import os
 import json
 import subprocess
 
-pj = PiJuice(1, 0x14)
+# Set log location
+log_dir = "/home/ash/timelapse/_local/logs"
+os.makedirs(log_dir, exist_ok=True)
 
+# Setup PiJuice
+pj = PiJuice(1, 0x14)
 status = pj.status.GetStatus()
 charge = pj.status.GetChargeLevel()
 
+# Extract data
 power_input = status.get("data", {}).get("powerInput", "Unknown")
 raw_power_status = status.get("data", {}).get("powerStatus")
 power_status = raw_power_status if raw_power_status else "Not managed by PiJuice"
@@ -45,6 +50,7 @@ def get_throttling():
     except:
         return "Unavailable"
 
+#Build log
 log = {
     "timestamp": datetime.now().isoformat(),
     "battery_level": battery_level,
@@ -59,6 +65,12 @@ log = {
     "throttled": get_throttling()
 }
 
+# Save to timestamped file
+timestamp = log["timestamp"]
+log_filename = f"{log_dir}/{timestamp}.json"
+with open(log_filename, "w") as f:
+    json.dump(log, f, indent=2)
 
-with open(os.path.expanduser("~/timelapse/status.json"), "w") as f:
-    f.write(json.dumps(log, indent=2))
+# Also save current status.json for debugging
+with open("/home/ash/timelapse/status.json", "w") as f:
+    json.dump(log, f, indent=2)
