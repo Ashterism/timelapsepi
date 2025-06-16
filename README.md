@@ -92,3 +92,5 @@ The _local/ folder is ignored using .gitignore to prevent flooding the repo with
 To avoid conflicts preventing the autoupdate function working run this on the pi:
 
 > git config pull.rebase false
+
+> git config --global core.editor true
