@@ -42,6 +42,12 @@ def get_uptime():
             return int(uptime_seconds)
     except:
         return "Unavailable"
+    
+def format_uptime(seconds):
+    minutes = seconds // 60
+    hours = minutes // 60
+    days = hours // 24
+    return f"{days}d {hours % 24}h {minutes % 60}m"
 
 def get_throttling():
     try:
@@ -49,6 +55,9 @@ def get_throttling():
         return output.strip().split("=")[1]
     except:
         return "Unavailable"
+    
+# Get uptime once
+uptime = get_uptime()
 
 #Build log
 log = {
@@ -61,7 +70,8 @@ log = {
     "temperature_C": battery_temp,
     "cpu_temp_C": get_cpu_temp(),
     "cpu_load": get_load_avg(),
-    "uptime_s": get_uptime(),
+    "uptime_s": uptime,
+    "uptime_str": format_uptime(uptime) if isinstance(uptime, int) else "Unavailable",
     "throttled": get_throttling()
 }
 
