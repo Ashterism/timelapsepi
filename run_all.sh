@@ -1,4 +1,10 @@
-#!/bin/bash
+#!/bin/bash -e
+
+echo "[INFO] Starting run_all at $(date)"
+
+# Wake Wi-Fi (if it's sleeping)
+sudo /sbin/ifconfig wlan0 up
+sleep 5
 
 # --- Check Wi-Fi ---
 ping -c 1 -W 5 8.8.8.8 > /dev/null 2>&1
@@ -22,3 +28,11 @@ cd /home/ash/timelapse
 
 # Upload to Firebase
 /usr/bin/python3 upload_status.py
+
+# --- Disable Wi-Fi ---
+# Only disable if no active SSH session
+if ! who | grep "pts/" > /dev/null; then
+  sudo /sbin/ifconfig wlan0 down
+fi
+
+echo "[INFO] Script complete at $(date)"
