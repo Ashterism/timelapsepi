@@ -2,36 +2,34 @@
 
 echo "[INFO] Starting run_all at $(date)"
 
-# Wake Wi-Fi (if it's sleeping)
+# Wake Wi-Fi
 sudo /sbin/ifconfig wlan0 up
 sleep 5
 
-# --- Check Wi-Fi ---
+# Always log status, even if no Wi-Fi
+/usr/bin/python3 /home/ash/timelapse/log_status.py
+
+# Try to connect to the internet
 ping -c 1 -W 5 8.8.8.8 > /dev/null 2>&1
 if [ $? -ne 0 ]; then
-  echo "[WARN] Wi-Fi down. Reinitialising wlan0 interface..."
-  sudo ip link set wlan0 down
-  sleep 2
-  sudo ip link set wlan0 up
-  sleep 10  # Give time to reconnect
+  echo "[WARN] No internet. Attempting reconnect..."
+  sudo systemctl restart dhcpcd
+  sleep 10
+  ping -c 1 -W 5 8.8.8.8 > /dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    echo "[ERROR] Still no internet. Skipping upload."
+  else
+    echo "[INFO] Wi-Fi reconnected. Uploading..."
+    /usr/bin/python3 /home/ash/timelapse/upload_status.py
+  fi
 else
-  echo "[INFO] Wi-Fi OK."
+  echo "[INFO] Internet OK. Uploading..."
+  /usr/bin/python3 /home/ash/timelapse/upload_status.py
 fi
 
-cd /home/ash/timelapse
-
-# Update from GitHub
-/usr/bin/git pull origin main
-
-# Log battery + power status
-/usr/bin/python3 log_status.py
-
-# Upload to Firebase
-/usr/bin/python3 upload_status.py
-
-# --- Disable Wi-Fi ---
-# Only disable if no active SSH session
+# Optional: disable Wi-Fi if not SSH'd in
 if ! who | grep "pts/" > /dev/null; then
+  echo "[INFO] No SSH session. Disabling Wi-Fi."
   sudo /sbin/ifconfig wlan0 down
 fi
 
