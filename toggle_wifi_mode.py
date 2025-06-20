@@ -2,6 +2,11 @@
 
 import os
 from dotenv import load_dotenv, set_key
+from datetime import datetime
+
+LOG_PATH = "/home/ash/timelapse/_local/button_trigger.log"
+with open(LOG_PATH, "a") as f:
+    f.write(f"{datetime.now()}: toggle_wifi_mode.py triggered\n")
 
 CONFIG_PATH = "/home/ash/config.env"
 load_dotenv(CONFIG_PATH)
