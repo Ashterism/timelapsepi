@@ -4,9 +4,13 @@ import os
 import subprocess
 from dotenv import load_dotenv, set_key
 from datetime import datetime
+from pijuice import PiJuice
+from time import sleep
 
 CONFIG_PATH = "/home/ash/timelapse/config.env"
 LOG_PATH = "/home/ash/timelapse/_local/button_trigger.log"
+
+pj = PiJuice(1, 0x14)  # bus 1, address 0x14
 
 def log(msg):
     with open(LOG_PATH, "a") as f:
@@ -22,27 +26,33 @@ def get_current_wifi_mode():
         log(f"[ERROR] Failed to detect Wi-Fi mode: {e}")
     return "unknown"
 
+def flash_led(colour):
+    if colour == "orange":
+        pj.status.SetLedBlink('D2', 3, [255, 128, 0], 300, [0, 0, 0], 300)
+    elif colour == "green":
+        pj.status.SetLedBlink('D2', 3, [0, 255, 0], 300, [0, 0, 0], 300)
+
 def switch_to_hotspot():
     log("[INFO] Switching to HOTSPOT mode")
     os.system("sudo ifconfig wlan0 down")
-    os.system("sleep 1")
+    sleep(1)
     os.system("sudo ifconfig wlan0 up")
-    os.system("sleep 1")
+    sleep(1)
     os.system("sudo systemctl restart hostapd")
     set_key(CONFIG_PATH, "WIFI_CLIENT_MODE", "False")
     set_key(CONFIG_PATH, "WIFI_HOTSPOT", "True")
-    os.system("/usr/bin/pijuice_cli led blink orange 3")
+    flash_led("orange")
 
 def switch_to_client():
     log("[INFO] Switching to CLIENT mode")
     os.system("sudo systemctl stop hostapd")
     os.system("sudo ifconfig wlan0 down")
-    os.system("sleep 1")
+    sleep(1)
     os.system("sudo ifconfig wlan0 up")
-    os.system("sleep 1")
+    sleep(1)
     set_key(CONFIG_PATH, "WIFI_CLIENT_MODE", "True")
     set_key(CONFIG_PATH, "WIFI_HOTSPOT", "False")
-    os.system("/usr/bin/pijuice_cli led blink green 3")
+    flash_led("green")
 
 def toggle_mode():
     load_dotenv(CONFIG_PATH)
