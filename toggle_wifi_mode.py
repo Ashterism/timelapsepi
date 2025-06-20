@@ -10,7 +10,7 @@ LOG_PATH = "/home/ash/timelapse/_local/button_trigger.log"
 
 def log(msg):
     with open(LOG_PATH, "a") as f:
-        f.write(f"{datetime.now()}: {msg}\n")
+        f.write(f"{datetime.now().isoformat()} | {msg}\n")
 
 def get_current_wifi_mode():
     try:
