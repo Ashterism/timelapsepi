@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /home/ash/config.env
+source /home/ash/timelapse/config.env
 LOG_PATH="/home/ash/timelapse/_local/run.log"
 cd /home/ash/timelapse
 
