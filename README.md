@@ -1,98 +1,248 @@
 # timelapsepi
 
-also see: https://github.com/PiSupply/PiJuice/blob/master/Software/README.md
+> Power-resilient Raspberry Pi logging and status system with PiJuice + Firebase
 
-# TimelapsePi Status Logger
+Also see: https://github.com/PiSupply/PiJuice/blob/master/Software/README.md
 
-This project logs power, battery, and system data from a Raspberry Pi using PiJuice, and uploads it to Firebase for display on a remote status dashboard (e.g. [Ashterix | Pi Status](https://ashterix.com/status)).
+---
 
-## 📦 What This Repo Includes
+## 📋 Overview
 
-- `log_status.py` — Logs system and PiJuice status data every 15 minutes
-- `upload_status.py` — Uploads those logs to Firebase Firestore
-- `run_all.sh` — Cron-triggered script to run both the above
-- `_local/` (ignored by Git) — Where logs are stored before upload
-- `status.json` — Most recent log (for quick debugging or display)
+`timelapsepi` is a modular Raspberry Pi logging system designed for remote, solar-powered operation.
 
-## 🔧 Requirements (Not Included in Repo)
+It logs power, battery, and system data using PiJuice, stores it locally, and (when connected) uploads it to Firebase Firestore for remote monitoring — e.g. via: [Ashterix | Pi Status](https://ashterix.com/status)
 
-This setup assumes your working directory is /home/pi/timelapse/
+---
 
-If you place the repo elsewhere, update paths in:
-- run_all.sh
-- log_status.py
-- upload_status.py
-- Your cronjob (crontab -e)
+## 📦 Repo Contents
 
-These must be set up manually on each Pi before it works:
+- `log_status.py` — Logs system + PiJuice data as JSON
+- `upload_status.py` — Uploads log files to Firebase
+- `run_all.sh` — Cron-triggered script that coordinates logging, uploads, Git sync, hotspot/wifi checks
+- `timelapsepi.py` — CLI to view + toggle config flags (e.g. logging, uploads, hotspot)
+- `scripts/` — Contains stub or modular scripts (e.g. Git pull, start hotspot)
+- `_local/` — Stores logs locally (ignored by Git)
+- `status.json` — Most recent system snapshot (for debug/quick UI display)
+- `config.env` — Toggles behaviour (logging, Firebase, Git, Wi-Fi mode)
+
+---
+
+## 🔧 Requirements
+
+Assumes working directory is `/home/pi/timelapse/`.
+
+If using a different path, update:
+
+- Paths in `run_all.sh`, `log_status.py`, `upload_status.py`
+- Cronjob (see below)
+
+---
 
 ### 1. Install PiJuice software
-> sudo apt-get update
 
+> sudo apt-get update
 > sudo apt-get install pijuice-base
 
-### 2. Install Python dependencies
-> sudo pip3 install firebase-admin
+---
 
-### 3. Enable PiJuice I2C access
-> sudo raspi-config  
+### 2. Enable I2C for PiJuice
 
-Interface Options > I2C > Enable
+> sudo raspi-config
 
-### 4. Create _local directory
-This is where logs are stored and queued before upload:
+# Interface Options > I2C > Enable
 
-> mkdir -p /home/pi/timelapse/_local/logs
+---
+
+### 3. Install Python dependencies
+
+> sudo pip3 install firebase-admin python-dotenv
+
+---
+
+### 4. Create `_local/logs` directory
+
+```bash
+mkdir -p /home/pi/timelapse/_local/logs
+```
+
+---
 
 ### 5. Set up Firebase
-You need a Firebase project and Firestore enabled.
 
-Go to https://console.firebase.google.com and create a project
+- Go to https://console.firebase.google.com and create a project
+- Enable Firestore (start in test mode)
+- Go to: Project Settings > Service Accounts > Generate Private Key
+- Save the `.json` key to:
 
-In the Firebase Console, go to: Build > Firestore Database and click Create Database (start in test mode)
+```
+/home/pi/firebase-creds.json
+```
 
-Go to: Project Settings > Service Accounts
+> 🔒 **Never commit this file to Git!**
 
-Click 'Generate New Private Key' and save the .json file
-
-Place it on your Pi at:
-
-> /home/pi/firebase-creds.json
-
-**🔒 Do not commit this file to the repo!**
-
-Update the path in upload_status.py if you place the key elsewhere:
+Edit `upload_status.py` if using a different path:
 
 > cred = credentials.Certificate("/home/pi/firebase-creds.json")
 
+---
+
 ## 🔁 Cron Setup
-Add the following to your crontab to run every 15 minutes:
+
+Edit crontab to run the main script every 15 minutes:
 
 > crontab -e
 
+Add:
+
 > */15 * * * * /home/pi/timelapse/run_all.sh
 
-Make sure the script is executable:
+Make sure it's executable:
 
 > chmod +x /home/pi/timelapse/run_all.sh
 
-## 🔄 What It Does
-Every 15 minutes:
+---
 
-1. log_status.py logs data from the PiJuice and system to a timestamped .json in _local/logs/
-2. upload_status.py attempts to upload all .json files in that folder to Firebase
-3. Files are deleted after successful upload; failures remain and are retried next time
+## 🔧 Config via `config.env`
 
-This ensures offline resilience — no data is lost if Wi-Fi drops.
+Use this file to enable/disable modules:
+
+> LOGGING_ENABLED=True
+> FIREBASE_UPLOAD=True
+> GITHUB_PULL=False
+> WIFI_CLIENT_MODE=True
+> WIFI_HOTSPOT=False
+
+Change values using:
+
+python3 timelapsepi.py
+
+You’ll get a visual toggle menu in terminal.
+
+---
+
+## 🔄 Script Logic (`run_all.sh`)
+
+Every 15 mins:
+
+1. Logs battery/system status (if enabled)
+2. Wakes + checks Wi-Fi (client mode)
+3. Pulls latest code from GitHub (if enabled)
+4. Uploads data to Firebase (if enabled)
+5. Starts hotspot (if enabled)
+6. Logs result and errors to `_local/run.log`
+
+Offline logging is fully supported — files will sync when reconnected.
+
+---
+
+## 📶 Hotspot / Off-Grid Mode
+
+See [README-hotspot-mode.md](README-hotspot-mode.md) for full instructions to set up:
+
+- A direct-connect hotspot
+- Static IP and DHCP server
+- Toggle button to switch between Wi-Fi client and hotspot
+
+---
 
 ## ⚠️ Git Ignore
-The _local/ folder is ignored using .gitignore to prevent flooding the repo with data files:
+
+The `_local/` folder is ignored using `.gitignore` to prevent flooding the repo with data files:
 
 > _local/
 
-## Set default behaviour for git merge
-To avoid conflicts preventing the autoupdate function working run this on the pi:
+---
+
+## 🧩 Git Merge Conflicts (Autoupdate)
+
+To avoid auto-pull failures due to merge prompts, run:
 
 > git config pull.rebase false
-
 > git config --global core.editor true
+
+---
+
+## 📡 Full Hotspot Setup Guide (Off-Grid Mode)
+
+## 🌐 Enabling Direct Wi-Fi Hotspot Mode (for Off-Grid Use)
+
+This allows your Pi to act as a Wi-Fi access point, so you can connect directly to it (without a router) in the field.
+
+### ✅ One-Time Setup Steps
+
+Run all commands from your Pi while connected to a regular Wi-Fi network (client mode):
+
+---
+
+### 1. Install required packages
+
+> sudo apt update
+> sudo apt install hostapd dnsmasq
+> sudo systemctl unmask hostapd
+> sudo systemctl disable hostapd
+
+---
+
+### 2. Create `/etc/hostapd/hostapd.conf`
+
+> sudo nano /etc/hostapd/hostapd.conf
+
+Paste the following:
+
+> interface=wlan0
+> driver=nl80211
+> ssid=timelapsepi
+> hw_mode=g
+> channel=7
+> wmm_enabled=0
+> auth_algs=1
+> ignore_broadcast_ssid=0
+
+This creates an **open network** called `timelapsepi`. You can add WPA settings later if needed.
+
+---
+
+### 3. Configure a static IP on `wlan0`
+
+> sudo nano /etc/dhcpcd.conf
+
+Add this at the bottom:
+
+> interface wlan0
+>     static ip_address=192.168.4.1/24
+>     nohook wpa_supplicant
+
+---
+
+### 4. Set up DHCP server
+
+> sudo nano /etc/dnsmasq.conf
+
+Add:
+
+> interface=wlan0
+> dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
+
+---
+
+### 5. (Optional) Toggle hotspot mode via PiJuice button
+
+If you’ve set up a `toggle_wifi_mode.sh` script and mapped it via:
+
+> pijuice_cli buttons set custom long /home/ash/toggle_wifi_mode.sh
+
+Then a long press will switch between client and hotspot modes.
+
+---
+
+### 6. Enable in config
+
+Make sure `config.env` contains:
+
+> WIFI_MODE=hotspot
+
+Your cron-driven `run_all.sh` will now re-check and reassert the hotspot mode every 15 minutes.
+
+---
+
+🧪 Once tested, you can safely start hotspot mode in the desert and connect from your laptop to the Pi without needing any router or mobile data.
