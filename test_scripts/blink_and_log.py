@@ -14,4 +14,3 @@ with open(LOG_PATH, "a") as f:
 # Flash LED (teal then off, once)
 pj.status.SetLedBlink('D2', 1, [0, 200, 100], 300, [0, 0, 0], 300)
 sleep(0.6)
-ssss
