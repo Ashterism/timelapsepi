@@ -32,3 +32,16 @@ def start():
 def switch_to_wifi():
     set_key('/home/ash/timelapse/config.env', 'wifi_mode', 'client')
     return 'Switched to Wi-Fi. Reboot or wait for next run_all.sh.'
+
+@app.route('/status')
+def status():
+    try:
+        uptime = subprocess.check_output(['uptime', '-p']).decode().strip()
+        ip = subprocess.check_output("hostname -I", shell=True).decode().strip()
+        mode = os.getenv('wifi_mode', 'unknown')
+        return f"🟢 Status OK<br>Uptime: {uptime}<br>IP: {ip}<br>Mode: {mode}"
+    except Exception as e:
+        return f"🔴 Status error: {str(e)}"
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
