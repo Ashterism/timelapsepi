@@ -22,7 +22,7 @@ if [ "$WIFI_MODE" == "client" ]; then
 
 elif [ "$WIFI_MODE" == "hotspot" ]; then
   log "[INFO] Wi-Fi mode: hotspot - enabling access point"
-  ./scripts/hotspot_mode.sh
+  enable_hotspot
 
 elif [ "$WIFI_MODE" == "none" ]; then
   log "[INFO] Wi-Fi mode: none - no connectivity mode active (silent logging only)"
