@@ -8,11 +8,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return send_file('web/index.html')
+    return send_file('/home/ash/timelapse/web/index.html')
 
 @app.route('/style.css')
 def style():
-    return send_file('web/style.css')
+    return send_file('/home/ash/timelapse/web/style.css')
 
 @app.route('/latest.jpg')
 def latest():
