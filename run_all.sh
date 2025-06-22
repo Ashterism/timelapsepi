@@ -14,15 +14,11 @@ log_start
 log_status
 
 if [ "$WIFI_MODE" == "client" ]; then
-  if who | grep -q "pts"; then  # checks for SSH session 
-    log "[INFO] SSH session detected - skipping Wi-Fi operations"
-  else
-    bring_up_wifi
-    check_internet
-    pull_git
-    upload_firebase
-    maybe_drop_wifi
-  fi
+  bring_up_wifi     # unless ssh active
+  check_internet
+  pull_git          # if set to do so
+  upload_firebase   # if set to do so
+  maybe_drop_wifi   # unless ssh active
 
 elif [ "$WIFI_MODE" == "hotspot" ]; then
   log "[INFO] Wi-Fi mode: hotspot - enabling access point"

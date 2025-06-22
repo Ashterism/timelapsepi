@@ -1,7 +1,16 @@
+# Function: check for ssh connection
+ is_ssh_session() {
+    who | grep -q "pts"
+ }
+ 
  # Function: bring_up_wifi()
 bring_up_wifi() {
-  log "[INFO] Wi-Fi mode: client - bringing up wlan0"
-  if ! timeout 30s sudo /sbin/ifconfig wlan0 up; then
+  if is_ssh_session; then
+    log "[INFO] SSH session detected - skipping wlan0 up"
+    return
+  fi
+    log "[INFO] Wi-Fi mode: client - bringing up wlan0"
+    if ! timeout 30s sudo /sbin/ifconfig wlan0 up; then
     log "[ERROR] wlan0 up timed out at $(date)"
   fi
   sleep 5
@@ -34,12 +43,13 @@ check_internet() {
 
 # Function: maybe_drop_wifi()
 maybe_drop_wifi() {
+  if is_ssh_session; then
+    log "[INFO] SSH session detected - skipping wlan0 down"
+    return
+  fi
+
   if [ "$DROP_WIFI_AFTER" == "True" ]; then
-    if who | grep -q "pts"; then
-      log "[INFO] SSH session detected - keeping Wi-Fi on"
-    else
-      log "[INFO] Dropping Wi-Fi after tasks to conserve power"
-      sudo /sbin/ifconfig wlan0 down
-    fi
+    log "[INFO] Dropping wlan0 after tasks"
+    sudo /sbin/ifconfig wlan0 down
   fi
 }
