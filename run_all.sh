@@ -4,6 +4,7 @@ source /home/ash/timelapse/config.env
 source /home/ash/timelapse/functions/logging.sh
 source /home/ash/timelapse/functions/network.sh
 source /home/ash/timelapse/functions/websync.sh
+source /home/ash/timelapse/functions/webserver.sh
 
 LOG_PATH="/home/ash/timelapse/_local/run.log"
 cd /home/ash/timelapse
@@ -29,6 +30,12 @@ elif [ "$WIFI_MODE" == "none" ]; then
 
 else
   log "[WARN] Unknown Wi-Fi mode: $WIFI_MODE - skipping all network activity"
+fi
+
+if [ "$WEBSERVER_ENABLED" == "true" ]; then
+  start_webserver
+else
+  stop_webserver
 fi
 
 log_end
