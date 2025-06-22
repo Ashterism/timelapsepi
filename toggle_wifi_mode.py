@@ -39,8 +39,7 @@ def switch_to_hotspot():
     os.system("sudo ifconfig wlan0 up")
     sleep(1)
     os.system("sudo systemctl restart hostapd")
-    set_key(CONFIG_PATH, "WIFI_CLIENT_MODE", "False")
-    set_key(CONFIG_PATH, "WIFI_HOTSPOT", "True")
+    set_key(CONFIG_PATH, "WIFI_MODE","hotspot")
     flash_led("orange")
 
 def switch_to_client():
@@ -50,8 +49,7 @@ def switch_to_client():
     sleep(1)
     os.system("sudo ifconfig wlan0 up")
     sleep(1)
-    set_key(CONFIG_PATH, "WIFI_CLIENT_MODE", "True")
-    set_key(CONFIG_PATH, "WIFI_HOTSPOT", "False")
+    set_key(CONFIG_PATH, "WIFI_MODE", "client")
     flash_led("green")
 
 def toggle_mode():
