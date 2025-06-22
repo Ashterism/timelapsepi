@@ -17,7 +17,7 @@ log_end() {
 
  # Function: log_status()
 log_status() {
-  if [ "$LOGGING_ENABLED" == "True" ]; then
+  if [ "$LOGGING_ENABLED" == "true" ]; then
     log "[INFO] Logging enabled - running log_status.py"
     if ! timeout 20s /usr/bin/python3 log_status.py; then
       log "[ERROR] log_status.py timed out at $(date)"
