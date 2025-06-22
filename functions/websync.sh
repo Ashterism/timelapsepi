@@ -1,6 +1,6 @@
  # Function: pull_git()
 pull_git() {
-  if [ "$GITHUB_PULL" == "True" ]; then
+  if [ "$GITHUB_PULL" == "true" ]; then
     if [ "$ONLINE" == "true" ]; then
       log "[INFO] Pulling latest from GitHub..."
       if ! timeout 20s /usr/bin/git pull origin main; then
@@ -16,7 +16,7 @@ pull_git() {
 
  # Function: upload_firebase()
 upload_firebase() {
-  if [ "$FIREBASE_UPLOAD" == "True" ]; then
+  if [ "$FIREBASE_UPLOAD" == "true" ]; then
     if [ "$ONLINE" == "true" ]; then
       log "[INFO] Uploading to Firebase..."
       if ! timeout 20s /usr/bin/python3 upload_status.py; then

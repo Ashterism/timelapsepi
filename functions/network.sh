@@ -9,11 +9,11 @@ bring_up_wifi() {
     log "[INFO] SSH session detected - skipping wlan0 up"
     return
   fi
-    log "[INFO] Wi-Fi mode: client - bringing up wlan0"
-    if ! timeout 30s sudo /sbin/ifconfig wlan0 up; then
+  log "[INFO] Wi-Fi mode: client - bringing up wlan0"
+  if ! timeout 30s sudo /sbin/ifconfig wlan0 up; then
     log "[ERROR] wlan0 up timed out at $(date)"
   fi
-  sleep 5
+  sleep 5       
 }
 
  # Function: check_internet()
@@ -24,8 +24,8 @@ check_internet() {
     log "[INFO] Internet OK at $(date)"
   else
     log "[WARN] No internet. Trying reconnect..."
-    if who | grep -q "pts"; then
-      log "[INFO] SSH session detected – skipping Wi-Fi reset"
+    if is_ssh_session; then
+      log "[INFO] SSH session detected - skipping Wi-Fi reset"
     else
       if ! timeout 15s sudo /sbin/ifconfig wlan0 down && sudo /sbin/ifconfig wlan0 up; then
         log "[ERROR] Wi-Fi reset failed at $(date)"
@@ -48,7 +48,7 @@ maybe_drop_wifi() {
     return
   fi
 
-  if [ "$DROP_WIFI_AFTER" == "True" ]; then
+  if [ "$DROP_WIFI_AFTER" == "true" ]; then
     log "[INFO] Dropping wlan0 after tasks"
     sudo /sbin/ifconfig wlan0 down
   fi

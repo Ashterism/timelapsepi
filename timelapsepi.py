@@ -16,7 +16,7 @@ def print_menu():
         if key == "WIFI_MODE":
             print(f"[→] WIFI_MODE: {val}")
         else:
-            print(f"[{'✓' if val == 'True' else '✗'}] {key}")
+            print(f"[{'✓' if val == 'true' else '✗'}] {key}")
     print("\nType the name of a setting to toggle it.")
     print("Type 'wifi' to cycle WIFI_MODE.")
     print("Or type 'status' to refresh, or 'exit' to quit.\n")
@@ -28,7 +28,7 @@ def toggle(key):
     if key == "WIFI_MODE":
         print("Use 'wifi' to change Wi-Fi mode.")
         return
-    new_val = "False" if config[key] == "True" else "True"
+    new_val = "false" if config[key] == "true" else "true"
     set_key(CONFIG_PATH, key, new_val)
     config[key] = new_val
     print(f"Toggled {key} → {new_val}")
