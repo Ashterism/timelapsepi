@@ -18,3 +18,10 @@ stop_webserver() {
     log "[INFO] No webserver PID found - nothing to stop"
   fi
 }
+
+restart_webserver() {
+  log "[INFO] Restarting Flask webserver"
+  stop_webserver
+  sleep 1  # small delay to ensure clean shutdown
+  start_webserver
+}
