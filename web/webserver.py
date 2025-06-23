@@ -16,7 +16,10 @@ def style():
 
 @app.route('/latest.jpg')
 def latest():
-    return send_file('/home/ash/timelapse/_local/latest.jpg')
+    path = '/home/ash/timelapse/_local/latest.jpg'
+    if not os.path.exists(path):
+        return '', 404  # Clean fail instead of 500
+    return send_file(path)
 
 @app.route('/photo')
 def photo():
