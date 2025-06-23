@@ -84,3 +84,8 @@ EOF
 
   log "[INFO] Metadata saved: ${METADATA_PATH}"
 }
+
+# If the script is run directly (not sourced), call take_photo
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  take_photo
+fi
