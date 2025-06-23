@@ -1,5 +1,6 @@
 # Function: log()
 log() {
+  : "${LOG_PATH:=/home/ash/timelapse/_local/run.log}"
   echo "$1" >> "$LOG_PATH"
 }
 
