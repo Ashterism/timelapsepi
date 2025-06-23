@@ -2,9 +2,17 @@ from flask import Flask, send_file
 import subprocess
 from dotenv import set_key, load_dotenv
 import os
+import logging
 
 load_dotenv('/home/ash/timelapse/config.env')
 app = Flask(__name__)
+
+# Log to file
+logging.basicConfig(
+    filename='/home/ash/timelapse/_local/webserver.log',
+    level=logging.DEBUG,
+    format='%(asctime)s [%(levelname)s] %(message)s'
+)
 
 @app.route('/')
 def index():
@@ -23,8 +31,14 @@ def latest():
 
 @app.route('/photo')
 def photo():
+    app.logger.debug("📸 /photo route hit")
     result = subprocess.run('source /home/ash/timelapse/web/webfunctions/take_photo.sh', shell=True)
-    return '📸 Photo taken.' if result.returncode == 0 else '❌ Photo failed.'
+    if result.returncode == 0:
+        app.logger.debug("✅ Photo taken successfully")
+        return '📸 Photo taken.'
+    else:
+        app.logger.error("❌ Photo failed to execute")
+        return '❌ Photo failed.'
 
 @app.route('/start')
 def start():
