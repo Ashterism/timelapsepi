@@ -24,6 +24,9 @@ It logs power, battery, and system data using PiJuice, stores it locally, and (w
 - `_local/` — Stores logs locally (ignored by Git)
 - `status.json` — Most recent system snapshot (for debug/quick UI display)
 - `config.env` — Toggles behaviour (logging, Firebase, Git, Wi-Fi mode)
+- `web/webserver.py` — Flask webserver to trigger captures and monitor status  
+- `functions/photo.sh` — Captures photo + writes metadata  
+- `functions/webserver.sh` — Starts/stops Flask server for remote control
 
 ---
 
@@ -83,6 +86,18 @@ mkdir -p /home/pi/timelapse/_local/logs
 Edit `upload_status.py` if using a different path:
 
 > cred = credentials.Certificate("/home/pi/firebase-creds.json")
+
+---
+
+### 6. Install Camera + Metadata Tools
+
+```bash
+sudo apt update
+sudo apt install libcamera-apps exiftool
+```
+
+- `libcamera-jpeg` is used to capture photos from the Pi Camera Module
+- `exiftool` generates metadata for each image as a `.json` file
 
 ---
 
@@ -246,3 +261,17 @@ Your cron-driven `run_all.sh` will now re-check and reassert the hotspot mode ev
 ---
 
 🧪 Once tested, you can safely start hotspot mode in the desert and connect from your laptop to the Pi without needing any router or mobile data.
+
+---
+
+## 📷 Web Interface for Capturing Photos
+
+If `WEBSERVER_ENABLED=true` is set in `config.env`, a Flask-based web interface will run on port `5000`.
+
+Access from a browser:
+- `http://<pi-ip>:5000/` — Main interface
+- `/photo` — Captures a photo + metadata
+- `/latest.jpg` — Latest image preview
+- `/status` — Shows uptime and network mode
+
+Captured photos and metadata are stored in `_local/photos/`.
