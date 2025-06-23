@@ -32,7 +32,7 @@ def latest():
 @app.route('/photo')
 def photo():
     app.logger.debug("📸 /photo route hit")
-    result = subprocess.run('source /home/ash/timelapse/web/webfunctions/take_photo.sh', shell=True)
+    result = subprocess.run(['bash', '-c', 'source /home/ash/timelapse/web/webfunctions/take_photo.sh && take_photo'])
     if result.returncode == 0:
         app.logger.debug("✅ Photo taken successfully")
         return '📸 Photo taken.'
