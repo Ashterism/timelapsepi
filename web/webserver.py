@@ -22,6 +22,10 @@ def index():
 def style():
     return send_file('/home/ash/timelapse/web/style.css')
 
+@app.route('/photo.js')
+def photo_js():
+    return send_file('/home/ash/timelapse/web/photo.js')
+
 @app.route('/latest.jpg')
 def latest():
     path = '/home/ash/timelapse/_local/latest.jpg'
