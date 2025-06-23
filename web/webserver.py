@@ -58,10 +58,14 @@ def photo():
         app.logger.error("❌ Photo failed to execute")
         return '❌ Photo failed.', 500
 
-@app.route('/start')
-def start():
-    subprocess.run(['/home/ash/timelapse/run_all.sh'])
-    return 'Capture process started.'
+@app.route('/webserverlog')
+def show_log():
+    try:
+        with open('/home/ash/timelapse/_local/webserver.log', 'r') as f:
+            lines = f.readlines()[-50:]  # Show last 50 lines
+        return '<pre>' + ''.join(lines) + '</pre>'
+    except FileNotFoundError:
+        return '⚠️ Log file not found'
 
 @app.route('/mode/wifi')
 def switch_to_wifi():

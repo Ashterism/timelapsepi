@@ -9,7 +9,7 @@
   <h1>📷 TimelapsePi</h1>
 
   <button onclick="takePhoto()">Take Test Photo</button>
-  <button onclick="fetch('/start').then(r => r.text()).then(alert)">Start Capture</button>
+  <button onclick="window.open('/webserverlog', '_blank')">Webserver Log</button>
   <button onclick="fetch('/mode/wifi').then(r => r.text()).then(alert)">Switch to Wi-Fi</button>
 
   <div id="preview">
