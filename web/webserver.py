@@ -23,7 +23,7 @@ def latest():
 
 @app.route('/photo')
 def photo():
-    result = subprocess.run('source /home/ash/timelapse/functions/photo.sh && take_photo', shell=True)
+    result = subprocess.run('source /home/ash/timelapse/web/webfunctions/take_photo.sh', shell=True)
     return '📸 Photo taken.' if result.returncode == 0 else '❌ Photo failed.'
 
 @app.route('/start')

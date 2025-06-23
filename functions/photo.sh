@@ -83,19 +83,3 @@ EOF
 
   log "[INFO] Metadata saved: ${METADATA_PATH}"
 }
-
-# If this script is run directly, allow command-based access to functions
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  CMD="$1"
-  shift
-
-  case "$CMD" in
-    take_photo)
-      take_photo "$@"
-      ;;
-    *)
-      echo "Usage: $0 {take_photo}" >&2
-      exit 1
-      ;;
-  esac
-fi
