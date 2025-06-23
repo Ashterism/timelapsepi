@@ -5,7 +5,7 @@ start_webserver() {
   check_webserver
   STATUS=$?
   if [ "$STATUS" -eq 0 ]; then
-    log "[INFO] Webserver already running and responsive - skipping start"
+#    log "[INFO] Webserver already running and responsive - skipping start"
     return
   elif [ "$STATUS" -eq 2 ]; then
     log "[INFO] Webserver not responding - restarting"
