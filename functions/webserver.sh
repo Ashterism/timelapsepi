@@ -42,16 +42,16 @@ restart_webserver() {
 
 # FUNCTION: check webserver
 check_webserver() {
+  if curl -s --max-time 2 http://localhost:5000/ > /dev/null; then
+    log "[INFO] Webserver is running and responsive (detected via port 5000)"
+    return 0
+  fi
+
   if [ -f /home/ash/timelapse/_local/webserver.pid ]; then
     PID=$(cat /home/ash/timelapse/_local/webserver.pid)
     if ps -p "$PID" > /dev/null 2>&1; then
-      if curl -s --max-time 2 http://localhost:5000/ > /dev/null; then
-        log "[INFO] Webserver is running and responsive (PID $PID)"
-        return 0
-      else
-        log "[WARN] Webserver running (PID $PID) but not responding"
-        return 2
-      fi
+      log "[WARN] Webserver running (PID $PID) but not responding on port 5000"
+      return 2
     else
       log "[WARN] PID file found but process $PID is not running"
       return 1
