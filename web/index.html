@@ -8,7 +8,7 @@
 <body>
   <h1>📷 TimelapsePi</h1>
 
-  <button onclick="fetch('/photo').then(r => r.text()).then(alert)">Take Test Photo</button>
+  <button onclick="takePhoto()">Take Test Photo</button>
   <button onclick="fetch('/start').then(r => r.text()).then(alert)">Start Capture</button>
   <button onclick="fetch('/mode/wifi').then(r => r.text()).then(alert)">Switch to Wi-Fi</button>
 
@@ -17,10 +17,6 @@
     <img id="photo" src="/latest.jpg" style="width: 100%; max-width: 400px;" alt="No photo yet" onerror="this.onerror=null; this.src='no-preview.png'; this.alt='No preview available';">
   </div>
 
-  <script>
-    setInterval(() => {
-      document.getElementById("photo").src = `/latest.jpg?${Date.now()}`;
-    }, 5000);
-  </script>
+  <script src="photo.js"></script>
 </body>
 </html>

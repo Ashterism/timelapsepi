@@ -1,4 +1,4 @@
-from flask import Flask, send_file
+from flask import Flask, send_file, jsonify
 import subprocess
 from dotenv import set_key, load_dotenv
 import os
@@ -29,6 +29,14 @@ def latest():
         return '', 404  # Clean fail instead of 500
     return send_file(path)
 
+@app.route('/latest-timestamp')
+def latest_timestamp():
+    path = '/home/ash/timelapse/_local/latest.jpg'
+    if not os.path.exists(path):
+        return '', 404
+    timestamp = str(os.path.getmtime(path))
+    return timestamp
+
 @app.route('/photo')
 def photo():
     app.logger.debug("📸 /photo route hit")
@@ -44,7 +52,7 @@ def photo():
         return '📸 Photo taken.'
     else:
         app.logger.error("❌ Photo failed to execute")
-        return '❌ Photo failed.'
+        return '❌ Photo failed.', 500
 
 @app.route('/start')
 def start():
