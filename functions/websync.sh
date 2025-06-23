@@ -30,11 +30,8 @@ upload_firebase() {
         log "[ERROR] upload_status.py failed at $(date)"
       else
         log "[INFO] Firebase upload complete"
-        echo "$OUTPUT" | while read -r line; do
-      if echo "$line" | grep -qi "upload"; then
-        log "[INFO] Firebase: $line"
-      fi
-    done
+        COUNT=$(echo "$OUTPUT" | grep -ic "uploaded")
+        log "[INFO] Firebase: $COUNT files uploaded"
       fi
     else
       log "[INFO] Firebase upload skipped - no internet"
