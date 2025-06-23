@@ -15,8 +15,17 @@
   <div id="preview">
     <h2>Preview</h2>
     <img id="photo" src="/latest.jpg" style="width: 100%; max-width: 400px;" alt="No photo yet" onerror="this.onerror=null; this.src='no-preview.png'; this.alt='No preview available';">
+    <div id="fileInfo" style="font-size: 0.9rem; color: #555; margin-top: 0.5rem;"></div>
   </div>
 
   <script src="photo.js"></script>
+  <script>
+    fetch('/latest-timestamp')
+      .then(res => res.text())
+      .then(timestamp => {
+        const date = new Date(parseInt(timestamp) * 1000);
+        document.getElementById('fileInfo').textContent = `File: latest.jpg | Taken: ${date.toLocaleString()}`;
+      });
+  </script>
 </body>
 </html>
