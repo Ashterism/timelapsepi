@@ -41,7 +41,7 @@ restart_webserver() {
 }
 
 # FUNCTION: hard reset webserver
-reset_webserver_hard() {
+restart_webserver_hard() {
   if [ -f /home/ash/timelapse/_local/webserver.pid ]; then
     PID=$(cat /home/ash/timelapse/_local/webserver.pid)
     log "[INFO] Force killing Flask webserver (PID $PID)"
