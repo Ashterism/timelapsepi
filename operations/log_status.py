@@ -75,5 +75,5 @@ with open(log_filename, "w") as f:
     json.dump(log, f, indent=2)
 
 # Also save current status.json for debugging
-with open("/home/ash/timelapse/data/statuslogs/status.json", "w") as f:
+with open("/home/ash/timelapse/data/statuslogs/current_status.json", "w") as f:
     json.dump(log, f, indent=2)

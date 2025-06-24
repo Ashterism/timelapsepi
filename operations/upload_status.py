@@ -16,7 +16,7 @@ db = firestore.client()
 
 # Upload all log files
 for filename in os.listdir(log_dir):
-    if not filename.endswith(".json"):
+    if not filename.endswith(".json") or filename == "current_status.json":
         continue
 
     filepath = os.path.join(log_dir, filename)
