@@ -18,7 +18,16 @@
     <div id="fileInfo" style="font-size: 0.9rem; color: #555; margin-top: 0.5rem;"></div>
   </div>
  
+<details class="config-box">
+  <summary>⚙️ Configure timelapse</summary>
+  <div class="config-content">
+    <p>Timelapse settings will go here...</p>
+  </div>
+</details>
+
   <script src="photo.js"></script>
+  
+  <!-- Inline script to update timestamp text under the preview image on page load -->
   <script>
     fetch('/latest-timestamp')
       .then(res => res.text())

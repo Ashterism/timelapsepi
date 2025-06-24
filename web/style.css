@@ -21,3 +21,36 @@ button:disabled {
   background: #999;
   cursor: not-allowed;
 }
+
+details.config-box {
+  margin-top: 2rem;
+  text-align: left;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #eee;
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
+details.config-box summary {
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.5rem;
+  background: #ddd;
+  border-radius: 5px;
+  list-style: none;
+}
+
+details.config-box[open] summary {
+  border-bottom: 1px solid #ccc;
+}
+
+.config-content {
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 0.5rem;
+}

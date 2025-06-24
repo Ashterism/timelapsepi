@@ -1,5 +1,9 @@
+// This script handles taking a new photo and updating the preview image
+
 let lastTimestamp = null;
 
+// Called when the "Take Test Photo" button is clicked
+// Disables the button, fetches a new photo, and waits for an updated timestamp
 async function takePhoto() {
   const btn = document.querySelector('button[onclick="takePhoto()"]');
   btn.disabled = true;
@@ -20,6 +24,7 @@ async function takePhoto() {
   }
 }
 
+// Polls the server every second until the timestamp changes, indicating a new photo is available
 function pollForNewPhoto(btn) {
   fetch('/latest-timestamp')
     .then(res => res.text())
@@ -34,6 +39,7 @@ function pollForNewPhoto(btn) {
     .catch(() => resetButton(btn));
 }
 
+// Resets the button state after photo has been updated or if an error occurs
 function resetButton(btn) {
   btn.disabled = false;
   btn.textContent = "Take Test Photo";
