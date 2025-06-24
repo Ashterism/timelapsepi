@@ -1,6 +1,6 @@
 #!/bin/bash
 # photo.sh — photo capture and metadata tools
-source ../../operations/logging.sh
+source /home/ash/timelapse/operations/logging.sh
 
 # FUNCTION: take_photo()
 take_photo() {
