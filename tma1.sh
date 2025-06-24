@@ -1,10 +1,10 @@
 #!/bin/bash
 
 source /home/ash/timelapse/config.env
-source ./operations/logging.sh
-source ./operations/network.sh
-source ./operations/data_sync.sh
-source ./interfaces/webserver.sh
+source /home/ash/timelapse/operations/logging.sh
+source /home/ash/timelapse/operations/network.sh
+source /home/ash/timelapse/operations/data_sync.sh
+source /home/ash/timelapse/interfaces/webserver.sh
 
 LOG_PATH="/home/ash/timelapse/data/logs/run.log"
 cd /home/ash/timelapse || exit
