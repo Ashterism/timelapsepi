@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 # Set log directory
-log_dir = "/home/ash/timelapse/_local/logs"
+log_dir = "/home/ash/timelapse/logs"
 os.makedirs(log_dir, exist_ok=True)
 
 # Load Firebase credentials

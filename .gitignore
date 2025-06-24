@@ -1,6 +1,13 @@
 
 # Exclude local-only folders
-_local/
+logs/
+photos/
+operations/config.env
+
+# Firebase config
+firebase.json
+.firebaserc
+operations/firebase_config.*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

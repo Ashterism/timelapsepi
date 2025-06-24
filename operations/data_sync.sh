@@ -25,7 +25,7 @@ upload_firebase() {
   if [ "$FIREBASE_UPLOAD" == "true" ]; then
     if [ "$ONLINE" == "true" ]; then
       log "[INFO] Uploading to Firebase..."
-      OUTPUT=$(timeout 20s /usr/bin/python3 upload_status.py 2>&1)
+      OUTPUT=$(timeout 20s /usr/bin/python3 operations/upload_status.py 2>&1)
       if [ $? -ne 0 ]; then
         log "[ERROR] upload_status.py failed at $(date)"
       else

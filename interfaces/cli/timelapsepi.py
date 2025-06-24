@@ -3,7 +3,7 @@
 import os
 from dotenv import dotenv_values, set_key
 
-CONFIG_PATH = "/home/ash/timelapse/config.env"
+CONFIG_PATH = "/home/ash/timelapse/operations/config.env"
 config = dotenv_values(CONFIG_PATH)
 
 # Order matters here for cycling through modes

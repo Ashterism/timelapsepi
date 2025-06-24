@@ -4,7 +4,7 @@ from datetime import datetime
 from time import sleep
 from pijuice import PiJuice
 
-LOG_PATH = "/home/ash/timelapse/_local/button_test.log"
+LOG_PATH = "/home/ash/timelapse/logs/button_test.log"
 pj = PiJuice(1, 0x14)
 
 # Log it

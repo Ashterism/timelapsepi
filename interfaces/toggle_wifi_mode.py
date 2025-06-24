@@ -7,8 +7,8 @@ from datetime import datetime
 from pijuice import PiJuice
 from time import sleep
 
-CONFIG_PATH = "/home/ash/timelapse/config.env"
-LOG_PATH = "/home/ash/timelapse/_local/button_trigger.log"
+CONFIG_PATH = "/home/ash/timelapse/operations/config.env"
+LOG_PATH = "/home/ash/timelapse/logs/button_trigger.log"
 
 pj = PiJuice(1, 0x14)  # bus 1, address 0x14
 
@@ -63,6 +63,6 @@ def toggle_mode():
     else:
         log("[ERROR] Unknown Wi-Fi mode — no action taken")
         return
-    os.system("/home/ash/timelapse/tma1.sh &")
+    os.system("/home/ash/timelapse/operations/tma1.sh &")
 
 toggle_mode()

@@ -4,38 +4,38 @@ from dotenv import set_key, load_dotenv
 import os
 import logging
 
-load_dotenv('/home/ash/timelapse/config.env')
+load_dotenv('/home/ash/timelapse/operations/config.env')
 app = Flask(__name__)
 
 # Log to file
 logging.basicConfig(
-    filename='/home/ash/timelapse/_local/webserver.log',
+    filename='/home/ash/timelapse/logs/webserver.log',
     level=logging.DEBUG,
     format='%(asctime)s [%(levelname)s] %(message)s'
 )
 
 @app.route('/')
 def index():
-    return send_file('/home/ash/timelapse/web/index.html')
+    return send_file('/home/ash/timelapse/interfaces/web/index.html')
 
 @app.route('/style.css')
 def style():
-    return send_file('/home/ash/timelapse/web/style.css')
+    return send_file('/home/ash/timelapse/interfaces/web/style.css')
 
 @app.route('/photo.js')
 def photo_js():
-    return send_file('/home/ash/timelapse/web/photo.js')
+    return send_file('/home/ash/timelapse/interfaces/web/photo.js')
 
 @app.route('/latest.jpg')
 def latest():
-    path = '/home/ash/timelapse/_local/latest.jpg'
+    path = '/home/ash/timelapse/photos/latest.jpg'
     if not os.path.exists(path):
         return '', 404  # Clean fail instead of 500
     return send_file(path)
 
 @app.route('/latest-timestamp')
 def latest_timestamp():
-    path = '/home/ash/timelapse/_local/latest.jpg'
+    path = '/home/ash/timelapse/photos/latest.jpg'
     if not os.path.exists(path):
         return '', 404
     timestamp = str(os.path.getmtime(path))
@@ -61,7 +61,7 @@ def photo():
 @app.route('/webserverlog')
 def show_log():
     try:
-        with open('/home/ash/timelapse/_local/webserver.log', 'r') as f:
+        with open('/home/ash/timelapse/logs/webserver.log', 'r') as f:
             lines = f.readlines()[-50:]  # Show last 50 lines
         return '<pre>' + ''.join(lines) + '</pre>'
     except FileNotFoundError:
@@ -69,7 +69,7 @@ def show_log():
 
 @app.route('/mode/wifi')
 def switch_to_wifi():
-    set_key('/home/ash/timelapse/config.env', 'wifi_mode', 'client')
+    set_key('/home/ash/timelapse/operations/config.env', 'wifi_mode', 'client')
     return 'Switched to Wi-Fi. Reboot or wait for next tma1.sh.'
 
 @app.route('/status')

@@ -15,18 +15,18 @@ start_webserver() {
 
   log "[INFO] Starting Flask webserver"
   nohup python3 /home/ash/timelapse/web/webserver.py > /dev/null 2>&1 &
-  echo $! > /home/ash/timelapse/_local/webserver.pid
+  echo $! > /home/ash/timelapse/data/temp/webserver.pid
 }
 
 # FUNCTION: stop webserver
 stop_webserver() {
-  if [ -f /home/ash/timelapse/_local/webserver.pid ]; then
-    PID=$(cat /home/ash/timelapse/_local/webserver.pid)
+  if [ -f /home/ash/timelapse/data/temp/webserver.pid ]; then
+    PID=$(cat /home/ash/timelapse/data/temp/webserver.pid)
     if ps -p $PID > /dev/null 2>&1; then
       log "[INFO] Stopping Flask webserver (PID $PID)"
       kill $PID
     fi
-    rm /home/ash/timelapse/_local/webserver.pid
+    rm /home/ash/timelapse/data/temp/webserver.pid
   else
     log "[INFO] No webserver PID found - nothing to stop"
   fi
@@ -42,11 +42,11 @@ restart_webserver() {
 
 # FUNCTION: hard reset webserver
 restart_webserver_hard() {
-  if [ -f /home/ash/timelapse/_local/webserver.pid ]; then
-    PID=$(cat /home/ash/timelapse/_local/webserver.pid)
+  if [ -f /home/ash/timelapse/data/temp/webserver.pid ]; then
+    PID=$(cat /home/ash/timelapse/data/temp/webserver.pid)
     log "[INFO] Force killing Flask webserver (PID $PID)"
     kill -9 $PID 2>/dev/null || log "[WARN] Failed to kill process $PID"
-    rm -f /home/ash/timelapse/_local/webserver.pid
+    rm -f /home/ash/timelapse/data/temp/webserver.pid
   else
     log "[INFO] No webserver PID found - nothing to force kill"
   fi
@@ -59,8 +59,8 @@ check_webserver() {
     return 0
   fi
 
-  if [ -f /home/ash/timelapse/_local/webserver.pid ]; then
-    PID=$(cat /home/ash/timelapse/_local/webserver.pid)
+  if [ -f /home/ash/timelapse/data/temp/webserver.pid ]; then
+    PID=$(cat /home/ash/timelapse/data/temp/webserver.pid)
     if ps -p "$PID" > /dev/null 2>&1; then
       log "[WARN] Webserver running (PID $PID) but not responding on port 5000"
       return 2

@@ -5,8 +5,8 @@ source ../../operations/logging.sh
 # FUNCTION: take_photo()
 take_photo() {
   TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-  IMAGE_DIR="/home/ash/timelapse/_local/photos"
-  LATEST_PATH="/home/ash/timelapse/_local/latest.jpg"
+  IMAGE_DIR="/home/ash/timelapse/photos"
+  LATEST_PATH="/home/ash/timelapse/photos/latest.jpg"
   IMAGE_PATH="$IMAGE_DIR/$TIMESTAMP.jpg"
 
   mkdir -p "$IMAGE_DIR"

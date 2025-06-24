@@ -5,7 +5,7 @@ import json
 import subprocess
 
 # Set log location
-log_dir = "/home/ash/timelapse/_local/logs"
+log_dir = "/home/ash/timelapse/logs"
 os.makedirs(log_dir, exist_ok=True)
 
 # Setup PiJuice
@@ -75,5 +75,5 @@ with open(log_filename, "w") as f:
     json.dump(log, f, indent=2)
 
 # Also save current status.json for debugging
-with open("/home/ash/timelapse/status.json", "w") as f:
+with open("/home/ash/timelapse/logs/status.json", "w") as f:
     json.dump(log, f, indent=2)

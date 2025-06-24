@@ -1,6 +1,6 @@
 # Function: log()
 log() {
-  : "${LOG_PATH:=/home/ash/timelapse/_local/run.log}"
+  : "${LOG_PATH:=/home/ash/timelapse/logs/run.log}"
   echo "$1" >> "$LOG_PATH"
 }
 
@@ -20,7 +20,7 @@ log_end() {
 log_status() {
   if [ "$LOGGING_ENABLED" == "true" ]; then
     log "[INFO] Logging enabled - running log_status.py"
-    if ! timeout 20s /usr/bin/python3 log_status.py; then
+    if ! timeout 20s /usr/bin/python3 operations/log_status.py; then
       log "[ERROR] log_status.py timed out at $(date)"
     fi
   else
