@@ -25,7 +25,7 @@ stop_webserver() {
     PID=$(cat /home/ash/timelapse/data/temp/webserver.pid)
     if ps -p $PID > /dev/null 2>&1; then
       log "[INFO] Stopping Flask webserver (PID $PID)"
-      kill $PID
+      kill "$PID"
     fi
     rm /home/ash/timelapse/data/temp/webserver.pid
   else

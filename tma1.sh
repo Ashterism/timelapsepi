@@ -7,7 +7,7 @@ source ./operations/data_sync.sh
 source ./interfaces/webserver.sh
 
 LOG_PATH="/home/ash/timelapse/data/logs/run.log"
-cd /home/ash/timelapse
+cd /home/ash/timelapse || exit
 
 
  # --- Script Execution Starts Here ---

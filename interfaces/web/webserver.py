@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 # Log to file
 logging.basicConfig(
-    filename = '/home/ash/timelapse/data/logs/webserver.log'
+    filename = '/home/ash/timelapse/data/logs/webserver.log',
     level=logging.DEBUG,
     format='%(asctime)s [%(levelname)s] %(message)s'
 )
