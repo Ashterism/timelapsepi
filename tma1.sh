@@ -6,7 +6,7 @@ source ./operations/network.sh
 source ./operations/data_sync.sh
 source ./interfaces/webserver.sh
 
-LOG_PATH="/home/ash/timelapse/_local/run.log"
+LOG_PATH="/home/ash/timelapse/data/logs/run.log"
 cd /home/ash/timelapse
 
 
