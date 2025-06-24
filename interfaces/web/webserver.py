@@ -20,11 +20,11 @@ def index():
 
 @app.route('/style.css')
 def style():
-    return send_file('/home/ash/timelapse/interfaces/web/index.html')
+    return send_file('/home/ash/timelapse/interfaces/web/style.css')
 
 @app.route('/photo.js')
 def photo_js():
-    return send_file('/home/ash/timelapse/interfaces/web/index.html')
+    return send_file('/home/ash/timelapse/interfaces/web/photo.js')
 
 @app.route('/latest.jpg')
 def latest():
