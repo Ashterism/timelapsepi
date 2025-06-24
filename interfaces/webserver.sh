@@ -15,7 +15,7 @@ start_webserver() {
 
   log "[INFO] Starting Flask webserver"
   mkdir -p /home/ash/timelapse/data/temp
-  nohup python3 /home/ash/timelapse/web/webserver.py > /dev/null 2>&1 &
+  nohup python3 /home/ash/timelapse/interfaces/web/webserver.py > /dev/null 2>&1 &
   echo $! > /home/ash/timelapse/data/temp/webserver.pid
 }
 
