@@ -16,15 +16,15 @@ logging.basicConfig(
 
 @app.route('/')
 def index():
-    return send_file('./interfaces/web/index.html')
+    return send_file('/home/ash/timelapse/interfaces/web/index.html')
 
 @app.route('/style.css')
 def style():
-    return send_file('./interfaces/web/style.css')
+    return send_file('/home/ash/timelapse/interfaces/web/index.html')
 
 @app.route('/photo.js')
 def photo_js():
-    return send_file('./interfaces/web/photo.js')
+    return send_file('/home/ash/timelapse/interfaces/web/index.html')
 
 @app.route('/latest.jpg')
 def latest():
