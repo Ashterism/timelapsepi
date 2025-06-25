@@ -29,7 +29,6 @@ upload_firebase() {
       if [ $? -ne 0 ]; then
         log "[ERROR] upload_status.py failed at $(date)"
       else
-        log "[INFO] Firebase upload complete"
         COUNT=$(echo "$OUTPUT" | grep -ic "uploaded")
         log "[INFO] Firebase: $COUNT files uploaded"
       fi
