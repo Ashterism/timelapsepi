@@ -4,6 +4,11 @@ import os
 import subprocess
 from pathlib import Path
 from dotenv import dotenv_values, set_key
+import sys
+
+# Add functions directory to Python path
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent / "functions"))
+
 from log_util import log
 
 BASE_PATH = Path("/home/ash/timelapse")
