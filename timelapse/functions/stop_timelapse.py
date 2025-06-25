@@ -6,6 +6,10 @@ import sys
 from pathlib import Path
 from log_util import log
 
+import sys
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from config_paths import LOGS_PATH
+
 def stop_runner(session_folder):
     pid_path = Path(session_folder) / "runner.pid"
     if not pid_path.exists():

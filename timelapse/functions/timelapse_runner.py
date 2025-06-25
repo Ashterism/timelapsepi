@@ -7,19 +7,16 @@ import datetime
 from pathlib import Path
 import sys
 
-def log(msg):
-    timestamp = datetime.datetime.now().isoformat()
-    log_path = Path("/home/ash/timelapse/data/logs/timelapse_runner.log")
-    log_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(log_path, "a") as f:
-        f.write(f"{timestamp} - {msg}\n")
+# Add shared utility path
+sys.path.append(str(Path(__file__).resolve().parents[1] ))
+from config_paths import PHOTO_SCRIPT
 
 def load_config(config_path):
     try:
         with open(config_path, "r") as f:
             return json.load(f)
     except Exception as e:
-        log(f"❌ Failed to load config: {e}")
+        log(f"❌ Failed to load config: {e}", "timelapse_runner.log")
         sys.exit(1)
 
 def save_config(config, config_path):
@@ -27,7 +24,7 @@ def save_config(config, config_path):
         with open(config_path, "w") as f:
             json.dump(config, f, indent=2)
     except Exception as e:
-        log(f"❌ Failed to update config: {e}")
+        log(f"❌ Failed to update config: {e}", "timelapse_runner.log")
 
 def should_continue(config):
     if config["end_condition"] == "count":
@@ -43,11 +40,11 @@ def wait_until(start_time_iso):
     now = datetime.datetime.now()
     seconds = (start_time - now).total_seconds()
     if seconds > 0:
-        log(f"⏳ Waiting {int(seconds)} seconds until start time...")
+        log(f"⏳ Waiting {int(seconds)} seconds until start time...", "timelapse_runner.log")
         time.sleep(seconds)
 
 def take_photo():
-    result = subprocess.run(["bash", "/home/ash/timelapse/functions/photo.sh"])
+    result = subprocess.run(["bash", str(PHOTO_SCRIPT)])
     return result.returncode == 0
 
 def main():
@@ -58,7 +55,7 @@ def main():
     config_path = Path(sys.argv[1])
     config = load_config(config_path)
 
-    log(f"📂 Timelapse session started: {config['folder']}")
+    log(f"📂 Timelapse session started: {config['folder']}", "timelapse_runner.log")
     wait_until(config["start_time"])
 
     config["status"]["started"] = True
@@ -69,13 +66,13 @@ def main():
         if success:
             config["status"]["photos_taken"] += 1
             save_config(config, config_path)
-            log(f"📸 Photo taken ({config['status']['photos_taken']})")
+            log(f"📸 Photo taken ({config['status']['photos_taken']})", "timelapse_runner.log")
         else:
-            log("❌ Photo failed")
+            log("❌ Photo failed", "timelapse_runner.log")
 
         time.sleep(config["interval_seconds"])
 
-    log("✅ Timelapse complete.")
+    log("✅ Timelapse complete.", "timelapse_runner.log")
     config["status"]["completed"] = True
     save_config(config, config_path)
 

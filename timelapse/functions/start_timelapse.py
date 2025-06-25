@@ -9,10 +9,10 @@ import subprocess
 import sys
 from log_util import log
 
-
-# Absolute base path (edit here if you change username or path)
-BASE_PATH = Path("/home/ash/timelapse")
-SESSIONS_PATH = BASE_PATH / "sessions"
+# Paths managed contrally from config_path.py
+import sys
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from config_paths import SESSIONS_PATH, RUNNER_SCRIPT
 
 def prompt_time(prompt, default_now=False):
     entry = input(prompt)
@@ -85,8 +85,8 @@ def main():
     print("🚀 Launching timelapse runner...")
 
     # Launch the runner and save its PID
-    process = subprocess.Popen([
-        "nohup", "python3", str(BASE_PATH / "timelapse_runner.py"), str(config_path)
+    subprocess.Popen([
+        "nohup", "python3", str(RUNNER_SCRIPT), str(config_path)
     ])
 
     pid_file = folder_path / "runner.pid"

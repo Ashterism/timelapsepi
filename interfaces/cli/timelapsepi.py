@@ -2,26 +2,27 @@
 
 import os
 import subprocess
-from pathlib import Path
-from dotenv import dotenv_values, set_key
 import sys
 from pathlib import Path
+from dotenv import dotenv_values, set_key
 
-# Append correct absolute path to functions/
+# Allow importing from project root
+sys.path.append(str(Path(__file__).resolve().parents[2]))
+
+from config_paths import (
+    CONFIG_PATH, SESSIONS_PATH, PHOTO_SCRIPT,
+    START_SCRIPT, STATUS_SCRIPT, STOP_SCRIPT
+)
+
+# Also allow log_util import
 sys.path.append(str(Path(__file__).resolve().parents[2] / "timelapse/functions"))
-
 from log_util import log
-
-BASE_PATH = Path("/home/ash/timelapse")
-CONFIG_PATH = BASE_PATH / "operations/config.env"
-SESSIONS_PATH = BASE_PATH / "sessions"
-PHOTO_SCRIPT = BASE_PATH / "functions/photo.sh"
-START_SCRIPT = BASE_PATH / "functions/start_timelapse.py"
-STATUS_SCRIPT = BASE_PATH / "functions/status_timelapse.py"
-STOP_SCRIPT = BASE_PATH / "functions/stop_timelapse.py"
 
 config = dotenv_values(CONFIG_PATH)
 WIFI_MODES = ["client", "hotspot", "none"]
+
+def cli_log(msg):
+    log(msg, "timelapsepi.log")
 
 def print_menu():
     print("\n📋 timelapsepi: Status + Control")
@@ -39,43 +40,60 @@ def print_menu():
     print("  wifi      → cycle Wi-Fi mode")
     print("  toggle X  → toggle a config.env flag (e.g. LOGGING_ENABLED)")
     print("  refresh   → reload config.env")
+    print("  clear     → clear the screen")
     print("  exit      → quit CLI\n")
 
 def run_start():
-    subprocess.run(["python3", str(START_SCRIPT)])
+    try:
+        subprocess.run(["python3", str(START_SCRIPT)])
+        run_status()
+    except Exception as e:
+        print(f"❌ Failed to start: {e}")
+        cli_log(f"Failed to start: {e}")
 
 def run_status():
-    sessions = sorted(SESSIONS_PATH.iterdir(), key=os.path.getmtime, reverse=True)
-    for session in sessions:
-        config_file = session / "timelapse_config.json"
-        if config_file.exists():
-            subprocess.run(["python3", str(STATUS_SCRIPT), str(config_file)])
-            return
-    print("⚠️ No session config found.")
+    SESSIONS_PATH.mkdir(parents=True, exist_ok=True)
+    try:
+        sessions = sorted(SESSIONS_PATH.iterdir(), key=os.path.getmtime, reverse=True)
+        for session in sessions:
+            config_file = session / "timelapse_config.json"
+            if config_file.exists():
+                subprocess.run(["python3", str(STATUS_SCRIPT), str(config_file)])
+                return
+        print("⚠️ No session config found.")
+    except Exception as e:
+        print(f"❌ Error checking status: {e}")
+        cli_log(f"Status check failed: {e}")
 
 def run_stop():
-    sessions = sorted(SESSIONS_PATH.iterdir(), key=os.path.getmtime, reverse=True)
-    for session in sessions:
-        pid_file = session / "runner.pid"
-        if pid_file.exists():
-            subprocess.run(["python3", str(STOP_SCRIPT), str(session)])
-            return
-    print("⚠️ No running session found.")
+    SESSIONS_PATH.mkdir(parents=True, exist_ok=True)
+    try:
+        sessions = sorted(SESSIONS_PATH.iterdir(), key=os.path.getmtime, reverse=True)
+        for session in sessions:
+            pid_file = session / "runner.pid"
+            if pid_file.exists():
+                subprocess.run(["python3", str(STOP_SCRIPT), str(session)])
+                return
+        print("⚠️ No running session found.")
+    except Exception as e:
+        print(f"❌ Error stopping session: {e}")
+        cli_log(f"Stop failed: {e}")
 
 def run_test_photo():
+    if not PHOTO_SCRIPT.exists():
+        print("❌ photo.sh not found!")
+        cli_log("Test photo failed — script missing")
+        return
     subprocess.run(["bash", str(PHOTO_SCRIPT)])
 
 def toggle_flag(flag):
     if flag not in config:
         print("Unknown setting.")
         return
-    if config[flag] == "true":
-        new_val = "false"
-    else:
-        new_val = "true"
+    new_val = "false" if config[flag] == "true" else "true"
     set_key(CONFIG_PATH, flag, new_val)
     print(f"Toggled {flag} → {new_val}")
-    log(f"Toggled {flag} → {new_val}", "timelapsepi.log")
+    cli_log(f"Toggled {flag} → {new_val}")
 
 def cycle_wifi_mode():
     current = config.get("WIFI_MODE", "none")
@@ -83,7 +101,7 @@ def cycle_wifi_mode():
     next_mode = WIFI_MODES[(idx + 1) % len(WIFI_MODES)]
     set_key(CONFIG_PATH, "WIFI_MODE", next_mode)
     print(f"Cycled WIFI_MODE → {next_mode}")
-    log(f"Cycled WIFI_MODE → {next_mode}", "timelapsepi.log")
+    cli_log(f"Cycled WIFI_MODE → {next_mode}")
 
 def main():
     print_menu()
@@ -108,6 +126,8 @@ def main():
             global config
             config = dotenv_values(CONFIG_PATH)
             print_menu()
+        elif cmd == "clear":
+            os.system("clear")
         else:
             print("❓ Unknown command.")
             print_menu()
