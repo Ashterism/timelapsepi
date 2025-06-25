@@ -7,6 +7,8 @@ import datetime
 from pathlib import Path
 import subprocess
 import sys
+from log_util import log
+
 
 # Absolute base path (edit here if you change username or path)
 BASE_PATH = Path("/home/ash/timelapse")
@@ -82,9 +84,16 @@ def main():
     print(f"✅ Config saved: {config_path}")
     print("🚀 Launching timelapse runner...")
 
-    subprocess.Popen([
+    # Launch the runner and save its PID
+    process = subprocess.Popen([
         "nohup", "python3", str(BASE_PATH / "timelapse_runner.py"), str(config_path)
     ])
+
+    pid_file = folder_path / "runner.pid"
+    with open(pid_file, "w") as f:
+        f.write(str(process.pid))
+
+    log(f"Runner PID saved: {process.pid}", "timelapse_start.log")
 
 if __name__ == "__main__":
     main()
