@@ -15,4 +15,4 @@ while true; do
   echo "=== DMESG SNAPSHOT ===" >> "$LOGFILE"
   dmesg | tail -n 20 >> "$LOGFILE"
   sleep 60
-done
+donecd
