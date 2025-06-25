@@ -85,8 +85,8 @@ def main():
     print("🚀 Launching timelapse runner...")
 
     # Launch the runner and save its PID
-    subprocess.Popen([
-        "nohup", "python3", str(RUNNER_SCRIPT), str(config_path)
+    process = subprocess.Popen([
+        "python3", str(RUNNER_SCRIPT), str(config_path)
     ])
 
     pid_file = folder_path / "runner.pid"
