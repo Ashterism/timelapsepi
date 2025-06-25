@@ -8,7 +8,7 @@ from pathlib import Path
 import sys
 
 # Add shared utility path
-sys.path.append(str(Path(__file__).resolve().parents[1] ))
+sys.path.append(str(Path(__file__).resolve().parents[2] ))
 from config_paths import PHOTO_SCRIPT
 
 def load_config(config_path):
