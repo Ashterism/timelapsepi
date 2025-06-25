@@ -1,7 +1,10 @@
 # Function: check for ssh connection
- is_ssh_session() {
-    who | grep -q "pts"
- }
+is_ssh_session() {
+  local WHO_OUT
+  WHO_OUT=$(who)
+  log "[DEBUG] who output: $WHO_OUT"
+  echo "$WHO_OUT" | grep -qE "\(.*\)"  # Matches sessions with a remote IP (actual SSH)
+}
  
  # Function: bring_up_wifi()
 bring_up_wifi() {
@@ -13,6 +16,7 @@ bring_up_wifi() {
   if ! timeout 30s sudo /sbin/ifconfig wlan0 up; then
     log "[ERROR] wlan0 up timed out at $(date)"
   fi
+  ip a show wlan0 | grep -q "inet " || log "[WARN] wlan0 has no IP"
   sleep 5       
 }
 

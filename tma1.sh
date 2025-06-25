@@ -7,7 +7,9 @@ source /home/ash/timelapse/operations/data_sync.sh
 source /home/ash/timelapse/interfaces/webserver.sh
 
 LOG_PATH="/home/ash/timelapse/data/logs/run.log"
-cd /home/ash/timelapse || exit
+if ! cd /home/ash/timelapse; then
+  log "[ERROR] Failed to cd into /home/ash/timelapse"
+fi
 
 
  # --- Script Execution Starts Here ---
