@@ -58,9 +58,14 @@ def photo():
         app.logger.error("❌ Photo failed to execute")
         return '❌ Photo failed.', 500
 
-@app.route("/health")
+@app.route('/health')
 def health():
-    return "OK"
+    try:
+        with open('/home/ash/timelapse/data/temp/latest.jpg', 'rb') as f:
+            pass
+        return 'OK', 200
+    except:
+        return 'File error', 500
 
 @app.route('/webserverlog')
 def show_log():
