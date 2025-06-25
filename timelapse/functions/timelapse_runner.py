@@ -67,7 +67,10 @@ def main():
         if success:
             config["status"]["photos_taken"] += 1
             save_config(config, config_path)
-            log(f"📸 Photo taken ({config['status']['photos_taken']})", "timelapse_runner.log")
+            taken = config["status"]["photos_taken"]
+            total = config["photo_count"]
+            log(f"📸 Photo taken ({taken}/{total})", "timelapse_runner.log")
+            log(f"⏳ Waiting {config['interval_seconds']} seconds for next photo...", "timelapse_runner.log")
         else:
             log("❌ Photo failed", "timelapse_runner.log")
 
