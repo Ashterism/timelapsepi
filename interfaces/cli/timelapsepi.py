@@ -7,7 +7,7 @@ from dotenv import dotenv_values, set_key
 import sys
 
 # Add functions directory to Python path
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent / "functions"))
+sys.path.append(str(Path(__file__).resolve().parent.parent / "timelapse/functions"))
 
 from log_util import log
 
