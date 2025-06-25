@@ -70,7 +70,7 @@ def run_stop():
     try:
         sessions = sorted(SESSIONS_PATH.iterdir(), key=os.path.getmtime, reverse=True)
         for session in sessions:
-            pid_file = session / "runner.pid"
+            pid_file = session / "timelapse_runner.pid"
             if pid_file.exists():
                 subprocess.run(["python3", str(STOP_SCRIPT), str(session)])
                 return

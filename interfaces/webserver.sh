@@ -55,7 +55,7 @@ restart_webserver_hard() {
 
 # FUNCTION: check webserver
 check_webserver() {
-  if curl -s --max-time 2 http://localhost:5000/ > /dev/null; then
+  if curl -s --max-time 2 http://localhost:5000/health | grep -q OK; then
     log "[INFO] Webserver is running and responsive (detected via port 5000)"
     return 0
   fi

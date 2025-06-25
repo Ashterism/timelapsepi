@@ -58,6 +58,10 @@ def photo():
         app.logger.error("❌ Photo failed to execute")
         return '❌ Photo failed.', 500
 
+@app.route("/health")
+def health():
+    return "OK"
+
 @app.route('/webserverlog')
 def show_log():
     try:
