@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 
+# Paths managed contrally from config_path.py
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
 import json
 import os
 import uuid
 import datetime
 from pathlib import Path
 import subprocess
-import sys
 from log_util import log
-
-# Paths managed contrally from config_path.py
-import sys
-sys.path.append(str(Path(__file__).resolve().parents[1]))
 from config_paths import SESSIONS_PATH, RUNNER_SCRIPT
 
 def prompt_time(prompt, default_now=False):
