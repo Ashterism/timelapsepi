@@ -17,11 +17,11 @@ log_start
 log_status
 
 if [ "$WIFI_MODE" == "client" ]; then
-  bring_up_wifi     # unless ssh active
-  check_internet
-  pull_git          # if set to do so
-  upload_firebase   # if set to do so
-  maybe_drop_wifi   # unless ssh active
+  bring_up_wifi     # ops # unless ssh active
+  check_internet    # ops # 
+  pull_git          # ops # if set to do so
+  upload_firebase   # ops # if set to do so
+  maybe_drop_wifi   # ops # unless ssh active
 
 elif [ "$WIFI_MODE" == "hotspot" ]; then
   log "[INFO] Wi-Fi mode: hotspot - enabling access point"
@@ -34,10 +34,10 @@ else
   log "[WARN] Unknown Wi-Fi mode: $WIFI_MODE - skipping all network activity"
 fi
 
-if [ "$WEBSERVER_ENABLED" == "true" ]; then
-  start_webserver
-else
-  stop_webserver
-fi
+# if [ "$WEBSERVER_ENABLED" == "true" ]; then
+#   start_webserver
+# else
+#   stop_webserver
+# fi
 
 log_end

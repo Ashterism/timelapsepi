@@ -1,4 +1,4 @@
-from flask import Flask, send_file, jsonify
+from flask import Flask, send_file, jsonify, request
 import subprocess
 from dotenv import set_key, load_dotenv
 import os
@@ -13,6 +13,10 @@ logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s [%(levelname)s] %(message)s'
 )
+
+@app.before_request
+def log_request_info():
+    app.logger.info(f"🔹 Incoming request: {request.method} {request.path}")
 
 @app.route('/')
 def index():
