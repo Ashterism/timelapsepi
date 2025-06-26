@@ -5,10 +5,7 @@ import sys
 from pathlib import Path
 import datetime
 from log_util import log
-
-import sys
-sys.path.append(str(Path(__file__).resolve().parents[1]))
-from config_paths import LOGS_PATH
+from config.config_paths import LOGS_PATH  
 
 def print_status(config_path):
     try:

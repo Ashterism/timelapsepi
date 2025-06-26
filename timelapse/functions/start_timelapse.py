@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Paths managed contrally from config_path.py
+# Paths managed centrally from config/config_paths.py
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parents[1]))
@@ -12,7 +12,7 @@ import datetime
 from pathlib import Path
 import subprocess
 from log_util import log
-from config_paths import SESSIONS_PATH, RUNNER_SCRIPT
+from config.config_paths import SESSIONS_PATH, RUNNER_SCRIPT
 
 def prompt_time(prompt, default_now=False):
     entry = input(prompt)

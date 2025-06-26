@@ -8,6 +8,7 @@ OPERATIONS_PATH = ROOT / "operations"
 INTERFACES_PATH = ROOT / "interfaces"
 SESSIONS_PATH = ROOT / "sessions"
 LOGS_PATH = ROOT / "data/logs"
+BUTTON_TRIGGER_LOG = LOGS_PATH / "button_trigger.log"
 CONFIG_PATH = OPERATIONS_PATH / "config.env"
 
 # --- This project's app layer (custom per project) ---
@@ -21,3 +22,5 @@ STATUS_SCRIPT = FUNCTIONS_PATH / "status_timelapse.py"
 STOP_SCRIPT = FUNCTIONS_PATH / "stop_timelapse.py"
 RUNNER_SCRIPT = FUNCTIONS_PATH / "timelapse_runner.py"
 PHOTO_SCRIPT = FUNCTIONS_PATH / "photo.sh"
+
+TEMP_PATH = ROOT / "data/temp"

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from config.config_paths import CONFIG_PATH, LOGS_PATH, TMA1_SCRIPT, BUTTON_TRIGGER_LOG
 import os
 import subprocess
 from dotenv import load_dotenv, set_key
@@ -7,8 +8,7 @@ from datetime import datetime
 from pijuice import PiJuice
 from time import sleep
 
-CONFIG_PATH = "/home/ash/timelapse/operations/config.env"
-LOG_PATH = "/home/ash/timelapse/logs/button_trigger.log"
+LOG_PATH = BUTTON_TRIGGER_LOG
 
 pj = PiJuice(1, 0x14)  # bus 1, address 0x14
 
@@ -63,6 +63,6 @@ def toggle_mode():
     else:
         log("[ERROR] Unknown Wi-Fi mode — no action taken")
         return
-    os.system("/home/ash/timelapse/operations/tma1.sh &")
+    os.system(f"{TMA1_SCRIPT} &")
 
 toggle_mode()

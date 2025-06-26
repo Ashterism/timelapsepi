@@ -3,13 +3,14 @@ import subprocess
 from dotenv import set_key, load_dotenv
 import os
 import logging
+from config.config_paths import CONFIG_PATH, LOGS_PATH, INTERFACES_PATH, PHOTO_SCRIPT, TEMP_PATH
 
-load_dotenv('/home/ash/timelapse/config.env')
+load_dotenv(CONFIG_PATH)
 app = Flask(__name__)
 
 # Log to file
 logging.basicConfig(
-    filename = '/home/ash/timelapse/data/logs/webserver.log',
+    filename = LOGS_PATH / "webserver.log",
     level=logging.DEBUG,
     format='%(asctime)s [%(levelname)s] %(message)s'
 )
@@ -20,26 +21,26 @@ def log_request_info():
 
 @app.route('/')
 def index():
-    return send_file('/home/ash/timelapse/interfaces/web/index.html')
+    return send_file(INTERFACES_PATH / "web" / "index.html")
 
 @app.route('/style.css')
 def style():
-    return send_file('/home/ash/timelapse/interfaces/web/style.css')
+    return send_file(INTERFACES_PATH / "web" / "style.css")
 
 @app.route('/photo.js')
 def photo_js():
-    return send_file('/home/ash/timelapse/interfaces/web/photo.js')
+    return send_file(INTERFACES_PATH / "web" / "photo.js")
 
 @app.route('/latest.jpg')
 def latest():
-    path = '/home/ash/timelapse/data/temp/latest.jpg'
+    path = TEMP_PATH / "latest.jpg"
     if not os.path.exists(path):
-        return '', 404  # Clean fail instead of 500
+        return '', 404
     return send_file(path)
 
 @app.route('/latest-timestamp')
 def latest_timestamp():
-    path = '/home/ash/timelapse/data/temp/latest.jpg'
+    path = TEMP_PATH / "latest.jpg"
     if not os.path.exists(path):
         return '', 404
     timestamp = str(os.path.getmtime(path))
@@ -49,7 +50,7 @@ def latest_timestamp():
 def photo():
     app.logger.debug("📸 /photo route hit")
     result = subprocess.run(
-        ['/bin/bash', '/home/ash/timelapse/timelapse/functions/photo.sh'],
+        ['/bin/bash', str(PHOTO_SCRIPT)],
         capture_output=True,
         text=True
     )
@@ -65,7 +66,7 @@ def photo():
 @app.route('/health')
 def health():
     try:
-        with open('/home/ash/timelapse/data/temp/latest.jpg', 'rb') as f:
+        with open(TEMP_PATH / "latest.jpg", 'rb') as f:
             pass
         return 'OK', 200
     except:
@@ -74,15 +75,15 @@ def health():
 @app.route('/webserverlog')
 def show_log():
     try:
-        with open('/home/ash/timelapse/data/logs/webserver.log', 'r') as f:
-            lines = f.readlines()[-50:]  # Show last 50 lines
+        with open(LOGS_PATH / "webserver.log", 'r') as f:
+            lines = f.readlines()[-50:]
         return '<pre>' + ''.join(lines) + '</pre>'
     except FileNotFoundError:
         return '⚠️ Log file not found'
 
 @app.route('/mode/wifi')
 def switch_to_wifi():
-    set_key('/home/ash/timelapse/config.env', 'wifi_mode', 'client')
+    set_key(CONFIG_PATH, 'wifi_mode', 'client')
     return 'Switched to Wi-Fi. Reboot or wait for next tma1.sh.'
 
 @app.route('/status')

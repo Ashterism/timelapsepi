@@ -3,7 +3,7 @@ import datetime
 import sys
 
 sys.path.append(str(Path(__file__).resolve().parents[2]))
-from config_paths import LOGS_PATH
+from config.config_paths import LOGS_PATH
 
 def log(msg, logfile_name="timelapse_general.log"):
     timestamp = datetime.datetime.now().isoformat()

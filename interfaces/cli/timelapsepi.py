@@ -9,7 +9,7 @@ from dotenv import dotenv_values, set_key
 # Allow importing from project root
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
-from config_paths import (
+from config.config_paths import (
     CONFIG_PATH, SESSIONS_PATH, PHOTO_SCRIPT,
     START_SCRIPT, STATUS_SCRIPT, STOP_SCRIPT
 )
