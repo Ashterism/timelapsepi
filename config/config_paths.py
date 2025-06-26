@@ -1,7 +1,7 @@
 from pathlib import Path
 
 # Root of the whole repo
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 
 # --- Shared directories ---
 OPERATIONS_PATH = ROOT / "operations"
