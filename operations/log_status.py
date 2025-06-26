@@ -1,3 +1,4 @@
+from config.config_paths import STATUS_LOGS_PATH
 from pijuice import PiJuice
 from datetime import datetime
 import os
@@ -5,7 +6,7 @@ import json
 import subprocess
 
 # Set log location
-log_dir = "/home/ash/timelapse/data/statuslogs"
+log_dir = STATUS_LOGS_PATH
 os.makedirs(log_dir, exist_ok=True)
 
 # Setup PiJuice
@@ -75,5 +76,5 @@ with open(log_filename, "w") as f:
     json.dump(log, f, indent=2)
 
 # Also save current status.json for debugging
-with open("/home/ash/timelapse/data/statuslogs/current_status.json", "w") as f:
+with open(log_dir / "current_status.json", "w") as f:
     json.dump(log, f, indent=2)

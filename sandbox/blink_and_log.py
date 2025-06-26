@@ -3,8 +3,9 @@
 from datetime import datetime
 from time import sleep
 from pijuice import PiJuice
+from config.config_paths import BUTTON_TRIGGER_LOG
 
-LOG_PATH = "/home/ash/timelapse/logs/button_test.log"
+LOG_PATH = BUTTON_TRIGGER_LOG
 pj = PiJuice(1, 0x14)
 
 # Log it

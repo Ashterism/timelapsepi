@@ -1,3 +1,6 @@
+from config.config_paths import CONFIG_PATH
+from dotenv import load_dotenv
+load_dotenv(CONFIG_PATH)
 from smbus2 import SMBus
 
 bus = SMBus(1)

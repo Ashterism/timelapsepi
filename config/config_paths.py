@@ -24,3 +24,6 @@ RUNNER_SCRIPT = FUNCTIONS_PATH / "timelapse_runner.py"
 PHOTO_SCRIPT = FUNCTIONS_PATH / "photo.sh"
 
 TEMP_PATH = ROOT / "data/temp"
+
+# Status logs path
+STATUS_LOGS_PATH = ROOT / "data" / "statuslogs"
