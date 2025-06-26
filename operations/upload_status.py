@@ -4,6 +4,13 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from datetime import datetime
 
+# Add project root to sys.path for direct script execution
+import sys
+from pathlib import Path
+
+# Ensure project root is in sys.path
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
 
 # Set log directory
 log_dir = "/home/ash/timelapse/data/statuslogs"
