@@ -1,6 +1,15 @@
 #!/bin/bash
 source /home/ash/timelapse/config/config_paths.sh
 
+# Load mode control setting
+MODE_CONTROL_FILE="$(dirname "$0")/mode_control.env"
+if [[ -f "$MODE_CONTROL_FILE" ]]; then
+  source "$MODE_CONTROL_FILE"
+else
+  echo "[WARN] mode_control.env not found; defaulting to MODE_CONTROL=system"
+  MODE_CONTROL="system"
+fi
+
 MODE_NAME="$1"
 
 if [ -z "$MODE_NAME" ]; then
@@ -15,7 +24,7 @@ fi
 
 # Clear the existing config file
 echo "# Auto-generated config from preset: $MODE_NAME" > "$CONFIG_FILE"
-echo "MODE_CONTROL=system" >> "$CONFIG_FILE"
+echo "MODE_CONTROL=$MODE_CONTROL" >> "$CONFIG_FILE"
 
 awk -v section="[$MODE_NAME]" '
   $0 == section { found=1; next }
