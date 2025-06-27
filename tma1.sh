@@ -1,9 +1,7 @@
 #!/bin/bash
 
+source /home/ash/timelapse/operations/logging.sh
 source /home/ash/timelapse/config/config_paths.sh
-
-CONFIG_PATH="/home/ash/timelapse/config.env"
-PRESET_LOADER="/home/ash/timelapse/config/load_preset.sh"
 
 if [ -f "$MODE_CONTROL_FILE" ]; then
   source "$MODE_CONTROL_FILE"
@@ -22,7 +20,6 @@ else
 fi
 
 source "$CONFIG_PATH"
-source /home/ash/timelapse/operations/logging.sh
 source /home/ash/timelapse/operations/network.sh
 source /home/ash/timelapse/operations/data_sync.sh
 source /home/ash/timelapse/interfaces/webserver.sh
