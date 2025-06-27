@@ -27,3 +27,9 @@ TEMP_PATH = ROOT / "data/temp"
 
 # Status logs path
 STATUS_LOGS_PATH = ROOT / "data" / "statuslogs"
+
+# --- Config + Preset Logic ---
+CONFIG_DIR = ROOT / "config"
+PRESETS_FILE = CONFIG_DIR / "presets.env"
+MODE_CONTROL_FILE = CONFIG_DIR / "mode_control.env"
+LOAD_PRESET_SCRIPT = CONFIG_DIR / "load_preset.sh"
