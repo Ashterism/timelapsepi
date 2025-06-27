@@ -1,11 +1,20 @@
 #!/bin/bash
 
+source /home/ash/timelapse/config/config_paths.sh
+
 CONFIG_PATH="/home/ash/timelapse/config.env"
 PRESET_LOADER="/home/ash/timelapse/config/load_preset.sh"
-ACTIVE_PRESET=$(grep 'ACTIVE_PRESET=' "$CONFIG_PATH" | cut -d= -f2)
 
-# This checks config.env for MODE CONTROL. "System" = overwrite config
-if grep -q 'MODE_CONTROL=system' "$CONFIG_PATH"; then
+if [ -f "$MODE_CONTROL_FILE" ]; then
+  source "$MODE_CONTROL_FILE"
+  log "[INFO] Mode control set to: $MODE_CONTROL"
+  log "[INFO] Active preset: $ACTIVE_PRESET"
+else
+  echo "[ERROR] mode_control.env not found!"
+  exit 1
+fi
+
+if [ "$MODE_CONTROL" == "system" ]; then
   log "[INFO] SYSTEM mode enabled — reloading preset: $ACTIVE_PRESET"
   bash "$PRESET_LOADER" "$ACTIVE_PRESET"
 else
