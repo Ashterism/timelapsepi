@@ -2,7 +2,7 @@
 # Exclude local-only folders
 logs/
 photos/
-operations/config.env
+/config.env
 
 # Firebase config
 firebase.json

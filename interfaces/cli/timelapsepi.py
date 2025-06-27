@@ -24,6 +24,11 @@ WIFI_MODES = ["client", "hotspot", "none"]
 def cli_log(msg):
     log(msg, "timelapsepi.log")
 
+#
+# ─────────────────────────────────────────
+# Section: Menu Display
+# ─────────────────────────────────────────
+#
 def print_menu():
     print("\n📋 timelapsepi: Status + Control")
     print("────────────────────────────────────")
@@ -37,12 +42,76 @@ def print_menu():
     print("  stop      → stop active session")
     print("  status    → view session status")
     print("  test      → take test photo")
-    print("  wifi      → cycle Wi-Fi mode")
+    print("  preset    → switch to a predefined mode")
     print("  toggle X  → toggle a config.env flag (e.g. LOGGING_ENABLED)")
     print("  refresh   → reload config.env")
     print("  clear     → clear the screen")
     print("  exit      → quit CLI\n")
+    
+#
+# ─────────────────────────────────────────
+# Section: Preset Management
+# ─────────────────────────────────────────
+#
+def change_preset():
+    def show_menu():
+        print("\n=================================")
+        print("PRESETS (see /config/presets.env)")
+        print("=================================")
+        print("1. MAINS_AND_WIFI")
+        print("2. BATTERY_AND_WIFI")
+        print("3. BATTERY_AND_HOTSPOT")
+        print("4. BATTERY_NO_CXTION")
+        print("5. See option descriptions")
+    
+    while True:
+        show_menu()
+        choice = input("Select preset [1-4] or 5 for info: ").strip()
+        
+        if choice == "5":
+            print("\n📝 PRESET DESCRIPTIONS")
+            print("--------------------------")
+            print("# MAINS_AND_WIFI")
+            print("    - everything on all of the time")
+            print("    - syncs code and logs every 15 minutes\n")
+            print("# BATTERY_AND_WIFI")
+            print("    - drops wifi between uploads to save power")
+            print("    - syncs code and logs every 15 minutes\n")
+            print("# BATTERY_AND_HOTSPOT")
+            print("    - hotspot on until mode exited")
+            print("    - no sync\n")
+            print("# BATTERY_NO_CXTION")
+            print("    - no wireless connectivity")
+            print("    - no sync\n")
+            input("Press Enter to return to the menu...")
+            continue
 
+        presets = {
+            "1": "MAINS_AND_WIFI",
+            "2": "BATTERY_AND_WIFI",
+            "3": "BATTERY_AND_HOTSPOT",
+            "4": "BATTERY_NO_CXTION"
+        }
+        preset = presets.get(choice)
+
+        if preset:
+            result = subprocess.run(["bash", "config/load_preset.sh", preset])
+            if result.returncode == 0:
+                print(f"✅ Preset '{preset}' applied.")
+                cli_log(f"Preset changed to {preset}")
+            else:
+                print("❌ Failed to apply preset.")
+                cli_log(f"Failed to apply preset: {preset}")
+            break
+        else:
+            print("❌ Invalid selection.")
+            cli_log(f"Invalid preset selection: {choice}")
+
+#
+# ─────────────────────────────────────────
+# Section: Timelapse Control Commands
+# ─────────────────────────────────────────
+#
 def run_start():
     try:
         subprocess.run(["python3", str(START_SCRIPT)])
@@ -86,6 +155,11 @@ def run_test_photo():
         return
     subprocess.run(["bash", str(PHOTO_SCRIPT)])
 
+#
+# ─────────────────────────────────────────
+# Section: Config Flag Toggling
+# ─────────────────────────────────────────
+#
 def toggle_flag(flag):
     if flag not in config:
         print("Unknown setting.")
@@ -95,14 +169,11 @@ def toggle_flag(flag):
     print(f"Toggled {flag} → {new_val}")
     cli_log(f"Toggled {flag} → {new_val}")
 
-def cycle_wifi_mode():
-    current = config.get("WIFI_MODE", "none")
-    idx = WIFI_MODES.index(current) if current in WIFI_MODES else -1
-    next_mode = WIFI_MODES[(idx + 1) % len(WIFI_MODES)]
-    set_key(CONFIG_PATH, "WIFI_MODE", next_mode)
-    print(f"Cycled WIFI_MODE → {next_mode}")
-    cli_log(f"Cycled WIFI_MODE → {next_mode}")
-
+#
+# ─────────────────────────────────────────
+# Section: CLI Main Loop
+# ─────────────────────────────────────────
+#
 def main():
     print_menu()
     while True:
@@ -117,8 +188,8 @@ def main():
             run_status()
         elif cmd == "test":
             run_test_photo()
-        elif cmd == "wifi":
-            cycle_wifi_mode()
+        elif cmd == "preset":
+            change_preset()
         elif cmd.startswith("toggle "):
             flag = cmd.split(" ", 1)[1].strip().upper()
             toggle_flag(flag)

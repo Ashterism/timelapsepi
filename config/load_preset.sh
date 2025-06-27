@@ -1,8 +1,6 @@
 # === File: load_preset.sh ===
 #!/bin/bash
-
-PRESETS_FILE="/home/ash/timelapse/defaults/presets.env"
-CONFIG_FILE="/home/ash/timelapse/config.env"
+source /home/ash/timelapse/config/config_paths.sh
 
 MODE_NAME="$1"
 
@@ -25,3 +23,5 @@ grep -A10 "^\[$MODE_NAME\]" "$PRESETS_FILE" | \
   grep -v "^\[" | \
   grep -v "^--" | \
   sed '/^$/d' >> "$CONFIG_FILE"
+
+echo "$(date): Loaded preset '$MODE_NAME'" >> "$LOGS_DIR/preset.log"
