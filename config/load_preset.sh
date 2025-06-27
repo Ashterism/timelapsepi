@@ -1,4 +1,3 @@
-# === File: load_preset.sh ===
 #!/bin/bash
 source /home/ash/timelapse/config/config_paths.sh
 
@@ -18,10 +17,10 @@ fi
 echo "# Auto-generated config from preset: $MODE_NAME" > "$CONFIG_FILE"
 echo "MODE_CONTROL=system" >> "$CONFIG_FILE"
 
-grep -A10 "^\[$MODE_NAME\]" "$PRESETS_FILE" | \
-  tail -n +2 | \
-  grep -v "^\[" | \
-  grep -v "^--" | \
-  sed '/^$/d' >> "$CONFIG_FILE"
+awk -v section="[$MODE_NAME]" '
+  $0 == section { found=1; next }
+  /^\[.*\]/ { if(found) exit }
+  found && NF { print }
+' "$PRESETS_FILE" >> "$CONFIG_FILE"
 
 echo "$(date): Loaded preset '$MODE_NAME'" >> "$LOGS_DIR/preset.log"

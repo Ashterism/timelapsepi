@@ -194,8 +194,9 @@ def main():
             run_test_photo()
         elif cmd == "preset":
             change_preset()
-        elif cmd.startswith("toggle "):
-            flag = cmd.split(" ", 1)[1].strip().upper()
+        elif cmd.startswith("toggle"):
+            parts = cmd.split(" ", 1)
+            flag = parts[1].strip().upper() if len(parts) > 1 else None
             toggle_flag(flag)
         elif cmd == "refresh":
             global config
