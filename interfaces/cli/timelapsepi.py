@@ -11,7 +11,7 @@ sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 from config.config_paths import (
     CONFIG_PATH, SESSIONS_PATH, PHOTO_SCRIPT,
-    START_SCRIPT, STATUS_SCRIPT, STOP_SCRIPT
+    START_SCRIPT, STATUS_SCRIPT, STOP_SCRIPT, LOAD_PRESET_SCRIPT
 )
 
 # Also allow log_util import
@@ -95,7 +95,7 @@ def change_preset():
         preset = presets.get(choice)
 
         if preset:
-            result = subprocess.run(["bash", "config/load_preset.sh", preset])
+            result = subprocess.run(["bash", str(LOAD_PRESET_SCRIPT), preset])
             if result.returncode == 0:
                 print(f"✅ Preset '{preset}' applied.")
                 cli_log(f"Preset changed to {preset}")
@@ -161,8 +161,12 @@ def run_test_photo():
 # ─────────────────────────────────────────
 #
 def toggle_flag(flag):
-    if flag not in config:
-        print("Unknown setting.")
+    if not flag or flag not in config:
+        print("❓ Usage: toggle <SETTING_NAME>")
+        print("Available toggles:")
+        for k, v in config.items():
+            if v in ["true", "false"]:
+                print(f"  {k} → currently {v}")
         return
     new_val = "false" if config[flag] == "true" else "true"
     set_key(CONFIG_PATH, flag, new_val)
