@@ -3,11 +3,6 @@
 source /home/ash/timelapse/operations/logging.sh
 source /home/ash/timelapse/config/config_paths.sh
 
-#!/bin/bash
-
-source /home/ash/timelapse/operations/logging.sh
-source /home/ash/timelapse/config/config_paths.sh
-
 # Load mode control
 if ! source "$MODE_CONTROL_FILE"; then
   echo "[ERROR] mode_control.env not found or failed to load!"
