@@ -59,7 +59,13 @@ def main():
     config["status"]["started"] = True
     save_config(config, config_path)
 
+    interval = config["interval_seconds"]
+    total = config["photo_count"]
+
     while should_continue(config):
+        taken = config["status"]["photos_taken"]
+        total = config["photo_count"]
+        print(f"📸 Taking photo {taken + 1} of {total} — Interval: {config['interval_seconds']}s")
         success = take_photo()
         if success:
             config["status"]["photos_taken"] += 1
