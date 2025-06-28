@@ -26,7 +26,7 @@ else
   log "[INFO] USER mode — preserving existing config.env"
 fi
 
-source "$CONFIG_PATH"
+source "$CONFIG_FILE"
 source /home/ash/timelapse/operations/network.sh
 source /home/ash/timelapse/operations/data_sync.sh
 source /home/ash/timelapse/interfaces/webserver.sh
