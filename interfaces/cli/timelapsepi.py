@@ -63,11 +63,16 @@ def change_preset():
         print("3. BATTERY_AND_HOTSPOT")
         print("4. BATTERY_NO_CXTION")
         print("5. See option descriptions")
+        print("0. Back")
     
     while True:
         show_menu()
         choice = input("Select preset [1-4] or 5 for info: ").strip()
         
+        if choice == "0":
+            print("↩️ Returning to main menu...")
+            break
+
         if choice == "5":
             print("\n📝 PRESET DESCRIPTIONS")
             print("--------------------------")
