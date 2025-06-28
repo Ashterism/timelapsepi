@@ -1,45 +1,22 @@
 #!/bin/bash
+# --- Source relevant files ---
+source "$HOME/timelapse/config/config_paths.sh"
 
-source /home/ash/timelapse/operations/logging.sh
-source /home/ash/timelapse/config/config_paths.sh
-
-# Load mode control
-if ! source "$MODE_CONTROL_FILE"; then
-  echo "[ERROR] mode_control.env not found or failed to load!"
-  exit 1
-fi
-
-log "[INFO] Mode control set to: $MODE_CONTROL"
-log "[INFO] Active preset: $ACTIVE_PRESET"
-
-# Apply preset if system mode
-if [ "$MODE_CONTROL" == "system" ]; then
-  log "[INFO] SYSTEM mode enabled — reloading preset: $ACTIVE_PRESET"
-
-  if [[ -z "$PRESET_LOADER" || ! -f "$PRESET_LOADER" ]]; then
-    log "[ERROR] Invalid or missing preset loader at: $PRESET_LOADER"
-    exit 1
-  fi
-
-  bash "$PRESET_LOADER" "$ACTIVE_PRESET"
-else
-  log "[INFO] USER mode — preserving existing config.env"
-fi
+source "$LOGGING_SH"
+source "$MODE_CONTROL_SH"
+run_mode_control # sets values in following sources
 
 source "$CONFIG_FILE"
-source /home/ash/timelapse/operations/network.sh
-source /home/ash/timelapse/operations/data_sync.sh
-source /home/ash/timelapse/interfaces/webserver.sh
-
-LOG_PATH="/home/ash/timelapse/data/logs/run.log"
-if ! cd /home/ash/timelapse; then
-  log "[ERROR] Failed to cd into /home/ash/timelapse"
-fi
-
+source "$NETWORK_SH"
+source "$DATA_SYNC_SH"
+source "$WEBSERVER_SH"
 
  # --- Script Execution Starts Here ---
+ # --- Always start logs first ---
 log_start
 log_status
+
+# --- Control connectivity ---
 
 if [ "$WIFI_MODE" == "client" ]; then
   bring_up_wifi     # ops # unless ssh active
@@ -66,3 +43,5 @@ fi
 # fi
 
 log_end
+
+# --- Script Execution ENDS Here ---
