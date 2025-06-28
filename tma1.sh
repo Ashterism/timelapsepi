@@ -14,7 +14,13 @@ fi
 
 if [ "$MODE_CONTROL" == "system" ]; then
   log "[INFO] SYSTEM mode enabled — reloading preset: $ACTIVE_PRESET"
+  echo "PRESET_LOADER: '$PRESET_LOADER'"
+  echo "ACTIVE_PRESET: '$ACTIVE_PRESET'"
   bash "$PRESET_LOADER" "$ACTIVE_PRESET"
+  if [ ! -f "$PRESET_LOADER" ]; then
+    log "[ERROR] Preset loader script not found at: $PRESET_LOADER"
+    exit 1
+  fi
 else
   log "[INFO] USER mode — preserving existing config.env"
 fi
