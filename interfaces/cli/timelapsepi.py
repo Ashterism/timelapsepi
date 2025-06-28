@@ -121,6 +121,8 @@ def run_start():
     try:
         subprocess.run(["python3", str(START_SCRIPT)])
         run_status()
+        print("✅ Timelapse run completed.")
+        input("Press Enter to return to menu...")
     except Exception as e:
         print(f"❌ Failed to start: {e}")
         cli_log(f"Failed to start: {e}")
