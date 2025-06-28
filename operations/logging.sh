@@ -1,6 +1,6 @@
 # Function: log()
 log() {
-  : "${LOG_PATH:=/home/ash/timelapse/data/logs/run.log}"
+  : "${LOG_PATH:=$LOGS_DIR/run.log}"
   mkdir -p "$(dirname "$LOG_PATH")"
   echo "$1" >> "$LOG_PATH"
 }

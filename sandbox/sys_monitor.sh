@@ -1,6 +1,7 @@
 #!/bin/bash
 
-LOGFILE="/home/ash/timelapse/data/logs/sys_monitor.log"
+source "$HOME/timelapse/config/config_paths.sh"
+LOGFILE="$LOGS_DIR/sys_monitor.log"
 
 while true; do
   echo "===== $(date '+%Y-%m-%d %H:%M:%S') =====" >> "$LOGFILE"

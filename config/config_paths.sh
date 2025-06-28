@@ -1,6 +1,8 @@
 #!/bin/bash
 
-ROOT_DIR="/home/ash/timelapse"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export ROOT_DIR
+
 CONFIG_FILE="$ROOT_DIR/config.env"
 PRESETS_FILE="$ROOT_DIR/config/presets.env"
 LOGS_DIR="$ROOT_DIR/data/logs"

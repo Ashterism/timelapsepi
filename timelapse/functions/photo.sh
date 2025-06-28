@@ -1,12 +1,12 @@
 #!/bin/bash
 # photo.sh — photo capture and metadata tools
-source /home/ash/timelapse/operations/logging.sh
+source "$HOME/timelapse/config/config_paths.sh"
 
 # FUNCTION: take_photo()
 take_photo() {
   TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-  IMAGE_DIR="/home/ash/timelapse/data/temp"
-  LATEST_PATH="/home/ash/timelapse/data/temp/latest.jpg"
+  IIMAGE_DIR="$ROOT_DIR/data/temp"
+  LATEST_PATH="$ROOT_DIR/data/temp/latest.jpg"
   IMAGE_PATH="$IMAGE_DIR/$TIMESTAMP.jpg"
 
   mkdir -p "$IMAGE_DIR"

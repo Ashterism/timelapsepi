@@ -1,5 +1,5 @@
 #!/bin/bash
-source /home/ash/timelapse/config/config_paths.sh
+source "$HOME/timelapse/config/config_paths.sh"
 
 # Load mode control setting
 MODE_CONTROL_FILE="$(dirname "$0")/mode_control.env"

@@ -13,7 +13,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 
 # Set log directory
-log_dir = "/home/ash/timelapse/data/statuslogs"
+log_dir = os.path.expanduser("~/timelapse/data/statuslogs")
 os.makedirs(log_dir, exist_ok=True)
 
 # Load Firebase credentials
@@ -28,6 +28,11 @@ for filename in os.listdir(log_dir):
 
     filepath = os.path.join(log_dir, filename)
     
+    file_path = Path(filepath)
+    if file_path.stat().st_size == 0:
+        print(f"⚠️  Skipping empty file: {file_path.name}")
+        continue
+
     try:
         with open(filepath, "r") as f:
             data = json.load(f)
