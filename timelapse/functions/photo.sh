@@ -5,7 +5,7 @@ source "$(dirname "$BASH_SOURCE")/../../config/config_paths.sh"
 # FUNCTION: take_photo()
 take_photo() {
   TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-  IIMAGE_DIR="$ROOT_DIR/data/temp"
+  IMAGE_DIR="$ROOT_DIR/data/temp"
   LATEST_PATH="$ROOT_DIR/data/temp/latest.jpg"
   IMAGE_PATH="$IMAGE_DIR/$TIMESTAMP.jpg"
 
