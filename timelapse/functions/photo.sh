@@ -1,6 +1,6 @@
 #!/bin/bash
 # photo.sh — photo capture and metadata tools
-source "$HOME/timelapse/config/config_paths.sh"
+source "$(dirname "$BASH_SOURCE")/../../config/config_paths.sh"
 
 # FUNCTION: take_photo()
 take_photo() {
