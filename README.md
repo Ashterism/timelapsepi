@@ -18,7 +18,7 @@ It logs power, battery, and system data using PiJuice, stores it locally, and (w
 
 - `log_status.py` — Logs system + PiJuice data as JSON
 - `upload_status.py` — Uploads log files to Firebase
-- `run_all.sh` — Cron-triggered script that coordinates logging, uploads, Git sync, hotspot/wifi checks
+- `tma1.sh` — Cron-triggered script that coordinates logging, uploads, Git sync, hotspot/wifi checks
 - `timelapsepi.py` — CLI to view + toggle config flags (e.g. logging, uploads, hotspot)
 - `scripts/` — Contains stub or modular scripts (e.g. Git pull, start hotspot)
 - `_local/` — Stores logs locally (ignored by Git)
@@ -109,7 +109,12 @@ Edit crontab to run the main script every 15 minutes:
 
 Add:
 
-> */15 * * * * /home/pi/timelapse/run_all.sh
+> */15 * * * * cd /home/ash/timelapse && /bin/bash tma1.sh 2>&1 | ts '[%Y-%m-%d %H:%M:%S]' >> /home/ash/timelapse/data/logs/cron.log
+
+This runs the script using bash, ensures the working directory is correct, and adds per-line timestamps using `ts` from `moreutils`.
+
+To install `ts`, run:
+sudo apt install moreutils
 
 Make sure it's executable:
 

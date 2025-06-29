@@ -1,4 +1,4 @@
-source "$(dirname "$0")/../config/config_paths.sh"
+source "$ROOT_DIR/config/config_paths.sh"
 
 # Function: log()
 log() {
