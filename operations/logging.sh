@@ -7,14 +7,14 @@ log() {
 
  # Function: log_start()
 log_start() {
-  log "$(date): run_all triggered"
-  log "[INFO] Starting run_all at $(date)"
+  log "$(date): TMA-1 triggered"
+  log "[INFO] Starting tma1.sh at $(date)"
 }
 
  # Function: log_end()
 log_end() {
   log "[INFO] Script complete at $(date)"
-  log "$(date): run_all finished"
+  log "$(date): TMA-1 finished"
 }
 
  # Function: log_status()
