@@ -25,7 +25,7 @@ start_webserver() {
   mkdir -p "$ROOT_DIR/data/temp"
   mkdir -p "$ROOT_DIR/data/logs"
   LOG_FILE="$ROOT_DIR/data/logs/webserver.log"
-  nohup python3 "$ROOT_DIR/interfaces/web/webserver.py" > "$LOG_FILE" 2>&1 &
+  nohup python3 -m interfaces.web.webserver > "$LOG_FILE" 2>&1 &
   echo $! > "$ROOT_DIR/data/temp/webserver.pid"
 }
 
