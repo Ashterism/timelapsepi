@@ -1,7 +1,7 @@
 #!/bin/bash
 # --- Source relevant files ---
 source "$HOME/timelapse/config/config_paths.sh"
-
+echo "LOGGING_SH: $LOGGING_SH" # TEMP DEBUG LINE
 source "$LOGGING_SH"
 source "$MODE_CONTROL_SH"
 run_mode_control # sets values in following sources
