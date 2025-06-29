@@ -82,3 +82,13 @@ check_webserver() {
     return 1
   fi
 }
+# FUNCTION: configure webserver based on config
+config_webserver() {
+  if [ "$WEBSERVER_ENABLED" == "true" ]; then
+    log "[INFO] Config flag enabled - ensuring webserver is running"
+    start_webserver
+  else
+    log "[INFO] Config flag disabled - ensuring webserver is stopped"
+    stop_webserver
+  fi
+}

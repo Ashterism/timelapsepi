@@ -19,11 +19,13 @@ log_status
 # --- Control connectivity ---
 
 if [ "$WIFI_MODE" == "client" ]; then
-  bring_up_wifi     # ops # unless ssh active
-  check_internet    # ops # 
-  pull_git          # ops # if set to do so
-  upload_firebase   # ops # if set to do so
-  maybe_drop_wifi   # ops # unless ssh active
+   bring_up_wifi       # Only runs if NOT in an SSH session
+  check_internet       # Will try to recover if no internet, unless SSH
+  pull_git             # Only if configured to do so
+  upload_firebase      # Only if configured to do so
+  maybe_drop_wifi      # Will drop Wi-Fi unless SSH or DROP_WIFI_AFTER=false
+  config_webserver     # Handles webserver state according to config
+fi
 
 elif [ "$WIFI_MODE" == "hotspot" ]; then
   log "[INFO] Wi-Fi mode: hotspot - enabling access point"
@@ -35,12 +37,6 @@ elif [ "$WIFI_MODE" == "none" ]; then
 else
   log "[WARN] Unknown Wi-Fi mode: $WIFI_MODE - skipping all network activity"
 fi
-
-# if [ "$WEBSERVER_ENABLED" == "true" ]; then
-#   start_webserver
-# else
-#   stop_webserver
-# fi
 
 log_end
 
