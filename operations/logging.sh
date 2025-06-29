@@ -1,3 +1,5 @@
+source "$(dirname "$0")/../config/config_paths.sh"
+
 # Function: log()
 log() {
   : "${LOG_PATH:=$LOGS_DIR/run.log}"
@@ -21,7 +23,7 @@ log_end() {
 log_status() {
   if [ "$LOGGING_ENABLED" == "true" ]; then
     log "[INFO] Logging enabled - running log_status.py"
-    if ! timeout 20s /usr/bin/python3 operations/log_status.py; then
+    if ! timeout 20s /usr/bin/python3 "$ROOT_DIR/operations/log_status.py"; then
       log "[ERROR] log_status.py timed out at $(date)"
     fi
   else
