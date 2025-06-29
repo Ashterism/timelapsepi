@@ -23,7 +23,9 @@ start_webserver() {
 
   log "[INFO] Starting Flask webserver"
   mkdir -p "$ROOT_DIR/data/temp"
-  nohup python3 "$ROOT_DIR/interfaces/web/webserver.py" > /dev/null 2>&1 &
+  mkdir -p "$ROOT_DIR/data/logs"
+  LOG_FILE="$ROOT_DIR/data/logs/webserver.log"
+  nohup python3 "$ROOT_DIR/interfaces/web/webserver.py" > "$LOG_FILE" 2>&1 &
   echo $! > "$ROOT_DIR/data/temp/webserver.pid"
 }
 
