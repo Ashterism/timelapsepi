@@ -2,13 +2,6 @@
 # --- Source paths file ---
 source "$HOME/timelapse/config/config_paths.sh"
 
-# --- Print whats happening if running from terminal ---
-if [[ -t 1 ]]; then
-  echo "=== TIMELAPSE RUN LOG ==="
-  tail -n 20 "$LOG_FILE"
-  echo "========================="
-fi
-
 # --- Source relevant files ---
 source "$LOGGING_SH"
 source "$MODE_CONTROL_SH"
