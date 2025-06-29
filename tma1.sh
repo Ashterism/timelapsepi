@@ -1,7 +1,15 @@
 #!/bin/bash
-# --- Source relevant files ---
+# --- Source paths file ---
 source "$HOME/timelapse/config/config_paths.sh"
-echo "LOGGING_SH: $LOGGING_SH" # TEMP DEBUG LINE
+
+# --- Print whats happening if running from terminal ---
+if [[ -t 1 ]]; then
+  echo "=== TIMELAPSE RUN LOG ==="
+  tail -n 20 "$LOG_FILE"
+  echo "========================="
+fi
+
+# --- Source relevant files ---
 source "$LOGGING_SH"
 source "$MODE_CONTROL_SH"
 run_mode_control # sets values in following sources
