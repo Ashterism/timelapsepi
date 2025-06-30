@@ -70,7 +70,10 @@ def main():
             taken = config["status"]["photos_taken"]
             total = config["photo_count"]
             log(f"📸 Photo taken ({taken}/{total})", "timelapse_runner.log")
-            print(f"📸 Photo taken {taken} of {total} — waiting {config['interval_seconds']}s...")
+            if {taken} < {total}:
+                print(f"📸 Photo taken {taken} of {total} — waiting {config['interval_seconds']}s...")
+            else:
+                print(f"✅ All {total_photos} photos taken. Timelapse complete.")")
             log(f"⏳ Waiting {config['interval_seconds']} seconds for next photo...", "timelapse_runner.log")
         else:
             log("❌ Photo failed", "timelapse_runner.log")
@@ -86,3 +89,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
