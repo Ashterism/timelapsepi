@@ -7,6 +7,7 @@ from pathlib import Path
 from log_util import log
 
 from config.config_paths import LOGS_PATH
+from timelapse.sessionmgt.session_manager import clear_active_session
 
 def stop_runner(session_folder):
     pid_path = Path(session_folder) / "runner.pid"
@@ -23,10 +24,14 @@ def stop_runner(session_folder):
         log(f"🛑 Stopped runner PID {pid}", "timelapse_stop.log")
         pid_path.unlink()
         log("🧹 PID file removed.", "timelapse_stop.log")
+        clear_active_session()
+        log("📁 Cleared active session.", "timelapse_stop.log")
     except ProcessLookupError:
         print("⚠️ Process not found — may have already stopped.")
         log(f"⚠️ PID {pid} not found — already stopped?", "timelapse_stop.log")
         pid_path.unlink()
+        clear_active_session()
+        log("📁 Cleared active session.", "timelapse_stop.log")
     except Exception as e:
         print(f"❌ Error stopping process: {e}")
         log(f"❌ Error stopping PID {pid}: {e}", "timelapse_stop.log")

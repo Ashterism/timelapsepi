@@ -13,6 +13,7 @@ from pathlib import Path
 import subprocess
 from log_util import log
 from config.config_paths import SESSIONS_PATH, RUNNER_SCRIPT
+from timelapse.sessionmgmt.session_manager import get_active_session, set_active_session
 
 def prompt_time(prompt, default_now=False):
     entry = input(prompt)
@@ -35,6 +36,10 @@ def prompt_interval():
 
 def main():
     print("🎞  Timelapse Setup")
+
+    if get_active_session():
+        print("❌ A session is already active. Stop it before starting a new one.")
+        sys.exit(1)
 
     # Ensure sessions folder exists
     SESSIONS_PATH.mkdir(parents=True, exist_ok=True)
@@ -94,6 +99,8 @@ def main():
         f.write(str(process.pid))
 
     log(f"Runner PID saved: {process.pid}", "timelapse_start.log")
+
+    set_active_session(str(folder_path))
 
 if __name__ == "__main__":
     main()

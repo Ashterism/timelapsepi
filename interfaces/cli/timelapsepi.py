@@ -6,6 +6,8 @@ import sys
 from pathlib import Path
 from dotenv import dotenv_values, set_key
 
+from timelapse.sessionmgt.session_manager import get_active_session, set_active_session
+
 # Allow importing from project root
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
@@ -20,9 +22,6 @@ from timelapse.sessionmgt.log_util import log
 
 config = dotenv_values(CONFIG_PATH)
 WIFI_MODES = ["client", "hotspot", "none"]
-
-def cli_log(msg):
-    log(msg, "timelapsepi.log")
 
 #
 # ─────────────────────────────────────────
@@ -118,9 +117,8 @@ def change_preset():
 # ─────────────────────────────────────────
 #
 def run_start():
-    active_file = TEMP_PATH / "active_session.txt"
-    if active_file.exists():
-        print("⚠️ A session is already active. Stop it before starting a new one.")
+    if get_active_session():
+        print("❌ A session is already active. Stop it before starting a new one.")
         return
     try:
         subprocess.Popen(
@@ -137,6 +135,11 @@ def run_start():
         cli_log(f"Failed to start: {e}")
 
 def run_status():
+    active = get_active_session()
+    if active:
+        print(f"📂 Active session: {active}")
+    else:
+        print("ℹ️ No active session.")
     SESSIONS_PATH.mkdir(parents=True, exist_ok=True)
     try:
         sessions = sorted(SESSIONS_PATH.iterdir(), key=os.path.getmtime, reverse=True)
@@ -169,6 +172,9 @@ def run_stop():
         cli_log(f"Stop failed: {e}")
 
 def run_test_photo():
+    if get_active_session():
+        print("❌ A session is already active. Stop it before starting a new one.")
+        return
     try:
         from timelapse.take_photo import take_photo
         success = take_photo()

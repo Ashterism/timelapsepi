@@ -57,6 +57,13 @@ def latest_timestamp():
 @app.route('/photo')
 def photo():
     app.logger.debug("📸 /photo route hit")
+
+    # Prevent photo if a session is active
+    session = get_active_session()
+    if session:
+        app.logger.warning("❌ Cannot take test photo: session is active.")
+        return '❌ Session in progress. Stop it before taking a test photo.', 400
+
     result = subprocess.run(
         ['/bin/bash', str(PHOTO_SCRIPT)],
         capture_output=True,
@@ -108,6 +115,47 @@ def status():
         return f"🟢 Status OK<br>Uptime: {uptime}<br>IP: {ip}<br>Mode: {mode}{session_info}"
     except Exception as e:
         return f"🔴 Status error: {str(e)}"
+
+@app.route('/start')
+def start_timelapse():
+    session = get_active_session()
+    if session:
+        app.logger.warning("❌ Cannot start new session: one is already active.")
+        return '❌ Session already running. Stop it first.', 400
+
+    try:
+        result = subprocess.run(
+            ['python3', str(INTERFACES_PATH / "start_timelapse.py")],
+            capture_output=True,
+            text=True
+        )
+        if result.returncode == 0:
+            app.logger.info("✅ Session started via web.")
+            return '✅ Timelapse started.', 200
+        else:
+            app.logger.error(f"❌ Timelapse start failed:\n{result.stderr}")
+            return '❌ Timelapse start failed.', 500
+    except Exception as e:
+        app.logger.error(f"❌ Exception starting timelapse: {e}")
+        return f"❌ Exception: {str(e)}", 500
+
+@app.route('/stop')
+def stop_timelapse():
+    try:
+        result = subprocess.run(
+            ['python3', str(INTERFACES_PATH / "stop_timelapse.py")],
+            capture_output=True,
+            text=True
+        )
+        if result.returncode == 0:
+            app.logger.info("🛑 Timelapse stopped via web.")
+            return '🛑 Timelapse stopped.', 200
+        else:
+            app.logger.error(f"❌ Stop failed:\n{result.stderr}")
+            return '❌ Stop failed.', 500
+    except Exception as e:
+        app.logger.error(f"❌ Exception stopping timelapse: {e}")
+        return f"❌ Exception: {str(e)}", 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
