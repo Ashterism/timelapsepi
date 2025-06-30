@@ -166,21 +166,15 @@ def run_status():
         cli_log(f"Status check failed: {e}")
 
 def run_stop():
-    SESSIONS_PATH.mkdir(parents=True, exist_ok=True)
     try:
-        sessions = sorted(SESSIONS_PATH.iterdir(), key=os.path.getmtime, reverse=True)
-        for session in sessions:
-            pid_file = session / "timelapse_runner.pid"
-            if pid_file.exists():
-                subprocess.run(["python3", str(STOP_SCRIPT), str(session)])
-                # Remove active_session.txt after stopping
-                active_file = TEMP_PATH / "active_session.txt"
-                if active_file.exists():
-                    active_file.unlink()
-                return
-        print("⚠️ No running session found.")
+        result = subprocess.run(["python3", str(STOP_SCRIPT), "--auto"], check=True)
+        print("✅ Stop command executed.")
+        cli_log("Stop script executed successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Stop script failed with exit code {e.returncode}")
+        cli_log(f"Stop script failed: {e}")
     except Exception as e:
-        print(f"❌ Error stopping session: {e}")
+        print(f"❌ Error running stop script: {e}")
         cli_log(f"Stop failed: {e}")
 
 def run_test_photo():

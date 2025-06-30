@@ -38,8 +38,25 @@ def stop_runner(session_folder):
         sys.exit(1)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 2 and not (len(sys.argv) == 2 and sys.argv[1] == "--auto"):
         print("Usage: python3 stop_timelapse.py <path_to_session_folder>")
         sys.exit(1)
 
-    stop_runner(sys.argv[1])
+    if sys.argv[1] == "--auto":
+        from config.config_paths import TEMP_PATH, SESSIONS_PATH
+        from timelapse.sessionmgmt.session_manager import get_active_session
+
+        active_session = get_active_session()
+        if not active_session:
+            print("ℹ️ No active session.")
+            sys.exit(0)
+
+        pid_path = Path(active_session) / "timelapse_runner.pid"
+        if pid_path.exists():
+            stop_runner(active_session)
+        else:
+            print("⚠️ No runner PID file found. Cleaning up stale session.")
+            clear_active_session()
+            sys.exit(0)
+    else:
+        stop_runner(sys.argv[1])
