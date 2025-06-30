@@ -10,7 +10,7 @@ from dotenv import dotenv_values, set_key
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 from config.config_paths import (
-    CONFIG_PATH, SESSIONS_PATH, PHOTO_SCRIPT,
+    CONFIG_PATH, TEMP_PATH, SESSIONS_PATH, PHOTO_SCRIPT,
     START_SCRIPT, STATUS_SCRIPT, STOP_SCRIPT, LOAD_PRESET_SCRIPT
 )
 
