@@ -18,7 +18,7 @@ take_photo() {
   mkdir -p "$LATEST_DIR"
 
   # Photo capture (for Pi Camera type only)
-  libcamera-jpeg -o "$IMAGE_PATH" --metadata "$RAW_META_PATH" --metadata-format json
+  libcamera-still -o "$IMAGE_PATH" --metadata "$RAW_META_PATH" --metadata-format json --nopreview -t 1000
 
   log "[INFO] Test photo captured: $IMAGE_PATH"
 
