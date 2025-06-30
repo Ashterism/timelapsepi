@@ -21,11 +21,11 @@
       photoEl.src = `/latest.jpg?${Date.now()}`;
 
       fetch('/latest-timestamp')
-        .then(res => res.text())
-        .then(timestamp => {
-          const date = new Date(parseInt(timestamp) * 1000);
-          document.getElementById('fileInfo').textContent = `File: latest.jpg | Taken: ${date.toLocaleString()}`;
-        });
+      .then(res => res.text())
+      .then(timestamp => {
+        const date = new Date(timestamp); // Now an ISO 8601 string
+        document.getElementById('fileInfo').textContent = `File: latest.jpg | Taken: ${date.toLocaleString()}`;
+      });
     </script>  
   </div>
  

@@ -40,11 +40,18 @@ def latest():
 
 @app.route('/latest-timestamp')
 def latest_timestamp():
-    path = TEMP_PATH / "latest.jpg"
+    path = TEMP_PATH / "latest.json"
     if not os.path.exists(path):
         return '', 404
-    timestamp = str(os.path.getmtime(path))
-    return timestamp
+    try:
+        import json
+        with open(path) as f:
+            data = json.load(f)
+        return data.get("timestamp", ""), 200
+    except Exception as e:
+        app.logger.error(f"Error reading latest.json: {e}")
+        return '', 500
+
 
 @app.route('/photo')
 def photo():

@@ -165,7 +165,28 @@ def run_test_photo():
         print("❌ photo.sh not found!")
         cli_log("Test photo failed — script missing")
         return
+
     subprocess.run(["bash", str(PHOTO_SCRIPT)])
+
+    latest_path = TEMP_PATH / "latest.jpg"
+    metadata_path = TEMP_PATH / "latest.json"
+
+    if not metadata_path.exists():
+        print("❌ Photo taken but metadata missing.")
+        return
+
+    try:
+        import json
+        with open(metadata_path) as f:
+            metadata = json.load(f)
+        timestamp = metadata.get("timestamp", "unknown")
+        print(f"\n📸 Test photo captured.")
+        print(f"🕒 Timestamp: {timestamp}")
+        print(f"📂 Path: {latest_path}")
+        print(f"💻 Mac copy command:")
+        print(f"scp pi@raspberrypi.local:{latest_path} ~/Downloads/")
+    except Exception as e:
+        print(f"⚠️ Error reading metadata: {e}")
 
 #
 # ─────────────────────────────────────────
