@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 "$HOME/timelapse/interfaces/cli/timelapsepi.py" "$@"
+PYTHONPATH="$HOME/timelapse" python3 "$HOME/timelapse/interfaces/cli/timelapsepi.py" "$@"
