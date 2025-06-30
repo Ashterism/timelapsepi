@@ -126,12 +126,7 @@ def run_start():
         print("❌ A session is already active. Stop it before starting a new one.")
         return
     try:
-        subprocess.Popen(
-            ["python3", str(START_SCRIPT)],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            start_new_session=True
-        )
+        subprocess.run(["python3", str(START_SCRIPT)])
         run_status()
         print("✅ Timelapse run completed.")
         input("Press Enter to return to menu...")
