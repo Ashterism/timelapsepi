@@ -4,6 +4,7 @@ from dotenv import set_key, load_dotenv
 import os
 import logging
 from config.config_paths import CONFIG_PATH, LOGS_PATH, INTERFACES_PATH, PHOTO_SCRIPT, TEMP_PATH
+from timelapse.sessionmgt.session_manager import get_active_session
 
 load_dotenv(CONFIG_PATH)
 app = Flask(__name__)
@@ -99,7 +100,12 @@ def status():
         uptime = subprocess.check_output(['uptime', '-p']).decode().strip()
         ip = subprocess.check_output("hostname -I", shell=True).decode().strip()
         mode = os.getenv('wifi_mode', 'unknown')
-        return f"🟢 Status OK<br>Uptime: {uptime}<br>IP: {ip}<br>Mode: {mode}"
+
+        # Session management
+        session = get_active_session()
+        session_info = f"<br>📂 Session: {session}" if session else "<br>📂 Session: None"
+
+        return f"🟢 Status OK<br>Uptime: {uptime}<br>IP: {ip}<br>Mode: {mode}{session_info}"
     except Exception as e:
         return f"🔴 Status error: {str(e)}"
 

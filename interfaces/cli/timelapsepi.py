@@ -15,8 +15,8 @@ from config.config_paths import (
 )
 
 # Also allow log_util import
-sys.path.append(str(Path(__file__).resolve().parents[2] / "timelapse/functions"))
-from log_util import log
+sys.path.append(str(Path(__file__).resolve().parents[2] / "timelapse/sessionmgt"))
+from timelapse.sessionmgt.log_util import log
 
 config = dotenv_values(CONFIG_PATH)
 WIFI_MODES = ["client", "hotspot", "none"]
@@ -118,6 +118,10 @@ def change_preset():
 # ─────────────────────────────────────────
 #
 def run_start():
+    active_file = TEMP_PATH / "active_session.txt"
+    if active_file.exists():
+        print("⚠️ A session is already active. Stop it before starting a new one.")
+        return
     try:
         subprocess.Popen(
             ["python3", str(START_SCRIPT)],
@@ -154,6 +158,10 @@ def run_stop():
             pid_file = session / "timelapse_runner.pid"
             if pid_file.exists():
                 subprocess.run(["python3", str(STOP_SCRIPT), str(session)])
+                # Remove active_session.txt after stopping
+                active_file = TEMP_PATH / "active_session.txt"
+                if active_file.exists():
+                    active_file.unlink()
                 return
         print("⚠️ No running session found.")
     except Exception as e:
