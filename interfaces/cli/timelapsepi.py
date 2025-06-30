@@ -182,6 +182,8 @@ def run_test_photo():
         return
     try:
         from timelapse.take_photo import take_photo
+        log("📷 Starting test photo")
+        print("📷 Initialising camera, please wait…")
         success = take_photo()
         if not success:
             print("❌ Photo capture failed.")
@@ -232,6 +234,7 @@ def toggle_flag(flag):
 # ─────────────────────────────────────────
 #
 def main():
+    print_menu()
     while True:
         cmd = input("> ").strip().lower()
         if cmd == "exit":
