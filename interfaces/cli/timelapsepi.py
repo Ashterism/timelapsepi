@@ -12,7 +12,7 @@ import os
 import subprocess
 from dotenv import dotenv_values, set_key
 
-from timelapse.sessionmgmt.session_manager import get_active_session, set_active_session
+from timelapse.sessionmgmt.session_manager import get_active_session, set_active_session, get_session_status
 
 from config.config_paths import (
     CONFIG_PATH, TEMP_PATH, SESSIONS_PATH, PHOTO_SCRIPT,
@@ -131,7 +131,6 @@ def run_start():
 
         # Check session state
         try:
-            from timelapse.sessionmgmt.session_manager import get_session_status
             status = get_session_status()
             if status is not None:
                 if status.get("completed", False):
