@@ -119,7 +119,12 @@ def change_preset():
 #
 def run_start():
     try:
-        subprocess.run(["python3", str(START_SCRIPT)])
+        subprocess.Popen(
+            ["python3", str(START_SCRIPT)],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True
+        )
         run_status()
         print("✅ Timelapse run completed.")
         input("Press Enter to return to menu...")
