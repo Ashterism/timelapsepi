@@ -162,7 +162,7 @@ def run_stop():
 
 def run_test_photo():
     try:
-        from timelapse.functions.take_photo import take_photo
+        from timelapse.take_photo import take_photo
         success = take_photo()
         if not success:
             print("❌ Photo capture failed.")
