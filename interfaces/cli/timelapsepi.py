@@ -128,7 +128,19 @@ def run_start():
     try:
         subprocess.run(["python3", str(START_SCRIPT)])
         run_status()
-        print("✅ Timelapse run completed.")
+
+        # Check session state
+        try:
+            from timelapse.sessionmgmt.session_manager import get_session_status
+            status = get_session_status()
+            if status.get("completed", False):
+                print("✅ Timelapse run completed.")
+            else:
+                print("⏳ Timelapse is still running...")
+        except Exception as e:
+            print("⚠️ Could not determine session status.")
+            cli_log(f"Session status error: {e}")
+
         input("Press Enter to return to menu...")
     except Exception as e:
         print(f"❌ Failed to start: {e}")
