@@ -6,18 +6,15 @@ import sys
 from pathlib import Path
 from dotenv import dotenv_values, set_key
 
+# Activate helper-based path setup
+from timelapse.helpers.import_bootstrap import *
 from timelapse.sessionmgmt.session_manager import get_active_session, set_active_session
-
-# Allow importing from project root
-sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 from config.config_paths import (
     CONFIG_PATH, TEMP_PATH, SESSIONS_PATH, PHOTO_SCRIPT,
     START_SCRIPT, STATUS_SCRIPT, STOP_SCRIPT, LOAD_PRESET_SCRIPT
 )
 
-# Also allow log_util import
-sys.path.append(str(Path(__file__).resolve().parents[2] / "timelapse/sessionmgt"))
 from timelapse.functions.log_util import log
 
 config = dotenv_values(CONFIG_PATH)
