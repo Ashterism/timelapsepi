@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
+# Add repo root to sys.path for clean imports
+from pathlib import Path
+import sys
+sys.path.append(str(Path(__file__).resolve().parents[2]))
+
+# Now import the bootstrap logic to cleanly structure further imports
+from timelapse.helpers.import_bootstrap import *
+
 import os
 import subprocess
-import sys
-from pathlib import Path
 from dotenv import dotenv_values, set_key
 
-# Activate helper-based path setup
-from timelapse.helpers.import_bootstrap import *
 from timelapse.sessionmgmt.session_manager import get_active_session, set_active_session
 
 from config.config_paths import (
