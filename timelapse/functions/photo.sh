@@ -3,6 +3,7 @@
 # TODO: Consider adding HDR support with:
 # libcamera-still --hdr 1 ...
 # Requires tuning + validation
+#!/bin/bash
 
 # photo.sh — photo capture and metadata tools
 source "$(dirname "$BASH_SOURCE")/../../config/config_paths.sh"
@@ -13,12 +14,11 @@ take_photo() {
   TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
   local LATEST_DIR="$ROOT_DIR/data/temp/latestjpg"
   local IMAGE_PATH="$LATEST_DIR/latest.jpg"
-  local RAW_META_PATH="$LATEST_DIR/raw_metadata.json"
 
   mkdir -p "$LATEST_DIR"
 
   # Photo capture (for Pi Camera type only)
-  libcamera-still -o "$IMAGE_PATH" --metadata "$RAW_META_PATH" --metadata-format json --nopreview -t 1000
+  libcamera-jpeg -o "$IMAGE_PATH"
 
   log "[INFO] Test photo captured: $IMAGE_PATH"
 
@@ -63,18 +63,6 @@ write_metadata() {
   local IMAGE_HEIGHT=$(extract_exif_value ImageHeight "$IMAGE_PATH")
   local FILE_SIZE=$(extract_exif_value FileSize "$IMAGE_PATH")
 
-  local RAW_META_PATH="${IMAGE_PATH%.*}/raw_metadata.json"
-
-  # Extract select libcamera metadata if available
-  if [ -f "$RAW_META_PATH" ]; then
-    RAW_EXPOSURE_US=$(jq '.ExposureTime' "$RAW_META_PATH" 2>/dev/null || echo "unknown")
-    RAW_ANALOGUE_GAIN=$(jq '.AnalogueGain' "$RAW_META_PATH" 2>/dev/null || echo "unknown")
-    RAW_DIGITAL_GAIN=$(jq '.DigitalGain' "$RAW_META_PATH" 2>/dev/null || echo "unknown")
-    RAW_LUX=$(jq '.Lux' "$RAW_META_PATH" 2>/dev/null || echo "unknown")
-    RAW_COLOUR_TEMP=$(jq '.ColourTemperature' "$RAW_META_PATH" 2>/dev/null || echo "unknown")
-    RAW_SENSOR_TEMP=$(jq '.SensorTemperature' "$RAW_META_PATH" 2>/dev/null || echo "unknown")
-  fi
-
   cat <<EOF > "$METADATA_PATH"
 {
   "filename": "$FILENAME",
@@ -93,14 +81,6 @@ write_metadata() {
     "image_width": "$IMAGE_WIDTH",
     "image_height": "$IMAGE_HEIGHT",
     "file_size": "$FILE_SIZE"
-  },
-  "raw_metadata": {
-    "exposure_us": "$RAW_EXPOSURE_US",
-    "analogue_gain": "$RAW_ANALOGUE_GAIN",
-    "digital_gain": "$RAW_DIGITAL_GAIN",
-    "lux": "$RAW_LUX",
-    "colour_temp": "$RAW_COLOUR_TEMP",
-    "sensor_temp_c": "$RAW_SENSOR_TEMP"
   }
 }
 EOF
