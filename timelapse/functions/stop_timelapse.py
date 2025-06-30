@@ -7,7 +7,7 @@ from pathlib import Path
 from log_util import log
 
 from config.config_paths import LOGS_PATH
-from timelapse.sessionmgt.session_manager import clear_active_session
+from timelapse.sessionmgmt.session_manager import clear_active_session
 
 def stop_runner(session_folder):
     pid_path = Path(session_folder) / "runner.pid"
