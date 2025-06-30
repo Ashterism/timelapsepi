@@ -6,19 +6,15 @@ source "$LOGGING_SH"
 # FUNCTION: take_photo()
 take_photo() {
   TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-  local IMAGE_DIR="$ROOT_DIR/data/temp"
-  LATEST_PATH="$ROOT_DIR/data/temp/latest.jpg"
-  IMAGE_PATH="$IMAGE_DIR/$TIMESTAMP.jpg"
+  local LATEST_DIR="$ROOT_DIR/data/temp/latestjpg"
+  local IMAGE_PATH="$LATEST_DIR/latest.jpg"
 
-  mkdir -p "$IMAGE_DIR"
+  mkdir -p "$LATEST_DIR"
 
   # Photo capture (for Pi Camera type only)
   libcamera-jpeg -o "$IMAGE_PATH"
 
-  # Update 'latest' image
-  cp "$IMAGE_PATH" "$LATEST_PATH"
-
-  log "[INFO] Photo captured: $IMAGE_PATH"
+  log "[INFO] Test photo captured: $IMAGE_PATH"
 
   write_metadata "$IMAGE_PATH" "$TIMESTAMP"
 }

@@ -1,3 +1,8 @@
+#
+Notes - add samba?
+
+
+
 # timelapsepi
 
 > Power-resilient Raspberry Pi logging and status system with PiJuice + Firebase
