@@ -7,7 +7,7 @@ from pathlib import Path
 import subprocess
 
 from config.config_paths import TEMP_PATH
-from log_util import log
+from timelapse.functions.log_util import log
 
 LATEST_DIR = TEMP_PATH / "latestjpg"
 LATEST_IMAGE = LATEST_DIR / "latest.jpg"
