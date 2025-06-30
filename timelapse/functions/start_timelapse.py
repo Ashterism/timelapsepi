@@ -102,5 +102,16 @@ def main():
 
     set_active_session(str(folder_path))
 
+    # Write metadata.json to track session state
+    metadata = {
+        "status": "running",
+        "started": datetime.datetime.now().isoformat(),
+        "ended": None,
+        "interval_seconds": interval_sec
+    }
+    metadata_path = folder_path / "metadata.json"
+    with open(metadata_path, "w") as f:
+        json.dump(metadata, f, indent=2)
+
 if __name__ == "__main__":
     main()

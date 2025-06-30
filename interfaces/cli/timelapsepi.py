@@ -227,7 +227,6 @@ def toggle_flag(flag):
 # ─────────────────────────────────────────
 #
 def main():
-    print_menu()
     while True:
         cmd = input("> ").strip().lower()
         if cmd == "exit":

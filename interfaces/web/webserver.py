@@ -5,6 +5,7 @@ import os
 import logging
 from config.config_paths import CONFIG_PATH, LOGS_PATH, INTERFACES_PATH, PHOTO_SCRIPT, TEMP_PATH
 from timelapse.sessionmgt.session_manager import get_active_session
+from timelapse.sessionmgt.session_list import list_sessions
 
 load_dotenv(CONFIG_PATH)
 app = Flask(__name__)
@@ -156,6 +157,22 @@ def stop_timelapse():
     except Exception as e:
         app.logger.error(f"❌ Exception stopping timelapse: {e}")
         return f"❌ Exception: {str(e)}", 500
+
+
+# Route to list sessions
+@app.route('/sessions')
+def sessions():
+    try:
+        sessions = list_sessions()
+        html = "<h2>📂 Timelapse Sessions</h2><ul>"
+        for s in sessions:
+            flag = "🟢" if s["is_active"] else "⚪"
+            html += f"<li>{flag} {s['path']}</li>"
+        html += "</ul>"
+        return html
+    except Exception as e:
+        app.logger.error(f"❌ Failed to load sessions: {e}")
+        return f"❌ Error loading sessions: {str(e)}", 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
