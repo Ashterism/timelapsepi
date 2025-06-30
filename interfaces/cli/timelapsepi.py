@@ -133,10 +133,13 @@ def run_start():
         try:
             from timelapse.sessionmgmt.session_manager import get_session_status
             status = get_session_status()
-            if status.get("completed", False):
-                print("✅ Timelapse run completed.")
+            if status is not None:
+                if status.get("completed", False):
+                    print("✅ Timelapse run completed.")
+                else:
+                    print("⏳ Timelapse is still running...")
             else:
-                print("⏳ Timelapse is still running...")
+                print("📸 Timelapse launched — waiting for first photo...")
         except Exception as e:
             print("⚠️ Could not determine session status.")
             cli_log(f"Session status error: {e}")
