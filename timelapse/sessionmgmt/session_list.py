@@ -1,5 +1,3 @@
-
-
 import os
 from pathlib import Path
 from config.config_paths import SESSIONS_PATH, TEMP_PATH

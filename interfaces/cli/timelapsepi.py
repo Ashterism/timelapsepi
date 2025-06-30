@@ -244,6 +244,8 @@ def main():
     print_menu()
     while True:
         cmd = input("> ").strip().lower()
+        if not cmd:
+            continue
         if cmd == "exit":
             break
         elif cmd == "start":

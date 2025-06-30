@@ -81,5 +81,8 @@ def main():
     config["status"]["completed"] = True
     save_config(config, config_path)
 
+    from timelapse.sessionmgmt.session_manager import clear_active_session
+    clear_active_session()
+
 if __name__ == "__main__":
     main()

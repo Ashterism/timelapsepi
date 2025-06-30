@@ -4,8 +4,8 @@ from dotenv import set_key, load_dotenv
 import os
 import logging
 from config.config_paths import CONFIG_PATH, LOGS_PATH, INTERFACES_PATH, PHOTO_SCRIPT, TEMP_PATH
-from timelapse.sessionmgt.session_manager import get_active_session
-from timelapse.sessionmgt.session_list import list_sessions
+from timelapse.sessionmgmt.session_manager import get_active_session
+from timelapse.sessionmgmt.session_list import list_sessions
 
 load_dotenv(CONFIG_PATH)
 app = Flask(__name__)
