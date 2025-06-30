@@ -1,5 +1,7 @@
 #
-Notes - add samba?
+Notes 
+- add samba?
+- add exiftool
 
 
 
