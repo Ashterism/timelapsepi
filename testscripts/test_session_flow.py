@@ -1,39 +1,67 @@
+"""
+Test script for simulating the full timelapse session creation flow.
 
-# test_session_flow.py
+This script:
+- Simulates CLI input to start a new timelapse session
+- Validates that active_session.json is created and contains the correct path
+- Checks that the session folder and config file are created correctly
+- Asserts that the config file has the expected total photo count
+- Cleans up the session and ensures session data is cleared
+
+Purpose: Confirm that end-to-end session setup logic behaves correctly when triggered via subprocess.
+"""
+# test_full_start.py
 import sys
 import json
 import time
+import subprocess
 from pathlib import Path
 
 # Manually add project root
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-# Now import
-from timelapse.helpers import import_bootstrap  # triggers sys.path modification
-from timelapse.functions import start_timelapse
+# Import paths and session utilities
 from timelapse.sessionmgmt.session_manager import (
     get_active_session,
     clear_active_session,
 )
 from config.config_paths import TEMP_PATH
 
-print("▶️ Running test: test_session_flow")
+print("▶️ Running test: test_full_start")
 
-# Start a timelapse session programmatically
-print("📦 Simulating timelapse start...")
-start_timelapse.main(simulate=True)  # Assumes simulate=True bypasses user input (if not implemented yet, we’ll add it)
+# Simulate CLI input for starting a timelapse
+print("📦 Simulating timelapse start via subprocess...")
+user_input = "00:00:15\n\n1\n2\n\n"
+subprocess.run(["python3", "timelapse/functions/start_timelapse.py"], input=user_input, text=True)
 
-# Give the system a moment (if needed)
+# Allow time for session file to be written
 time.sleep(1)
 
-# Check if active session was set
+# Validate session creation
 active_session_path = get_active_session()
 assert active_session_path is not None, "❌ Active session was not set"
 print("✅ Active session set:", active_session_path)
 
-# Check that the file exists
+# Check the session file exists
 session_file = TEMP_PATH / "active_session.json"
 assert session_file.exists(), f"❌ Expected session file not found at {session_file}"
+
+# Validate contents of active_session.json
+with open(session_file) as f:
+    session_data = json.load(f)
+assert session_data["path"] == str(active_session_path), "❌ Session path mismatch in file"
+
+# Confirm session folder exists
+assert active_session_path.exists(), "❌ Active session folder does not exist"
+
+# Confirm session config file exists
+config_file = active_session_path / "timelapse_config.json"
+assert config_file.exists(), "❌ Config file not created in session folder"
+
+# Confirm config file contains expected total photo count
+with open(config_file) as f:
+    config = json.load(f)
+assert config["status"]["total_photos"] == 2, "❌ Total photo count mismatch"
 
 # Clean up
 clear_active_session()
