@@ -1,3 +1,7 @@
+# Set ROOT_DIR if not already set (called from .bashrc)
+: "${ROOT_DIR:=$HOME/timelapse}"
+
+# Source centralised paths
 source "$ROOT_DIR/config/config_paths.sh"
 
 # Function: log()
