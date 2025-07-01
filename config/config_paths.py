@@ -21,7 +21,7 @@ START_SCRIPT = FUNCTIONS_PATH / "start_timelapse.py"
 STATUS_SCRIPT = FUNCTIONS_PATH / "status_timelapse.py"
 STOP_SCRIPT = FUNCTIONS_PATH / "stop_timelapse.py"
 RUNNER_SCRIPT = FUNCTIONS_PATH / "timelapse_runner.py"
-PHOTO_SCRIPT = FUNCTIONS_PATH / "photo.sh"
+PHOTO_SCRIPT = FUNCTIONS_PATH / "take_photo.py"
 
 TEMP_PATH = ROOT / "data/temp"
 
