@@ -11,8 +11,8 @@ import uuid
 import datetime
 from pathlib import Path
 import subprocess
-from log_util import log
 from config.config_paths import SESSIONS_PATH, RUNNER_SCRIPT
+from timelapse.functions.log_util import log
 from timelapse.sessionmgmt.session_manager import get_active_session, set_active_session
 
 def prompt_time(prompt, default_now=False):
