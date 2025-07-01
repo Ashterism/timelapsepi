@@ -7,8 +7,7 @@ import json
 import time
 from pathlib import Path
 
-# Add project root to sys.path
-sys.path.append(str(Path(__file__).resolve().parents[1]))
+from timelapse.helpers.import_bootstrap import *  # adds project root and utility imports
 
 from timelapse.functions import start_timelapse
 from timelapse.sessionmgmt.session_manager import (
