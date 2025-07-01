@@ -32,7 +32,8 @@ print("▶️ Running test: test_full_start")
 # Simulate CLI input for starting a timelapse
 print("📦 Simulating timelapse start via subprocess...")
 user_input = "00:00:15\n\n1\n2\n\n"
-subprocess.run(["python3", "timelapse/functions/start_timelapse.py"], input=user_input, text=True)
+start_script = Path(__file__).resolve().parents[1] / "timelapse/functions/start_timelapse.py"
+subprocess.run(["python3", str(start_script)], input=user_input, text=True)
 
 # Allow time for session file to be written
 time.sleep(1)
