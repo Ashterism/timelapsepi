@@ -45,6 +45,10 @@ def take_photo():
     result = subprocess.run(["bash", str(PHOTO_SCRIPT)])
     return result.returncode == 0
 
+def not_cancelled(config):
+    active_file = Path.home() / "timelapse/data/temp/active_session.txt"
+    return active_file.exists() and active_file.read_text().strip() == str(config["folder"])
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python3 timelapse_runner.py <config_path>")
@@ -63,6 +67,9 @@ def main():
     total = config["photo_count"]
 
     while should_continue(config):
+        if not not_cancelled(config):
+            log("🛑 Session manually stopped or invalid. Exiting timelapse runner.", "timelapse_runner.log")
+            break
         success = take_photo()
         if success:
             config["status"]["photos_taken"] += 1
@@ -89,4 +96,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
