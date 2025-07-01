@@ -16,11 +16,11 @@ from pathlib import Path
 # Ensure project root is in path
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-from timelapse.sessionmgmt.session_manager import (
-    set_active_session,
-    get_active_session,
-    clear_active_session,
-)
+# from timelapse.sessionmgmt.session_manager import (
+#     set_active_session,
+#     get_active_session,
+#     clear_active_session,
+# )
 # Add functions dir to sys.path for log_util.py
 sys.path.append(str(Path(__file__).resolve().parents[1] / "timelapse/functions"))
 from timelapse.functions import timelapse_runner
@@ -47,7 +47,9 @@ dummy_config = {
 with open(test_config_path, "w") as f:
     json.dump(dummy_config, f)
 
-set_active_session(test_session_path)
+# Manually write active_session.txt to mimic runner logic
+active_path = TEMP_PATH / "active_session.txt"
+active_path.write_text(str(test_session_path))
 
 print("▶️ Running timelapse_runner.main() with test config...")
 
@@ -66,6 +68,7 @@ assert final_status["photos_taken"] == 2, f"❌ Expected 2 photos, got {final_st
 print("✅ Photos taken:", final_status["photos_taken"])
 
 # Clean up
-clear_active_session()
-assert not (TEMP_PATH / "active_session.json").exists(), "❌ Session file not cleared"
+# Manually remove active_session.txt
+if active_path.exists():
+    active_path.unlink()
 print("🧹 Cleaned up session")

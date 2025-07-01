@@ -13,7 +13,7 @@ LATEST_DIR = TEMP_PATH / "latestjpg"
 LATEST_IMAGE = LATEST_DIR / "latest.jpg"
 LATEST_METADATA = LATEST_DIR / "latest.json"
 
-def take_photo():
+def take_photo(config=None):
     """Captures a test photo using libcamera and writes metadata."""
     LATEST_DIR.mkdir(parents=True, exist_ok=True)
 

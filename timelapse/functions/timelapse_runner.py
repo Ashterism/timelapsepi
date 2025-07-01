@@ -9,6 +9,7 @@ from pathlib import Path
 from log_util import log
 from config.config_paths import PHOTO_SCRIPT, TEMP_PATH, SESSIONS_PATH
 from timelapse.sessionmgmt.session_manager import set_active_session
+from timelapse.functions.take_photo import take_photo
 
 def load_config(config_path):
     try:
@@ -41,20 +42,6 @@ def wait_until(start_time_iso):
     if seconds > 0:
         log(f"⏳ Waiting {int(seconds)} seconds until start time...", "timelapse_runner.log")
         time.sleep(seconds)
-
-def take_photo(config):
-    session_path = Path(config["folder"])
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    photo_path = session_path / f"{timestamp}.jpg"
-    metadata_path = session_path / f"{timestamp}.json"
-
-    result = subprocess.run([
-        "bash", str(PHOTO_SCRIPT),
-        str(photo_path),
-        str(metadata_path)
-    ])
-
-    return result.returncode == 0
 
 # checks if active session file still exists (stop/complete removes it)
 def not_cancelled(config):
