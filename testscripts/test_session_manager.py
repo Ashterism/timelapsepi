@@ -1,4 +1,5 @@
 from pathlib import Path
+from config.config_paths import TEMP_PATH, SESSIONS_PATH
 import json
 
 from timelapse.sessionmgmt.session_manager import (
@@ -8,7 +9,7 @@ from timelapse.sessionmgmt.session_manager import (
 )
 
 # Create a dummy session path
-dummy_session_path = Path.home() / "timelapse/sessions/test_session"
+dummy_session_path = SESSIONS_PATH / "test_session"
 dummy_config_path = dummy_session_path / "timelapse_config.json"
 dummy_session_path.mkdir(parents=True, exist_ok=True)
 
@@ -19,21 +20,21 @@ with open(dummy_config_path, "w") as f:
 # Test set_active_session
 print("Setting active session...")
 set_active_session(dummy_session_path)
+assert (TEMP_PATH / "active_session.txt").exists(), "❌ active_session.txt was not created"
 
 # Test get_active_session
 print("Getting active session...")
 active = get_active_session()
+assert active == dummy_session_path, "❌ Active session path mismatch"
 print("✅ Active session:", active)
 
 # Test get_session_status
 from timelapse.sessionmgmt.session_manager import get_session_status
 status = get_session_status()
+assert status == {"photos_taken": 1, "total_photos": 5}, "❌ Incorrect status read from config"
 print("📸 Status:", status)
 
 # Clean up
 clear_active_session()
+assert not (TEMP_PATH / "active_session.txt").exists(), "❌ active_session.txt was not cleared"
 print("🧹 Cleared active session.")
-
-# Optional: remove dummy session folder (if you're done with it)
-# import shutil
-# shutil.rmtree(dummy_session_path)
