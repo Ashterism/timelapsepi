@@ -15,7 +15,7 @@ def get_active_session() -> Path | None:
     try:
         with open(ACTIVE_SESSION_FILE) as f:
             data = json.load(f)
-        session_path = Path(data["path"])
+        session_path = Path(data["path"]).resolve()
         return session_path if session_path.exists() else None
     except Exception:
         return None
