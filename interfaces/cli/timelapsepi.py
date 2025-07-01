@@ -213,6 +213,10 @@ def run_test_photo():
         print(f"❌ Error during test photo: {e}")
         cli_log(f"Test photo error: {e}")
 
+    print()
+    print_menu()
+
+
 #
 # ─────────────────────────────────────────
 # Section: Config Flag Toggling
