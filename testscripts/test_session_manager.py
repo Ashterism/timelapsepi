@@ -1,6 +1,9 @@
-from pathlib import Path
-from config.config_paths import TEMP_PATH, SESSIONS_PATH
 import json
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parents[1]))  # Adds project root to Python path
+from config.config_paths import TEMP_PATH, SESSIONS_PATH
+
 
 from timelapse.sessionmgmt.session_manager import (
     set_active_session,
