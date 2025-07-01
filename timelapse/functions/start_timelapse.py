@@ -100,7 +100,7 @@ def main():
 
     log(f"Runner PID saved: {process.pid}", "timelapse_start.log")
 
-    set_active_session(str(folder_path))
+    set_active_session(folder_path)
 
     # Write metadata.json to track session state
     metadata = {
