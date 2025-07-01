@@ -1,3 +1,18 @@
+"""
+Test Script: test_session_manager.py
+
+This script tests the core functionality of session management in isolation.
+It verifies:
+- That a new session path can be created and registered as the active session.
+- That the active session can be retrieved correctly from disk.
+- That session status (e.g., number of photos taken) can be read from the config file.
+- That clearing the active session properly removes the active_session.json file.
+
+Note: This test operates independently of the full timelapse flow (e.g. start_timelapse.py).
+It is used to confirm that session_manager.py is functioning as expected in isolation.
+"""
+
+
 import json
 import sys
 from pathlib import Path
@@ -41,5 +56,5 @@ print("📸 Status:", status)
 
 # Clean up
 clear_active_session()
-assert not (TEMP_PATH / "active_session.txt").exists(), "❌ active_session.txt was not cleared"
+assert not (TEMP_PATH / "active_session.json").exists(), "❌ active_session.json was not cleared"
 print("🧹 Cleared active session.")
