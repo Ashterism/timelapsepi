@@ -184,7 +184,7 @@ def run_test_photo():
         print("❌ A session is already active. Stop it before starting a new one.")
         return
     try:
-        from timelapse.take_photo import take_photo
+        from timelapse.functions.take_photo import take_photo
         log("📷 Starting test photo")
         print("📷 Initialising camera, please wait…")
         success = take_photo()

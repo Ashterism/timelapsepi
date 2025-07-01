@@ -24,7 +24,7 @@ from timelapse.sessionmgmt.session_manager import (
 # Add functions dir to sys.path for log_util.py
 sys.path.append(str(Path(__file__).resolve().parents[1] / "timelapse/functions"))
 from timelapse.functions import timelapse_runner
-from timelapse.take_photo import take_photo
+from timelapse.functions.take_photo import take_photo
 from config.config_paths import TEMP_PATH, SESSIONS_PATH
 
 # Prep test session

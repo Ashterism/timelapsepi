@@ -42,8 +42,18 @@ def wait_until(start_time_iso):
         log(f"⏳ Waiting {int(seconds)} seconds until start time...", "timelapse_runner.log")
         time.sleep(seconds)
 
-def take_photo():
-    result = subprocess.run(["bash", str(PHOTO_SCRIPT)])
+def take_photo(config):
+    session_path = Path(config["folder"])
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    photo_path = session_path / f"{timestamp}.jpg"
+    metadata_path = session_path / f"{timestamp}.json"
+
+    result = subprocess.run([
+        "bash", str(PHOTO_SCRIPT),
+        str(photo_path),
+        str(metadata_path)
+    ])
+
     return result.returncode == 0
 
 # checks if active session file still exists (stop/complete removes it)
@@ -73,7 +83,7 @@ def main():
         if not not_cancelled(config):
             log("🛑 Session manually stopped or invalid. Exiting timelapse runner.", "timelapse_runner.log")
             break
-        success = take_photo()
+        success = take_photo(config)
         if success:
             config["status"]["photos_taken"] += 1
             save_config(config, config_path)
