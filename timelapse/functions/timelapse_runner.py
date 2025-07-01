@@ -7,7 +7,8 @@ import sys
 import datetime
 from pathlib import Path
 from log_util import log
-from config.config_paths import PHOTO_SCRIPT, TEMP_PATH
+from config.config_paths import PHOTO_SCRIPT, TEMP_PATH, SESSIONS_PATH
+from timelapse.sessionmgmt.session_manager import set_active_session
 
 def load_config(config_path):
     try:
@@ -58,6 +59,7 @@ def main():
     config_path = Path(sys.argv[1])
     config = load_config(config_path)
 
+    set_active_session(config["folder"])
     log(f"📂 Timelapse session started: {config['folder']}", "timelapse_runner.log")
     wait_until(config["start_time"])
 

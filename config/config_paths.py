@@ -33,3 +33,6 @@ CONFIG_DIR = ROOT / "config"
 PRESETS_FILE = CONFIG_DIR / "presets.env"
 MODE_CONTROL_FILE = CONFIG_DIR / "mode_control.env"
 LOAD_PRESET_SCRIPT = CONFIG_DIR / "load_preset.sh"
+
+# --- Session management ---
+SESSIONMGMT_PATH = ROOT / "timelapse" / "sessionmgmt"
