@@ -1,4 +1,4 @@
-import sys
+import json
 from pathlib import Path
 
 from config.config_paths import TEMP_PATH
