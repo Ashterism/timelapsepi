@@ -25,6 +25,7 @@ def get_active_session() -> Path | None:
 # Set the active session by saving its path to disk
 def set_active_session(session_path: Path):
     """Save the active session path to file."""
+    print("🛠 Writing active session to file:", ACTIVE_SESSION_FILE)  # Debug line added
     ACTIVE_SESSION_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(ACTIVE_SESSION_FILE, "w") as f:
         json.dump({"path": str(session_path)}, f)
