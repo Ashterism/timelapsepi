@@ -1,14 +1,15 @@
 
-
-
 # test_session_flow.py
 import sys
 import json
 import time
 from pathlib import Path
 
-from timelapse.helpers.import_bootstrap import *  # adds project root and utility imports
+# Manually add project root
+sys.path.append(str(Path(__file__).resolve().parents[1]))
 
+# Now import
+from timelapse.helpers import import_bootstrap  # triggers sys.path modification
 from timelapse.functions import start_timelapse
 from timelapse.sessionmgmt.session_manager import (
     get_active_session,
