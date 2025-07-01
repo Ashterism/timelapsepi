@@ -87,6 +87,11 @@ def main():
         json.dump(config, f, indent=2)
 
     print(f"✅ Config saved: {config_path}")
+
+    # Mark this session as active by writing to active_session.txt
+    set_active_session(folder_path)
+    log(f"Active session set: {folder_path}", "timelapse_start.log")
+
     print("🚀 Launching timelapse runner...")
 
     # Launch the runner and save its PID
@@ -99,8 +104,6 @@ def main():
         f.write(str(process.pid))
 
     log(f"Runner PID saved: {process.pid}", "timelapse_start.log")
-
-    set_active_session(folder_path)
 
     # Write metadata.json to track session state
     metadata = {
