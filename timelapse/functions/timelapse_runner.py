@@ -7,7 +7,7 @@ import sys
 import datetime
 from pathlib import Path
 from log_util import log
-from config.config_paths import PHOTO_SCRIPT
+from config.config_paths import PHOTO_SCRIPT, TEMP_PATH
 
 def load_config(config_path):
     try:
@@ -45,8 +45,9 @@ def take_photo():
     result = subprocess.run(["bash", str(PHOTO_SCRIPT)])
     return result.returncode == 0
 
+# checks if active session file still exists (stop/complete removes it)
 def not_cancelled(config):
-    active_file = Path.home() / "timelapse/data/temp/active_session.txt"
+    active_file = TEMP_PATH / "active_session.txt"
     return active_file.exists() and active_file.read_text().strip() == str(config["folder"])
 
 def main():
