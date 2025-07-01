@@ -23,9 +23,9 @@ with open(dummy_config_path, "w") as f:
 # Test set_active_session
 print("Setting active session...")
 print("TEMP_PATH:", TEMP_PATH)
-print("Expected location:", TEMP_PATH / "active_session.txt")
+print("Expected location:", TEMP_PATH / "active_session.json")
 set_active_session(dummy_session_path)
-assert (TEMP_PATH / "active_session.txt").exists(), "❌ active_session.txt was not created"
+assert (TEMP_PATH / "active_session.json").exists(), "❌ active_session.json was not created"
 
 # Test get_active_session
 print("Getting active session...")
