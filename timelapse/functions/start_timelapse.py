@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
-# Paths managed centrally from config/config_paths.py
+# Add repo root to sys.path dynamically
 import sys
 from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parents[1]))
+repo_root = Path(__file__).resolve().parents[2]
+if str(repo_root) not in sys.path:
+    sys.path.insert(0, str(repo_root))
 
 import json
 import os
