@@ -41,6 +41,7 @@ def set_active_session(session_path: Path):
 def clear_active_session():
     """Remove the active session file."""
     if ACTIVE_SESSION_FILE.exists():
+        print("🧹 Clearing active session")
         ACTIVE_SESSION_FILE.unlink()
 
 # Return session status (e.g., photo count, completion) from config
