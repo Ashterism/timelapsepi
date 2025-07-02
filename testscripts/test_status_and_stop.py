@@ -28,11 +28,8 @@ def run_script(script_path, input_lines=None):
         stderr=subprocess.PIPE,
         text=True
     )
-    if input_lines:
-        for line in input_lines:
-            p.stdin.write(line + "\n")
-        p.stdin.close()
-    stdout, stderr = p.communicate(timeout=30)
+    input_data = "\n".join(input_lines) + "\n" if input_lines else None
+    stdout, stderr = p.communicate(input=input_data, timeout=30)
     print(f"🔁 STDOUT:\n{stdout}")
     print(f"⚠️ STDERR:\n{stderr}")
     return stdout, stderr
