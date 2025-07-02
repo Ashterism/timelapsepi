@@ -13,14 +13,14 @@ import time
 from pathlib import Path
 
 ACTIVE_SESSION_PATH = Path("/home/ash/timelapse/data/temp/active_session.json")
-STATUS_SCRIPT = "../timelapse/functions/status_timelapse.py"
-STOP_SCRIPT = "../timelapse/functions/stop_timelapse.py"
-START_SCRIPT = "../timelapse/functions/start_timelapse.py"
+STATUS_SCRIPT = "/home/ash/timelapse/functions/status_timelapse.py"
+STOP_SCRIPT = "/home/ash/timelapse/functions/stop_timelapse.py"
+START_SCRIPT = "/home/ash/timelapse/functions/start_timelapse.py"
 
 def file_exists():
     return ACTIVE_SESSION_PATH.exists()
 
-def run_script(script_path, input_data=None):
+def run_script(script_path, input_lines=None):
     p = subprocess.Popen(
         ["python3", script_path],
         stdin=subprocess.PIPE,
@@ -28,7 +28,11 @@ def run_script(script_path, input_data=None):
         stderr=subprocess.PIPE,
         text=True
     )
-    stdout, stderr = p.communicate(input=input_data, timeout=20)
+    if input_lines:
+        for line in input_lines:
+            p.stdin.write(line + "\n")
+        p.stdin.close()
+    stdout, stderr = p.communicate(timeout=30)
     print(f"🔁 STDOUT:\n{stdout}")
     print(f"⚠️ STDERR:\n{stderr}")
     return stdout, stderr
@@ -41,7 +45,7 @@ if file_exists():
     print("🧹 Cleared old active_session.json")
 
 print("🚀 Launching start_timelapse.py")
-inputs = "00:00:01\n\n1\n3\n\n"
+inputs = ["00:00:03", "", "1", "3", ""]
 run_script(START_SCRIPT, inputs)
 
 # Step 2: Wait until at least one photo is taken
