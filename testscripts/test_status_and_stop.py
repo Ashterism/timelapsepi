@@ -8,24 +8,27 @@ This test:
 4. Confirms that the active session file has been cleared and no further photos are taken.
 """
 
+from pathlib import Path
 import subprocess
 import time
-from timelapse.config.config_paths import (
-    STATUS_SCRIPT,
-    STOP_SCRIPT,
-    START_SCRIPT,
-    TEMP_PATH
-)
-from pathlib import Path
+import sys
 
-ACTIVE_SESSION_PATH = Path(TEMP_PATH) / "active_session.json"
+print("🔧 Running test_status_and_stop.py...")
+
+BASE_DIR = Path(__file__).resolve().parents[1]
+TEMP_PATH = BASE_DIR / "data" / "temp"
+ACTIVE_SESSION_PATH = TEMP_PATH / "active_session.json"
+
+sys.path.append(str(BASE_DIR))
+from timelapse.config.config_paths import STATUS_SCRIPT, STOP_SCRIPT, START_SCRIPT
 
 def file_exists():
     return ACTIVE_SESSION_PATH.exists()
 
 def run_script(script_path, input_lines=None):
     p = subprocess.Popen(
-        ["python3", script_path],
+        ["python3", str(script_path)],
+        cwd=BASE_DIR,
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -36,8 +39,6 @@ def run_script(script_path, input_lines=None):
     print(f"🔁 STDOUT:\n{stdout}")
     print(f"⚠️ STDERR:\n{stderr}")
     return stdout, stderr
-
-print("🔧 Running test_status_and_stop.py...")
 
 # Step 1: Start a new session
 if file_exists():
