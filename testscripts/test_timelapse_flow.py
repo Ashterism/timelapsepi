@@ -1,5 +1,3 @@
-
-
 import subprocess
 import json
 import time
@@ -19,13 +17,16 @@ if ACTIVE_SESSION_FILE.exists():
 
 # 2. Run start_timelapse.py (make sure it's runnable and uses correct paths)
 print("🚀 Launching start_timelapse.py")
+import threading
+
 p = subprocess.Popen(
     ["python3", "timelapse/functions/start_timelapse.py"],
     cwd=BASE_DIR,
     stdin=subprocess.PIPE,
     stdout=subprocess.PIPE,
     stderr=subprocess.PIPE,
-    text=True
+    text=True,
+    bufsize=1
 )
 
 inputs = "\n".join([
@@ -36,11 +37,20 @@ inputs = "\n".join([
     ""           # Folder name
 ]) + "\n"
 
-stdout, stderr = p.communicate(input=inputs, timeout=10)
+def feed_input(proc, text):
+    try:
+        proc.stdin.write(text)
+        proc.stdin.flush()
+    except Exception as e:
+        print("❌ Input write error:", e)
 
-print(stdout)
-if stderr:
-    print("❌ Error:\n", stderr)
+input_thread = threading.Thread(target=feed_input, args=(p, inputs))
+input_thread.start()
+
+for line in p.stdout:
+    print(line.strip())
+
+p.wait(timeout=30)
 
 # 3. Check for new active_session.json
 if not ACTIVE_SESSION_FILE.exists():
