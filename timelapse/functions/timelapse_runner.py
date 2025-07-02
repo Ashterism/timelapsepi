@@ -7,7 +7,7 @@ import sys
 import datetime
 from pathlib import Path
 from log_util import log
-from config.config_paths import PHOTO_SCRIPT, TEMP_PATH, SESSIONS_PATH
+from config.config_paths import PHOTO_SCRIPT, TEMP_PATH
 from timelapse.sessionmgmt.session_manager import set_active_session
 from timelapse.functions.take_photo import take_photo
 
@@ -48,15 +48,12 @@ def not_cancelled(config):
     active_file = TEMP_PATH / "active_session.txt"
     return active_file.exists() and active_file.read_text().strip() == str(config["folder"])
 
-def main(config=None):
-    if config is None:
-        if len(sys.argv) < 2:
-            print("Usage: python3 timelapse_runner.py <config_path>")
-            sys.exit(1)
-        config_path = Path(sys.argv[1])
-        config = load_config(config_path)
-    else:
-        config_path = Path(config["config_path"])
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: python3 timelapse_runner.py <config_path>")
+        sys.exit(1)
+    config_path = Path(sys.argv[1])
+    config = load_config(config_path)
 
     set_active_session(config["folder"])
     log(f"📂 Timelapse session started: {config['folder']}", "timelapse_runner.log")
