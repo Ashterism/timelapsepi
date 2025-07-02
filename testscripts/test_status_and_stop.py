@@ -69,5 +69,3 @@ if not file_exists():
     print("✅ active_session.json successfully cleared.")
 else:
     print("❌ active_session.json still exists.")
-else:
-    print("⚠️ Something went wrong — test may not have executed properly.")
