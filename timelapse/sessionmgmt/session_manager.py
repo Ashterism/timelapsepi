@@ -3,6 +3,11 @@ from pathlib import Path
 
 from config.config_paths import TEMP_PATH
 
+# TEMP DEBUG
+from config.config_paths import TEMP_PATH
+print(f"[DEBUG] TEMP_PATH = {TEMP_PATH}")
+# TEMP DEBUG
+
 # Path to the temporary JSON file tracking the active session
 ACTIVE_SESSION_FILE = TEMP_PATH / "active_session.json"
 

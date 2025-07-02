@@ -15,6 +15,11 @@ from config.config_paths import SESSIONS_PATH, RUNNER_SCRIPT
 from timelapse.functions.log_util import log
 from timelapse.sessionmgmt.session_manager import get_active_session, set_active_session
 
+# TEMP DEBUG
+from config.config_paths import TEMP_PATH
+print(f"[DEBUG] TEMP_PATH = {TEMP_PATH}")
+# TEMP DEBUG
+
 def prompt_time(prompt, default_now=False):
     entry = input(prompt)
     if not entry.strip() and default_now:

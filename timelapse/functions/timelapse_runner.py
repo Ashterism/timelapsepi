@@ -11,6 +11,11 @@ from config.config_paths import PHOTO_SCRIPT, TEMP_PATH
 from timelapse.sessionmgmt.session_manager import set_active_session
 from timelapse.functions.take_photo import take_photo
 
+# TEMP DEBUG
+from config.config_paths import TEMP_PATH
+print(f"[DEBUG] TEMP_PATH = {TEMP_PATH}")
+# TEMP DEBUG
+
 def load_config(config_path):
     try:
         with open(config_path, "r") as f:
