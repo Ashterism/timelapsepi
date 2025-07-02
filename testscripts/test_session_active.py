@@ -4,7 +4,9 @@ import subprocess
 import time
 import json
 from pathlib import Path
-from timelapse.config.config_paths import TEMP_PATH
+import sys
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from config.config_paths import TEMP_PATH
 from timelapse.sessionmgmt.session_manager import clear_active_session
 
 def test_start_timelapse_creates_valid_session():
