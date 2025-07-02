@@ -70,6 +70,9 @@ def main():
     interval = config["interval_seconds"]
     total = config["photo_count"]
 
+    print(f"[DEBUG] Starting loop? photos_taken = {config['status']['photos_taken']}, photo_count = {config['photo_count']}")
+    print(f"[DEBUG] should_continue = {should_continue(config)}")
+
     while should_continue(config):
         if not not_cancelled(config):
             log("🛑 Session manually stopped or invalid. Exiting timelapse runner.", "timelapse_runner.log")
