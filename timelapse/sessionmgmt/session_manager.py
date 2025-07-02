@@ -34,6 +34,8 @@ def set_active_session(session_path: Path):
     ACTIVE_SESSION_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(ACTIVE_SESSION_FILE, "w") as f:
         json.dump({"session_path": str(session_path)}, f)
+    print("✅ File written:", ACTIVE_SESSION_FILE.exists())
+    print("📄 Contents:", ACTIVE_SESSION_FILE.read_text())
 
 # Clear the stored active session
 def clear_active_session():
