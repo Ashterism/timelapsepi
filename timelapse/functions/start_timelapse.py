@@ -43,13 +43,6 @@ def main():
     if get_active_session():
         active_file = TEMP_PATH / "active_session.json"
 
-        print("\n[DEBUG] Active session detected.")
-        if active_file.exists():
-            print(f"✅ Found: {active_file}")
-            print("📄 Contents:", active_file.read_text())
-        else:
-            print(f"❌ active_session.json not found at expected path: {active_file}")
-
         print("❌ A session is already active. Stop it before starting a new one.")
         sys.exit(1)
 

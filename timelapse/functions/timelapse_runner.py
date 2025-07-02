@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# test functionality / debug via /timelapse/testscripts/test_timelapse_flow.py
+
 import json
 import subprocess
 import time
@@ -11,11 +13,6 @@ from config.config_paths import PHOTO_SCRIPT, TEMP_PATH
 from timelapse.sessionmgmt.session_manager import set_active_session
 from timelapse.functions.take_photo import take_photo
 from timelapse.sessionmgmt.session_manager import get_active_session
-
-# TEMP DEBUG
-from config.config_paths import TEMP_PATH
-print(f"[DEBUG] TEMP_PATH = {TEMP_PATH}")
-# TEMP DEBUG
 
 def load_config(config_path):
     try:
@@ -52,7 +49,6 @@ def wait_until(start_time_iso):
 # checks if active session file still exists (stop/complete removes it)
 def not_cancelled(config):
     active = get_active_session()
-    print(f"[DEBUG] not_cancelled: active = {active}, config = {config['folder']}")
     return active and str(active) == str(config["folder"])
 
 def main():
@@ -72,11 +68,7 @@ def main():
     interval = config["interval_seconds"]
     total = config["photo_count"]
 
-    print(f"[DEBUG] Starting loop? photos_taken = {config['status']['photos_taken']}, photo_count = {config['photo_count']}")
-    print(f"[DEBUG] should_continue = {should_continue(config)}")
-
     while should_continue(config):
-        print(f"[DEBUG] ⬅️ ENTERED LOOP — photos_taken = {config['status']['photos_taken']}, should_continue = {should_continue(config)}")
         if not not_cancelled(config):
             log("🛑 Session manually stopped or invalid. Exiting timelapse runner.", "timelapse_runner.log")
             break
