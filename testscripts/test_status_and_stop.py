@@ -26,6 +26,8 @@ def file_exists():
     return ACTIVE_SESSION_PATH.exists()
 
 def run_script(script_path, input_lines=None):
+    input_data = "\n".join(input_lines) + "\n" if input_lines else None
+
     p = subprocess.Popen(
         ["python3", str(script_path)],
         cwd=BASE_DIR,
@@ -34,8 +36,17 @@ def run_script(script_path, input_lines=None):
         stderr=subprocess.PIPE,
         text=True
     )
-    input_data = "\n".join(input_lines) + "\n" if input_lines else None
-    stdout, stderr = p.communicate(input=input_data, timeout=30)
+
+    # Give subprocess a moment to start
+    time.sleep(0.5)
+
+    try:
+        stdout, stderr = p.communicate(input=input_data, timeout=30)
+    except subprocess.TimeoutExpired:
+        p.kill()
+        stdout, stderr = p.communicate()
+        print("❌ TimeoutExpired — killed process")
+
     print(f"🔁 STDOUT:\n{stdout}")
     print(f"⚠️ STDERR:\n{stderr}")
     return stdout, stderr
