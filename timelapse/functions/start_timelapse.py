@@ -39,18 +39,17 @@ def main():
 
     if get_active_session():
         from config.config_paths import TEMP_PATH
-import time
+        import time
 
-active_file = TEMP_PATH / "active_session.json"
-time.sleep(0.1)  # Just in case of async delay (rare)
+        active_file = TEMP_PATH / "active_session.json"
+        time.sleep(0.1)  # Just in case of async delay (rare)
 
-if not active_file.exists():
-    print(f"❌ active_session.json not found at {active_file}")
-else:
-    print(f"✅ active_session.json found at {active_file}")
-    print("📄 Contents:", active_file.read_text())
+        if not active_file.exists():
+            print(f"❌ active_session.json not found at {active_file}")
+        else:
+            print(f"✅ active_session.json found at {active_file}")
+            print("📄 Contents:", active_file.read_text())
 
-    
         print("❌ A session is already active. Stop it before starting a new one.")
         sys.exit(1)
 
