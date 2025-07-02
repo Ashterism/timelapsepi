@@ -15,10 +15,6 @@ from config.config_paths import SESSIONS_PATH, RUNNER_SCRIPT
 from timelapse.functions.log_util import log
 from timelapse.sessionmgmt.session_manager import get_active_session, set_active_session
 
-# TEMP DEBUG
-from config.config_paths import TEMP_PATH
-print(f"[DEBUG] TEMP_PATH = {TEMP_PATH}")
-# TEMP DEBUG
 
 def prompt_time(prompt, default_now=False):
     entry = input(prompt)
@@ -43,17 +39,14 @@ def main():
     print("🎞  Timelapse Setup")
 
     if get_active_session():
-        from config.config_paths import TEMP_PATH
-        import time
-
         active_file = TEMP_PATH / "active_session.json"
-        time.sleep(0.1)  # Just in case of async delay (rare)
 
-        if not active_file.exists():
-            print(f"❌ active_session.json not found at {active_file}")
-        else:
-            print(f"✅ active_session.json found at {active_file}")
+        print("\n[DEBUG] Active session detected.")
+        if active_file.exists():
+            print(f"✅ Found: {active_file}")
             print("📄 Contents:", active_file.read_text())
+        else:
+            print(f"❌ active_session.json not found at expected path: {active_file}")
 
         print("❌ A session is already active. Stop it before starting a new one.")
         sys.exit(1)
