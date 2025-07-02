@@ -19,8 +19,28 @@ if ACTIVE_SESSION_FILE.exists():
 
 # 2. Run start_timelapse.py (make sure it's runnable and uses correct paths)
 print("🚀 Launching start_timelapse.py")
-p = subprocess.Popen(["python3", "timelapse/functions/start_timelapse.py"], cwd=BASE_DIR)
-time.sleep(3)
+p = subprocess.Popen(
+    ["python3", "timelapse/functions/start_timelapse.py"],
+    cwd=BASE_DIR,
+    stdin=subprocess.PIPE,
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE,
+    text=True
+)
+
+inputs = "\n".join([
+    "00:00:01",  # Interval
+    "",          # Start time
+    "1",         # End condition: number of photos
+    "2",         # Number of photos
+    ""           # Folder name
+]) + "\n"
+
+stdout, stderr = p.communicate(input=inputs, timeout=10)
+
+print(stdout)
+if stderr:
+    print("❌ Error:\n", stderr)
 
 # 3. Check for new active_session.json
 if not ACTIVE_SESSION_FILE.exists():
