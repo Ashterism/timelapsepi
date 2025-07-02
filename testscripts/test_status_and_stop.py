@@ -20,7 +20,7 @@ TEMP_PATH = BASE_DIR / "data" / "temp"
 ACTIVE_SESSION_PATH = TEMP_PATH / "active_session.json"
 
 sys.path.append(str(BASE_DIR))
-from timelapse.config.config_paths import STATUS_SCRIPT, STOP_SCRIPT, START_SCRIPT
+from config.config_paths import STATUS_SCRIPT, STOP_SCRIPT, START_SCRIPT
 
 def file_exists():
     return ACTIVE_SESSION_PATH.exists()
