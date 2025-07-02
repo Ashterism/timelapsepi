@@ -10,12 +10,15 @@ This test:
 
 import subprocess
 import time
+from timelapse.config.config_paths import (
+    STATUS_SCRIPT,
+    STOP_SCRIPT,
+    START_SCRIPT,
+    TEMP_PATH
+)
 from pathlib import Path
 
-ACTIVE_SESSION_PATH = Path("/home/ash/timelapse/data/temp/active_session.json")
-STATUS_SCRIPT = "/home/ash/timelapse/functions/status_timelapse.py"
-STOP_SCRIPT = "/home/ash/timelapse/functions/stop_timelapse.py"
-START_SCRIPT = "/home/ash/timelapse/functions/start_timelapse.py"
+ACTIVE_SESSION_PATH = Path(TEMP_PATH) / "active_session.json"
 
 def file_exists():
     return ACTIVE_SESSION_PATH.exists()
