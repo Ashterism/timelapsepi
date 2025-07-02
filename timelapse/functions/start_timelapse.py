@@ -38,6 +38,19 @@ def main():
     print("🎞  Timelapse Setup")
 
     if get_active_session():
+        from config.config_paths import TEMP_PATH
+import time
+
+active_file = TEMP_PATH / "active_session.json"
+time.sleep(0.1)  # Just in case of async delay (rare)
+
+if not active_file.exists():
+    print(f"❌ active_session.json not found at {active_file}")
+else:
+    print(f"✅ active_session.json found at {active_file}")
+    print("📄 Contents:", active_file.read_text())
+
+    
         print("❌ A session is already active. Stop it before starting a new one.")
         sys.exit(1)
 
@@ -88,7 +101,7 @@ def main():
 
     print(f"✅ Config saved: {config_path}")
 
-    # Mark this session as active by writing to active_session.txt
+    # Mark this session as active by writing to active_session.json
     set_active_session(folder_path)
     log(f"Active session set: {folder_path}", "timelapse_start.log")
 
