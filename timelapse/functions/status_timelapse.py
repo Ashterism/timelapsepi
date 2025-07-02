@@ -34,7 +34,10 @@ def print_status(config_path):
         print(f"🛑 End Time: {end_time}")
         print(f"📸 Photos Taken: {photo_count}")
 
-    print(f"✅ Completed: {'Yes' if completed else 'No'}")
+    if "completed" in config["status"]:
+        print(f"✅ Completed: {'Yes' if config['status']['completed'] else 'No'}")
+    else:
+        print(f"✅ Completed: Unknown (status not updated)")
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
