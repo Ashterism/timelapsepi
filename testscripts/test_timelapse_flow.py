@@ -49,28 +49,23 @@ input_thread.start()
 
 for line in p.stdout:
     print(line.strip())
+    if "Photo taken 1 of" in line:
+        if ACTIVE_SESSION_FILE.exists():
+            print("✅ active_session.json exists after first photo")
+        else:
+            print("❌ active_session.json missing after first photo")
 
 p.wait(timeout=30)
 
 # 3. Check for new active_session.json
-if not ACTIVE_SESSION_FILE.exists():
-    print("❌ active_session.json not found after running start_timelapse.py")
+# if not ACTIVE_SESSION_FILE.exists():
+#     print("❌ active_session.json not found after running start_timelapse.py")
+#     exit(1)
+
+if ACTIVE_SESSION_FILE.exists():
+    print("❌ active_session.json still exists after runner completed")
     exit(1)
-
-print("✅ Found active_session.json")
-with open(ACTIVE_SESSION_FILE) as f:
-    data = json.load(f)
-    print(f"📄 Session path: {data}")
-
-session_path = Path(data["session_path"])
-config_file = session_path / "timelapse_config.json"
-if not config_file.exists():
-    print("❌ timelapse_config.json not found in session path.")
-    exit(1)
-
-print("✅ Found timelapse_config.json")
-with open(config_file) as f:
-    config = json.load(f)
-    print(f"📷 Config: {json.dumps(config, indent=2)}")
+else:
+    print("✅ active_session.json successfully cleared after completion")
 
 print("✅ Test finished. You can now observe timelapse_runner logs for behaviour.")
