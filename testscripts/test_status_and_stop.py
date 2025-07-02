@@ -13,9 +13,9 @@ import time
 from pathlib import Path
 
 ACTIVE_SESSION_PATH = Path("/home/ash/timelapse/data/temp/active_session.json")
-STATUS_SCRIPT = "timelapse/functions/status_timelapse.py"
-STOP_SCRIPT = "timelapse/functions/stop_timelapse.py"
-START_SCRIPT = "timelapse/functions/start_timelapse.py"
+STATUS_SCRIPT = "../timelapse/functions/status_timelapse.py"
+STOP_SCRIPT = "../timelapse/functions/stop_timelapse.py"
+START_SCRIPT = "../timelapse/functions/start_timelapse.py"
 
 def file_exists():
     return ACTIVE_SESSION_PATH.exists()
