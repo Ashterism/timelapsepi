@@ -1,7 +1,10 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 from pijuice import PiJuice
 import time
+
+with open('/home/ash/button_debug.log', 'a') as f:
+    f.write("Button pressed\n")
 
 pj = PiJuice(1, 0x14)  # I2C bus 1, default PiJuice address
 
@@ -14,5 +17,3 @@ def flash_led():
 
 if __name__ == "__main__":
     flash_led()
-ß
-
