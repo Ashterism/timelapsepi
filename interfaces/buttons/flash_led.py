@@ -1,4 +1,4 @@
-#!/usr-bin/env python3
+#!/usr/bin/python3
 
 from pijuice import PiJuice
 import time
@@ -14,5 +14,5 @@ def flash_led():
 
 if __name__ == "__main__":
     flash_led()
-
+ß
 
