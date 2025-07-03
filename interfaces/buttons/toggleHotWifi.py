@@ -1,13 +1,10 @@
+#!/usr/bin/env python3
 # /home/ash/timelapse/interfaces/buttons/toggleHotWifi.py
 
 import subprocess
 
-with open("/home/ash/button_trigger.log", "a") as f:
-    f.write("Button script was called\n")
+def call_script(script_path):
+    subprocess.run(["/usr/bin/python3", script_path])
 
-def flash_led_script():
-    subprocess.run(
-        ["/usr/bin/python3", "/home/ash/timelapse/interfaces/buttons/flash_led.py"]
-    )
-
-flash_led_script()
+if __name__ == "__main__":
+    call_script("/home/ash/timelapse/interfaces/buttons/flash_led.py")
