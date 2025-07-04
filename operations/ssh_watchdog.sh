@@ -19,7 +19,7 @@ if [[ "$STATUS" = "active" && "$NC_STATUS" -eq 0 ]]; then
     echo "$TIMESTAMP - ✅ SSHD is active and reachable." >> "$LOG_FILE"
 else
     echo "$TIMESTAMP - ⚠️ SSHD issue detected. Restarting..." >> "$LOG_FILE"
-    systemctl restart ssh
+    sudo /bin/systemctl restart ssh
     sleep 2
     STATUS_AFTER=$(systemctl is-active ssh)
     nc -z "$IP_ADDRESS" 22
