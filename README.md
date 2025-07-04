@@ -2,12 +2,14 @@
 Notes 
 - add samba?
 - add exiftool
-
+- pijuice buttons need access to the home directory for buttons to work - after bookworm requires you to run chmod 750 /home/ash (where ash=home directory)
+  
 
 
 # timelapsepi
 
-> Power-resilient Raspberry Pi logging and status system with PiJuice + Firebase
+> Power-resilient Raspberry Pi logging and status system with PiJuice zero + Firebase
+> Timelapse tool
 
 Also see: https://github.com/PiSupply/PiJuice/blob/master/Software/README.md
 
