@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# this can be deleted
+
 LOG_FILE="/home/ash/timelapse/data/logs/sshd_watchdog.log"
 TIMESTAMP=$(date "+%Y-%m-%d %H:%M:%S")
 IP_ADDRESS=$(hostname -I | awk '{print $1}')
