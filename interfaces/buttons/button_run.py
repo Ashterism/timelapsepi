@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# /home/ash/timelapse/interfaces/buttons/toggleHotWifi.py
+# /home/ash/timelapse/interfaces/buttons/button_run.py
 
 import subprocess
 
