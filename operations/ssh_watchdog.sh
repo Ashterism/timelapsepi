@@ -1,19 +1,33 @@
 #!/bin/bash
 
+# CONFIG
 LOG_FILE="/home/ash/timelapse/data/logs/sshd_watchdog.log"
 TIMESTAMP=$(date "+%Y-%m-%d %H:%M:%S")
-IP=$(hostname -I | awk '{print $1}')  # Get the first IP
+IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
-# Check port 22 using netcat (nc)
-if nc -z -w 2 "$IP" 22; then
-    echo "$TIMESTAMP - ✅ SSH port 22 reachable on $IP." >> "$LOG_FILE"
+# LOG IP
+echo "$TIMESTAMP - 📡 IP address: $IP_ADDRESS" >> "$LOG_FILE"
+
+# CHECK SSH STATUS
+STATUS=$(systemctl is-active ssh)
+
+# CHECK IF PORT 22 IS LISTENING ON THE IP
+nc -z "$IP_ADDRESS" 22
+NC_STATUS=$?
+
+if [[ "$STATUS" = "active" && "$NC_STATUS" -eq 0 ]]; then
+    echo "$TIMESTAMP - ✅ SSHD is active and reachable." >> "$LOG_FILE"
 else
-    echo "$TIMESTAMP - ❌ SSH port 22 unreachable on $IP. Restarting SSH..." >> "$LOG_FILE"
+    echo "$TIMESTAMP - ⚠️ SSHD issue detected. Restarting..." >> "$LOG_FILE"
     systemctl restart ssh
     sleep 2
-    if nc -z -w 2 "$IP" 22; then
-        echo "$TIMESTAMP - 🔁 Restart fixed port 22." >> "$LOG_FILE"
+    STATUS_AFTER=$(systemctl is-active ssh)
+    nc -z "$IP_ADDRESS" 22
+    NC_STATUS_AFTER=$?
+
+    if [[ "$STATUS_AFTER" = "active" && "$NC_STATUS_AFTER" -eq 0 ]]; then
+        echo "$TIMESTAMP - 🔁 Restart successful. SSHD is now active and reachable." >> "$LOG_FILE"
     else
-        echo "$TIMESTAMP - ❗ Restart failed. Port 22 still unreachable." >> "$LOG_FILE"
+        echo "$TIMESTAMP - ❗ Restart failed. SSHD may still be unreachable." >> "$LOG_FILE"
     fi
 fi
