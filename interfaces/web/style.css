@@ -99,8 +99,11 @@ main.container {
   margin-bottom: 0.5rem;
 }
 
-.accordion-content {
+.accordion-button + .accordion-content {
   display: none;
+}
+
+.accordion-content {
   background-color: #1f1f1f;
   padding: 1rem;
   border-radius: 0 0 5px 5px;
