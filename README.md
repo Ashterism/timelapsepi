@@ -33,7 +33,7 @@ It logs power, battery, and system data using PiJuice, stores it locally, and (w
 - `_local/` — Stores logs locally (ignored by Git)
 - `status.json` — Most recent system snapshot (for debug/quick UI display)
 - `config.env` — Toggles behaviour (logging, Firebase, Git, Wi-Fi mode)
-- `web/webserver.py` — Flask webserver to trigger captures and monitor status  
+- `web/webserver.py` — FastAPI webserver to trigger captures and monitor status
 - `functions/photo.sh` — Captures photo + writes metadata  
 - `functions/webserver.sh` — Starts/stops Flask server for remote control
 
@@ -45,7 +45,7 @@ Assumes working directory is `/home/pi/timelapse/`.
 
 If using a different path, update:
 
-- Paths in `run_all.sh`, `log_status.py`, `upload_status.py`
+- Paths in `tma1.sh`, `log_status.py`, `upload_status.py`
 - Cronjob (see below)
 
 ---
@@ -127,7 +127,7 @@ sudo apt install moreutils
 
 Make sure it's executable:
 
-> chmod +x /home/pi/timelapse/run_all.sh
+> chmod +x /home/pi/timelapse/tma1.sh
 
 ---
 
@@ -149,7 +149,7 @@ You’ll get a visual toggle menu in terminal.
 
 ---
 
-## 🔄 Script Logic (`run_all.sh`)
+## 🔄 Script Logic (`tma1.sh`)
 
 Every 15 mins:
 
@@ -270,7 +270,7 @@ Make sure `config.env` contains:
 
 > WIFI_MODE=hotspot
 
-Your cron-driven `run_all.sh` will now re-check and reassert the hotspot mode every 15 minutes.
+Your cron-driven `tma1.sh` will now re-check and reassert the hotspot mode every 15 minutes.
 
 ---
 
@@ -280,12 +280,17 @@ Your cron-driven `run_all.sh` will now re-check and reassert the hotspot mode ev
 
 ## 📷 Web Interface for Capturing Photos
 
-If `WEBSERVER_ENABLED=true` is set in `config.env`, a Flask-based web interface will run on port `5000`.
+If WEBSERVER_ENABLED=true is set in config.env, a FastAPI-based web interface will run on port 5000.
 
 Access from a browser:
 - `http://<pi-ip>:5000/` — Main interface
 - `/photo` — Captures a photo + metadata
 - `/latest.jpg` — Latest image preview
 - `/status` — Shows uptime and network mode
+- `/latest-timestamp` — Returns the timestamp of the latest photo
+- `/webserverlog` — Displays recent log entries
+- `/sessions` — Lists timelapse session folders
 
 Captured photos and metadata are stored in `_local/photos/`.
+
+To expose this interface securely over the internet, consider using NGINX as a reverse proxy with optional HTTPS via Certbot.
