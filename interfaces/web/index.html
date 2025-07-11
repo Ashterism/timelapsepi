@@ -6,35 +6,42 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1>📷 TimelapsePi</h1>
+  <main class="container">
+    <div class="header">
+      <div class="menu-icon">☰</div>
+      <h1>Asheterix<br><span class="subtitle">Timelapse</span></h1>
+      <img src="/astroPic.png" alt="Logo" class="header-logo">
+    </div>
 
-  <button onclick="takePhoto()">Take Test Photo</button>
-  <button onclick="window.open('/webserverlog', '_blank')">Webserver Log</button>
-  <button onclick="fetch('/mode/wifi').then(r => r.text()).then(alert)">Switch to Wi-Fi</button>
+    <section class="section">
+      <h2>Status</h2>
+      <button onclick="takePhoto()">📸 Take Test Photo</button>
+    </section>
 
-  <div id="preview">
-    <h2>Preview</h2>
-    <img id="photo" src="" style="width: 100%; max-width: 400px;" alt="No photo yet" onerror="this.onerror=null; this.src='/interfaces/web/no-preview.png'; this.alt='No preview available';">
-    <div id="fileInfo" style="font-size: 0.9rem; color: #555; margin-top: 0.5rem;"></div>
-    <script>
-      const photoEl = document.getElementById('photo');
-      photoEl.src = `/latest.jpg?${Date.now()}`;
+    <section class="section">
+      <h2>Photo Preview</h2>
+      <img id="photo" src="" style="width: 100%; max-width: 400px;" alt="No photo yet" onerror="this.onerror=null; this.src='/interfaces/web/no-preview.png'; this.alt='No preview available';">
+      <div id="fileInfo" style="font-size: 0.9rem; color: #555; margin-top: 0.5rem;"></div>
+      <script>
+        const photoEl = document.getElementById('photo');
+        photoEl.src = `/latest.jpg?${Date.now()}`;
 
-      fetch('/latest-timestamp')
-      .then(res => res.text())
-      .then(timestamp => {
-        const date = new Date(timestamp); // Now an ISO 8601 string
-        document.getElementById('fileInfo').textContent = `File: latest.jpg | Taken: ${date.toLocaleString()}`;
-      });
-    </script>  
-  </div>
- 
-<details class="config-box">
-  <summary>⚙️ Configure timelapse</summary>
-  <div class="config-content">
-    <p>Timelapse settings will go here...</p>
-  </div>
-</details>
+        fetch('/latest-timestamp')
+        .then(res => res.text())
+        .then(timestamp => {
+          const date = new Date(timestamp); // Now an ISO 8601 string
+          document.getElementById('fileInfo').textContent = `File: latest.jpg | Taken: ${date.toLocaleString()}`;
+        });
+      </script>  
+    </section>
+
+    <details class="config-box section">
+      <summary>⚙️ Timelapse Config</summary>
+      <div class="config-content">
+        <p>Timelapse settings will go here...</p>
+      </div>
+    </details>
+  </main>
 
   <script src="/photo.js"></script>
   
