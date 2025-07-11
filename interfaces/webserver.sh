@@ -21,11 +21,11 @@ start_webserver() {
     fi
   fi
 
-  log "[INFO] Starting Flask webserver"
+  log "[INFO] Starting FastAPI webserver"
   mkdir -p "$ROOT_DIR/data/temp"
   mkdir -p "$ROOT_DIR/data/logs"
   LOG_FILE="$ROOT_DIR/data/logs/webserver.log"
-  nohup python3 -m interfaces.web.webserver > "$LOG_FILE" 2>&1 &
+  nohup uvicorn interfaces.web.webserver:app --host 0.0.0.0 --port 5000 > "$LOG_FILE" 2>&1 &
   echo $! > "$ROOT_DIR/data/temp/webserver.pid"
 }
 
@@ -34,7 +34,7 @@ stop_webserver() {
   if [ -f "$ROOT_DIR/data/temp/webserver.pid" ]; then
     PID=$(cat "$ROOT_DIR/data/temp/webserver.pid")
     if ps -p $PID > /dev/null 2>&1; then
-      log "[INFO] Stopping Flask webserver (PID $PID)"
+      log "[INFO] Stopping FastAPI webserver (PID $PID)"
       kill "$PID"
     fi
     rm "$ROOT_DIR/data/temp/webserver.pid"
@@ -45,7 +45,7 @@ stop_webserver() {
 
 # FUNCTION: restart webserver
 restart_webserver() {
-  log "[INFO] Restarting Flask webserver"
+  log "[INFO] Restarting FastAPI webserver"
   stop_webserver
   sleep 1  # small delay to ensure clean shutdown
   start_webserver
@@ -55,7 +55,7 @@ restart_webserver() {
 restart_webserver_hard() {
   if [ -f "$ROOT_DIR/data/temp/webserver.pid" ]; then
     PID=$(cat "$ROOT_DIR/data/temp/webserver.pid")
-    log "[INFO] Force killing Flask webserver (PID $PID)"
+    log "[INFO] Force killing FastAPI webserver (PID $PID)"
     kill -9 $PID 2>/dev/null || log "[WARN] Failed to kill process $PID"
     rm -f "$ROOT_DIR/data/temp/webserver.pid"
   else
