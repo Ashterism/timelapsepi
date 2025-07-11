@@ -9,50 +9,41 @@
   <main class="container">
     <div class="header">
       <div class="menu-icon">☰</div>
-      <h1>Asheterix<br><span class="subtitle">Timelapse</span></h1>
+      <h1>Ashterix<br><span class="subtitle">Timelapse</span></h1>
       <img src="/astroPic.png" alt="Logo" class="header-logo">
     </div>
 
-    <section class="section">
-      <h2>Status</h2>
-      <button onclick="takePhoto()">📸 Take Test Photo</button>
-    </section>
+    <div class="accordion">
+      <button class="accordion-button">📸 Status</button>
+      <div class="accordion-content">
+        <button onclick="takePhoto()">📸 Take Test Photo</button>
+      </div>
+    </div>
 
-    <section class="section">
-      <h2>Photo Preview</h2>
-      <img id="photo" src="" style="width: 100%; max-width: 400px;" alt="No photo yet" onerror="this.onerror=null; this.src='/interfaces/web/no-preview.png'; this.alt='No preview available';">
-      <div id="fileInfo" style="font-size: 0.9rem; color: #555; margin-top: 0.5rem;"></div>
-      <script>
-        const photoEl = document.getElementById('photo');
-        photoEl.src = `/latest.jpg?${Date.now()}`;
+    <div class="accordion">
+      <button class="accordion-button">🖼️ Photo Preview</button>
+      <div class="accordion-content">
+        <img id="photo" src="" style="width: 100%; max-width: 400px;" alt="No photo yet" onerror="this.onerror=null; this.src='/interfaces/web/no-preview.png'; this.alt='No preview available';">
+        <div id="fileInfo" style="font-size: 0.9rem; color: #555; margin-top: 0.5rem;"></div>
+      </div>
+    </div>
 
-        fetch('/latest-timestamp')
-        .then(res => res.text())
-        .then(timestamp => {
-          const date = new Date(timestamp); // Now an ISO 8601 string
-          document.getElementById('fileInfo').textContent = `File: latest.jpg | Taken: ${date.toLocaleString()}`;
-        });
-      </script>  
-    </section>
-
-    <details class="config-box section">
-      <summary>⚙️ Timelapse Config</summary>
-      <div class="config-content">
+    <div class="accordion">
+      <button class="accordion-button">⚙️ Timelapse Config</button>
+      <div class="accordion-content">
         <p>Timelapse settings will go here...</p>
       </div>
-    </details>
+    </div>
+
+    <div class="accordion">
+      <button class="accordion-button">📁 Extra Options</button>
+      <div class="accordion-content">
+        <p>This section can hold additional settings or actions in the future.</p>
+      </div>
+    </div>
   </main>
 
-  <script src="/photo.js"></script>
+  <script src="/scripts.js"></script>
   
-  <!-- Inline script to update timestamp text under the preview image on page load -->
-  <script>
-    fetch('/latest-timestamp')
-      .then(res => res.text())
-      .then(timestamp => {
-        const date = new Date(parseInt(timestamp) * 1000);
-        document.getElementById('fileInfo').textContent = `File: latest.jpg | Taken: ${date.toLocaleString()}`;
-      });
-  </script>
 </body>
 </html>

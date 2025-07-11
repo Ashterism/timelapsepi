@@ -98,8 +98,21 @@ config_webserver() {
 # FUNCTION: start Cloudflare tunnel if enabled
 start_tunnel() {
   if [ "$CLOUDFLARE_TUNNEL" = "true" ]; then
+    # Check if tunnel is already running
+    if [ -f "$ROOT_DIR/data/temp/cloudflared.pid" ]; then
+      PID=$(cat "$ROOT_DIR/data/temp/cloudflared.pid")
+      if ps -p "$PID" > /dev/null 2>&1; then
+        log "[INFO] Cloudflare Tunnel already running (PID $PID) - skipping start"
+        return
+      else
+        log "[INFO] Removing stale Cloudflare Tunnel PID file"
+        rm "$ROOT_DIR/data/temp/cloudflared.pid"
+      fi
+    fi
     log "[INFO] Starting Cloudflare Tunnel"
+    mkdir -p "$ROOT_DIR/data/temp"
     nohup cloudflared tunnel run timelapsepi > "$LOGS_DIR/cloudflared.log" 2>&1 &
+    echo $! > "$ROOT_DIR/data/temp/cloudflared.pid"
   else
     log "[INFO] Skipping Cloudflare Tunnel (disabled in config)"
   fi
