@@ -94,3 +94,13 @@ config_webserver() {
     stop_webserver
   fi
 }
+
+# FUNCTION: start Cloudflare tunnel if enabled
+start_tunnel() {
+  if [ "$CLOUDFLARE_TUNNEL" = "true" ]; then
+    log "[INFO] Starting Cloudflare Tunnel"
+    nohup cloudflared tunnel run timelapsepi > "$LOGS_DIR/cloudflared.log" 2>&1 &
+  else
+    log "[INFO] Skipping Cloudflare Tunnel (disabled in config)"
+  fi
+}

@@ -1,6 +1,7 @@
 
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, HTMLResponse, PlainTextResponse
+from fastapi.staticfiles import StaticFiles
 from dotenv import set_key, load_dotenv
 import subprocess
 import logging
@@ -27,6 +28,10 @@ async def log_requests(request: Request, call_next):
     logger.info(f"🔹 Incoming request: {request.method} {request.url.path}")
     response = await call_next(request)
     return response
+
+# Serve static assets (CSS, JS, etc.)
+static_path = os.path.join(os.path.dirname(__file__), "static")
+app.mount("/static", StaticFiles(directory=static_path), name="static")
 
 @app.get("/")
 def index():

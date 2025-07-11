@@ -26,6 +26,7 @@ if [ "$WIFI_MODE" == "client" ]; then
   upload_firebase     # Only if configured to do so
   maybe_drop_wifi     # Will drop Wi-Fi unless SSH or DROP_WIFI_AFTER=false
   config_webserver    # Handles webserver state according to config
+  start_tunnel        # Only if configured to do so
 
 elif [ "$WIFI_MODE" == "hotspot" ]; then
   log "[INFO] Wi-Fi mode: hotspot - enabling access point"
