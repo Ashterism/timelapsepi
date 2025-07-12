@@ -14,6 +14,8 @@ from timelapse.sessionmgmt.session_list import list_sessions
 load_dotenv(CONFIG_PATH)
 app = FastAPI()
 
+app.mount("/static", StaticFiles(directory=INTERFACES_PATH / "web" / "static"), name="static")
+
 # Log to file
 logging.basicConfig(
     filename=LOGS_PATH / "webserver.log",
@@ -32,28 +34,9 @@ async def log_requests(request: Request, call_next):
 def index():
     return FileResponse(INTERFACES_PATH / "web" / "index.html")
 
-@app.get("/style.css")
-def style():
-    return FileResponse(INTERFACES_PATH / "web" / "style.css")
-
-@app.get("/scripts.js")
-def scripts_js():
-    return FileResponse(INTERFACES_PATH / "web" / "scripts.js")
-
-
-# Serve static astroPic.png
-@app.get("/astroPic.png")
-def astro_pic():
-    return FileResponse(INTERFACES_PATH / "web" / "astroPic.png")
-
-# Serve static no-preview.png (legacy path)
-@app.get("/interfaces/web/no-preview.png")
-def no_preview():
-    return FileResponse(INTERFACES_PATH / "web" / "no-preview.png")
-
 @app.get("/debug-path")
 def debug_path():
-    return PlainTextResponse(str(INTERFACES_PATH / "web" / "scripts.js"))
+    return PlainTextResponse(str(INTERFACES_PATH / "web" / "static" / "scripts.js"))
 
 @app.get("/latest.jpg")
 def latest_jpg():

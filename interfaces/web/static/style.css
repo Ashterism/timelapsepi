@@ -120,6 +120,7 @@ main.container {
   max-height: 0;
   display: none;
   transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+  text-align: center;
 }
 
 .accordion.open .accordion-content {
