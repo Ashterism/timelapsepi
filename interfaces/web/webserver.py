@@ -10,10 +10,13 @@ import os
 from config.config_paths import CONFIG_PATH, LOGS_PATH, INTERFACES_PATH, PHOTO_SCRIPT, TEMP_PATH
 from timelapse.sessionmgmt.session_manager import get_active_session
 from timelapse.sessionmgmt.session_list import list_sessions
-from interfaces.web.routes.timelapse_routes import router as timelapse_router
-
 load_dotenv(CONFIG_PATH)
 app = FastAPI()
+
+from interfaces.web.routes.photo_routes import router as photo_router
+from interfaces.web.routes.timelapse_routes import router as timelapse_router
+app.include_router(photo_router)
+app.include_router(timelapse_router)
 
 app.mount("/static", StaticFiles(directory=INTERFACES_PATH / "web" / "static"), name="static")
 
@@ -75,9 +78,5 @@ def status():
         return PlainTextResponse(f"🔴 Status error: {str(e)}")
 
 if __name__ == "__main__":
-    from interfaces.web.routes.photo_routes import router as photo_router
-    from interfaces.web.routes.timelapse_routes import router as timelapse_router
-    app.include_router(photo_router)
-    app.include_router(timelapse_router)
     import uvicorn
     uvicorn.run("interfaces.web.webserver:app", host="0.0.0.0", port=5000, reload=False)

@@ -61,6 +61,9 @@ restart_webserver_hard() {
   else
     log "[INFO] No webserver PID found - nothing to force kill"
   fi
+  
+  # Restart after hard kill
+  start_webserver
 }
 
 # FUNCTION: check webserver
