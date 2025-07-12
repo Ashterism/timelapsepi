@@ -18,6 +18,10 @@ from interfaces.web.routes.timelapse_routes import router as timelapse_router
 app.include_router(photo_router, prefix="")
 app.include_router(timelapse_router)
 
+# Add status_router after timelapse_router
+from interfaces.web.routes.status_route import router as status_router
+app.include_router(status_router)
+
 app.mount("/static", StaticFiles(directory=INTERFACES_PATH / "web" / "static"), name="static")
 
 # Log to file
