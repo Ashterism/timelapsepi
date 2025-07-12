@@ -47,18 +47,15 @@ function resetButton(btn) {
 
 // Accordion logic
 document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll(".accordion-content").forEach(div => {
-    div.style.display = "none";
-  });
   const buttons = document.querySelectorAll(".accordion-button");
   buttons.forEach(button => {
     button.addEventListener("click", () => {
       button.classList.toggle("active");
       const content = button.nextElementSibling;
-      if (content.style.display === "block") {
-        content.style.display = "none";
+      if (content.style.maxHeight) {
+        content.style.maxHeight = null;
       } else {
-        content.style.display = "block";
+        content.style.maxHeight = content.scrollHeight + "px";
       }
     });
   });
