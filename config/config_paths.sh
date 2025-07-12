@@ -3,7 +3,7 @@
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export ROOT_DIR
 
-CONFIG_FILE="$ROOT_DIR/config.env"
+CONFIG_FILE="$ROOT_DIR/config/config.env"
 PRESETS_FILE="$ROOT_DIR/config/presets.env"
 LOGS_DIR="$ROOT_DIR/data/logs"
 MODE_CONTROL_FILE="$ROOT_DIR/config/mode_control.env"

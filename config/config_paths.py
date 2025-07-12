@@ -9,7 +9,7 @@ INTERFACES_PATH = ROOT / "interfaces"
 SESSIONS_PATH = ROOT / "sessions"
 LOGS_PATH = ROOT / "data/logs"
 BUTTON_TRIGGER_LOG = LOGS_PATH / "button_trigger.log"
-CONFIG_PATH = OPERATIONS_PATH / "config.env"
+CONFIG_PATH = OPERATIONS_PATH / "/config" / "config.env"
 
 # --- This project's app layer (custom per project) ---
 APP_NAME = "timelapse"

@@ -100,7 +100,7 @@ main.container {
 }
 
 .accordion-button + .accordion-content {
-  display: none;
+  /* Removed display:none from here */
 }
 
 .accordion-content {
@@ -109,6 +109,7 @@ main.container {
   border-radius: 0 0 5px 5px;
   border: 1px solid #333;
   color: #eee;
+  display: none;
 }
 
 .accordion-button.active + .accordion-content {
