@@ -7,7 +7,7 @@ import logging
 import json
 import os
 
-from config.config_paths import CONFIG_PATH, LOGS_PATH, INTERFACES_PATH, PHOTO_SCRIPT, TEMP_PATH
+from config.config_paths import CONFIG_PATH, LOGS_PATH, INTERFACES_PATH, TEMP_PATH
 from timelapse.sessionmgmt.session_manager import get_active_session
 from timelapse.sessionmgmt.session_list import list_sessions
 load_dotenv(CONFIG_PATH)

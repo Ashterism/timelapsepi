@@ -13,7 +13,7 @@ async function takePhoto() {
     const res = await fetch('/latest-timestamp');
     lastTimestamp = await res.text();
 
-    const photoRes = await fetch('/photo');
+    const photoRes = await fetch('/photo', { method: 'POST' });
     if (!photoRes.ok) throw new Error('Photo failed');
 
     setTimeout(() => pollForNewPhoto(btn), 1000);
