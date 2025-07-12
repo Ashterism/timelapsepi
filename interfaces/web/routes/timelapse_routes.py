@@ -2,7 +2,8 @@ from fastapi import APIRouter
 from fastapi.responses import PlainTextResponse
 import logging
 
-from timelapse.sessionmgmt.session_manager import start_session, stop_session, get_active_session
+from timelapse.sessionmgmt.session_manager import stop_session, get_active_session
+from timelapse.sessionmgmt.session_list import start_session
 from timelapse.sessionmgmt.session_list import list_sessions
 
 logger = logging.getLogger(__name__)
