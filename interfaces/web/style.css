@@ -78,6 +78,9 @@ main.container {
   font-size: 1rem;
 }
 
+
+/* ACCORDIANS */
+
 .accordion {
   width: 100%;
   max-width: 600px;
@@ -100,7 +103,7 @@ main.container {
 }
 
 .accordion-button + .accordion-content {
-  /* Removed display:none from here */
+  display: none;
 }
 
 .accordion-content {
