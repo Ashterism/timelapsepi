@@ -33,6 +33,19 @@ def latest_timestamp():
     except Exception as e:
         logger.error(f"Error reading latest.json: {e}")
         return PlainTextResponse('', status_code=500)
+    
+@router.get("/latest.json")
+def latest_json():
+    path = TEMP_PATH / "latestjpg" / "latest.json"
+    if not os.path.exists(path):
+        return PlainTextResponse('', status_code=404)
+    try:
+        with open(path) as f:
+            data = json.load(f)
+        return data
+    except Exception as e:
+        logger.error(f"Error reading latest.json: {e}")
+        return PlainTextResponse('', status_code=500)
 
 @router.post("/photo")
 def photo():

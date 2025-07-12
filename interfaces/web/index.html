@@ -25,7 +25,14 @@
       <button class="accordion-button">🖼️ Photo Preview</button>
       <div class="accordion-content">
         <img id="preview-img" src="/latest.jpg" style="width: 100%; max-width: 400px;" alt="No photo yet" onerror="this.onerror=null; this.src='/static/no-preview.png'; this.alt='No preview available';">
-        <div id="fileInfo" style="font-size: 0.9rem; color: #555; margin-top: 0.5rem;"></div>
+        <div id="fileInfo" style="font-size: 0.9rem; color: #555; margin-top: 0.5rem;">
+          <p><strong>Timestamp:</strong> <span id="meta-timestamp">Loading...</span></p>
+          <p><strong>ISO:</strong> <span id="meta-iso">Loading...</span></p>
+          <p><strong>Shutter:</strong> <span id="meta-shutter">Loading...</span></p>
+          <p><strong>Aperture:</strong> <span id="meta-aperture">Loading...</span></p>
+          <p><strong>File Size:</strong> <span id="meta-filesize">Loading...</span></p>
+          <p><strong>Resolution:</strong> <span id="meta-resolution">Loading...</span></p>
+        </div>
         <button onclick="takePhoto()">📸 Take Test Photo</button>
 
       </div>

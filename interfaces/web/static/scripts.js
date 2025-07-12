@@ -23,6 +23,15 @@ async function takePhoto() {
       console.log("🆕 New photo detected.");
       const img = document.getElementById("preview-img");
       img.src = `/latest.jpg?cachebust=${new Date().getTime()}`;
+      // Fetch and show metadata
+      const metaRes = await fetch('/latest.json');
+      const meta = await metaRes.json();
+      document.getElementById("meta-timestamp").textContent = meta.timestamp || "unknown";
+      document.getElementById("meta-iso").textContent = meta.settings.iso || "unknown";
+      document.getElementById("meta-shutter").textContent = meta.settings.shutter_speed || "unknown";
+      document.getElementById("meta-aperture").textContent = meta.settings.aperture || "unknown";
+      document.getElementById("meta-filesize").textContent = meta.settings.file_size || "unknown";
+      document.getElementById("meta-resolution").textContent = `${meta.settings.image_width}×${meta.settings.image_height}` || "unknown";
       lastTimestamp = newTimestamp;
     } else {
       console.warn("⚠️ No new timestamp detected.");
