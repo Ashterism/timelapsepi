@@ -61,3 +61,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+// Slide-out menu toggle
+document.addEventListener("DOMContentLoaded", function () {
+  const menuIcon = document.querySelector(".menu-icon");
+  const sideMenu = document.getElementById("sideMenu");
+
+  menuIcon.addEventListener("click", () => {
+    sideMenu.classList.toggle("open");
+  });
+});
