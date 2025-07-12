@@ -28,10 +28,6 @@ async def log_requests(request: Request, call_next):
     response = await call_next(request)
     return response
 
-# Serve static assets (CSS, JS, etc.)
-static_path = os.path.join(os.path.dirname(__file__), "static")
-app.mount("/static", StaticFiles(directory=static_path), name="static")
-
 @app.get("/")
 def index():
     return FileResponse(INTERFACES_PATH / "web" / "index.html")
