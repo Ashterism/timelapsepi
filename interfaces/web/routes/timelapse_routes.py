@@ -8,7 +8,7 @@ from timelapse.sessionmgmt.session_manager import get_active_session
 from timelapse.sessionmgmt.session_list import list_sessions
 
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/photo")
+router = APIRouter()
 
 ## @router.post("/start")
 ## def start():
