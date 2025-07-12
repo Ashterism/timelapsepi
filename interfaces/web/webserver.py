@@ -65,6 +65,24 @@ def switch_to_wifi():
     set_key(CONFIG_PATH, 'wifi_mode', 'client')
     return PlainTextResponse('Switched to Wi-Fi. Reboot or wait for next tma1.sh.')
 
+
+# JSON status endpoint
+@app.get("/status/json")
+def status_json():
+    try:
+        uptime = subprocess.check_output(['uptime', '-p']).decode().strip()
+        ip = subprocess.check_output("hostname -I", shell=True).decode().strip()
+        mode = os.getenv('wifi_mode', 'unknown')
+        battery = os.getenv('battery_level', 'N/A')  # Placeholder, replace with real logic if available
+        return {
+            "uptime": uptime,
+            "ip": ip,
+            "connection": mode,
+            "battery": battery
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
 @app.get("/status")
 def status():
     try:

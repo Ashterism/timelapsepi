@@ -71,3 +71,17 @@ document.addEventListener("DOMContentLoaded", function () {
     sideMenu.classList.toggle("open");
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  fetch('/status')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("battery-status").textContent = `${data.battery_level}% (${data.power_source})`;
+      document.getElementById("connection-status").textContent = data.wifi_mode === "hotspot" ? "Hotspot" : "Wi-Fi";
+    })
+    .catch(err => {
+      document.getElementById("battery-status").textContent = "Unavailable";
+      document.getElementById("connection-status").textContent = "Unavailable";
+      console.error("Failed to fetch status:", err);
+    });
+});
