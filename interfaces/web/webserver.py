@@ -16,7 +16,7 @@ app = FastAPI()
 from interfaces.web.routes.photo_routes import router as photo_router
 from interfaces.web.routes.timelapse_routes import router as timelapse_router
 app.include_router(photo_router, prefix="/photo")
-app.include_router(timelapse_router, prefix="/")
+app.include_router(timelapse_router, prefix="/timelapse")
 
 app.mount("/static", StaticFiles(directory=INTERFACES_PATH / "web" / "static"), name="static")
 
