@@ -11,6 +11,8 @@ from timelapse.sessionmgmt.session_manager import get_active_session
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
+logger.debug("✅ photo_routes.py router loaded")
+
 @router.get("/latest.jpg")
 def latest_jpg():
     path = TEMP_PATH / "latest.jpg"
