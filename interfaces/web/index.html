@@ -3,7 +3,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TimelapsePi</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/static/style.css">
   <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
 </head>
 <body>
@@ -11,7 +11,7 @@
     <div class="header">
       <div class="menu-icon">☰</div>
       <h1>Ashterix<br><span class="subtitle">Timelapse</span></h1>
-      <img src="/astroPic.png" alt="Logo" class="header-logo">
+      <img src="/static/astroPic.png" alt="Logo" class="header-logo">
     </div>
 
     <div class="accordion">
@@ -24,7 +24,7 @@
     <div class="accordion">
       <button class="accordion-button">🖼️ Photo Preview</button>
       <div class="accordion-content">
-        <img id="photo" src="" style="width: 100%; max-width: 400px;" alt="No photo yet" onerror="this.onerror=null; this.src='/interfaces/web/no-preview.png'; this.alt='No preview available';">
+        <img id="photo" src="" style="width: 100%; max-width: 400px;" alt="No photo yet" onerror="this.onerror=null; this.src='/static/no-preview.png'; this.alt='No preview available';">
         <div id="fileInfo" style="font-size: 0.9rem; color: #555; margin-top: 0.5rem;"></div>
         <button onclick="takePhoto()">📸 Take Test Photo</button>
 
@@ -46,7 +46,7 @@
     </div>
   </main>
 
-<script src="scripts.js"></script>
+<script src="/static/scripts.js"></script>
 
 </body>
 </html>
