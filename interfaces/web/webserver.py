@@ -40,6 +40,17 @@ def style():
 def scripts_js():
     return FileResponse(INTERFACES_PATH / "web" / "scripts.js")
 
+
+# Serve static astroPic.png
+@app.get("/astroPic.png")
+def astro_pic():
+    return FileResponse(INTERFACES_PATH / "web" / "astroPic.png")
+
+# Serve static no-preview.png (legacy path)
+@app.get("/interfaces/web/no-preview.png")
+def no_preview():
+    return FileResponse(INTERFACES_PATH / "web" / "no-preview.png")
+
 @app.get("/debug-path")
 def debug_path():
     return PlainTextResponse(str(INTERFACES_PATH / "web" / "scripts.js"))
