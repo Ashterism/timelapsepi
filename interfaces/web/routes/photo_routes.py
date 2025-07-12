@@ -9,7 +9,7 @@ from config.config_paths import INTERFACES_PATH, PHOTO_SCRIPT, TEMP_PATH
 from timelapse.sessionmgmt.session_manager import get_active_session
 
 logger = logging.getLogger(__name__)
-router = APIRouter()
+router = APIRouter(prefix="/photo")
 
 logger.debug("✅ photo_routes.py router loaded")
 
