@@ -76,8 +76,9 @@ document.addEventListener("DOMContentLoaded", function () {
   fetch('/status')
     .then(response => response.json())
     .then(data => {
-      document.getElementById("battery-status").textContent = `${data.battery_level}% (${data.power_source})`;
+      document.getElementById("battery-status").textContent = data.battery_level !== null ? `${data.battery_level}% (${data.power_source})` : "Unavailable";
       document.getElementById("connection-status").textContent = data.wifi_mode === "hotspot" ? "Hotspot" : "Wi-Fi";
+      document.getElementById("ip-address").textContent = data.ip || "Unavailable";
     })
     .catch(err => {
       document.getElementById("battery-status").textContent = "Unavailable";

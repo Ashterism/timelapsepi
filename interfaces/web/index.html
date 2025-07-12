@@ -24,7 +24,11 @@
     <div class="accordion">
       <button class="accordion-button">📸 Status</button>
       <div class="accordion-content">
-          <p>Status settings will go here...</p>
+        <div id="system-status" class="metadata-block">
+          <p><strong>Battery:</strong> <span id="battery-status">Loading...</span></p>
+          <p><strong>Connection:</strong> <span id="connection-status">Loading...</span></p>
+          <p><strong>IP:</strong> <span id="ip-address">Loading...</span></p>
+        </div>
       </div>
     </div>
 
@@ -40,10 +44,7 @@
           <p><strong>File Size:</strong> <span id="meta-filesize">Loading...</span></p>
           <p><strong>Resolution:</strong> <span id="meta-resolution">Loading...</span></p>
         </div>
-        <div id="system-status" class="metadata-block">
-          <p><strong>Battery:</strong> <span id="battery-status">Loading...</span></p>
-          <p><strong>Connection:</strong> <span id="connection-status">Loading...</span></p>
-        </div>
+
         <button onclick="takePhoto()">📸 Take Test Photo</button>
 
       </div>
