@@ -29,7 +29,7 @@ def latest_timestamp():
     try:
         with open(path) as f:
             data = json.load(f)
-        return data.get("timestamp", "")
+        return PlainTextResponse(data.get("timestamp", ""), status_code=200)
     except Exception as e:
         logger.error(f"Error reading latest.json: {e}")
         return PlainTextResponse('', status_code=500)
