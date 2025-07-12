@@ -10,6 +10,7 @@ import os
 from config.config_paths import CONFIG_PATH, LOGS_PATH, INTERFACES_PATH, PHOTO_SCRIPT, TEMP_PATH
 from timelapse.sessionmgmt.session_manager import get_active_session
 from timelapse.sessionmgmt.session_list import list_sessions
+from interfaces.web.routes.timelapse_routes import router as timelapse_router
 
 load_dotenv(CONFIG_PATH)
 app = FastAPI()
@@ -38,47 +39,6 @@ def index():
 def debug_path():
     return PlainTextResponse(str(INTERFACES_PATH / "web" / "static" / "scripts.js"))
 
-@app.get("/latest.jpg")
-def latest_jpg():
-    path = TEMP_PATH / "latest.jpg"
-    if not os.path.exists(path):
-        return PlainTextResponse('', status_code=404)
-    return FileResponse(path)
-
-@app.get("/latest-timestamp")
-def latest_timestamp():
-    path = TEMP_PATH / "latest.json"
-    if not os.path.exists(path):
-        return PlainTextResponse('', status_code=404)
-    try:
-        with open(path) as f:
-            data = json.load(f)
-        return data.get("timestamp", "")
-    except Exception as e:
-        logger.error(f"Error reading latest.json: {e}")
-        return PlainTextResponse('', status_code=500)
-
-@app.post("/photo")
-def photo():
-    logger.debug("📸 /photo route hit")
-    session = get_active_session()
-    if session:
-        logger.warning("❌ Cannot take test photo: session is active.")
-        return PlainTextResponse('❌ Session in progress. Stop it before taking a test photo.', status_code=400)
-
-    result = subprocess.run(
-        ['/bin/bash', str(PHOTO_SCRIPT)],
-        capture_output=True,
-        text=True
-    )
-    logger.debug(result.stdout)
-    logger.error(result.stderr)
-    if result.returncode == 0:
-        logger.debug("✅ Photo taken successfully")
-        return PlainTextResponse('📸 Photo taken.')
-    else:
-        logger.error("❌ Photo failed to execute")
-        return PlainTextResponse('❌ Photo failed.', status_code=500)
 
 @app.get("/health")
 def health():
@@ -114,60 +74,10 @@ def status():
     except Exception as e:
         return PlainTextResponse(f"🔴 Status error: {str(e)}")
 
-@app.post("/start")
-def start_timelapse():
-    session = get_active_session()
-    if session:
-        logger.warning("❌ Cannot start new session: one is already active.")
-        return PlainTextResponse('❌ Session already running. Stop it first.', status_code=400)
-    try:
-        result = subprocess.run(
-            ['python3', str(INTERFACES_PATH / "start_timelapse.py")],
-            capture_output=True,
-            text=True
-        )
-        if result.returncode == 0:
-            logger.info("✅ Session started via web.")
-            return PlainTextResponse('✅ Timelapse started.')
-        else:
-            logger.error(f"❌ Timelapse start failed:\n{result.stderr}")
-            return PlainTextResponse('❌ Timelapse start failed.', status_code=500)
-    except Exception as e:
-        logger.error(f"❌ Exception starting timelapse: {e}")
-        return PlainTextResponse(f"❌ Exception: {str(e)}", status_code=500)
-
-@app.post("/stop")
-def stop_timelapse():
-    try:
-        result = subprocess.run(
-            ['python3', str(INTERFACES_PATH / "stop_timelapse.py")],
-            capture_output=True,
-            text=True
-        )
-        if result.returncode == 0:
-            logger.info("🛑 Timelapse stopped via web.")
-            return PlainTextResponse('🛑 Timelapse stopped.')
-        else:
-            logger.error(f"❌ Stop failed:\n{result.stderr}")
-            return PlainTextResponse('❌ Stop failed.', status_code=500)
-    except Exception as e:
-        logger.error(f"❌ Exception stopping timelapse: {e}")
-        return PlainTextResponse(f"❌ Exception: {str(e)}", status_code=500)
-
-@app.get("/sessions")
-def sessions():
-    try:
-        sessions = list_sessions()
-        html = "<h2>📂 Timelapse Sessions</h2><ul>"
-        for s in sessions:
-            flag = "🟢" if s["is_active"] else "⚪"
-            html += f"<li>{flag} {s['path']}</li>"
-        html += "</ul>"
-        return HTMLResponse(html)
-    except Exception as e:
-        logger.error(f"❌ Failed to load sessions: {e}")
-        return PlainTextResponse(f"❌ Error loading sessions: {str(e)}", status_code=500)
-
 if __name__ == "__main__":
+    from interfaces.web.routes.photo_routes import router as photo_router
+    from interfaces.web.routes.timelapse_routes import router as timelapse_router
+    app.include_router(photo_router)
+    app.include_router(timelapse_router)
     import uvicorn
     uvicorn.run("interfaces.web.webserver:app", host="0.0.0.0", port=5000, reload=False)
