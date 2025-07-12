@@ -11,12 +11,12 @@ async function takePhoto() {
 
   try {
     console.log("⏳ Fetching latest timestamp...");
-    const res = await fetch('/latest-timestamp');
+    const res = await fetch('/photo/latest-timestamp');
     console.log("📸 Timestamp fetch status:", res.status);
     lastTimestamp = await res.text();
 
     console.log("⏳ Sending photo request...");
-    const photoRes = await fetch('/photo', { method: 'POST' });
+    const photoRes = await fetch('/photo/photo', { method: 'POST' });
     console.log("📸 Photo fetch status:", photoRes.status);
     if (!photoRes.ok) throw new Error('Photo failed');
 
