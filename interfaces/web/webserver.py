@@ -40,6 +40,10 @@ def style():
 def scripts_js():
     return FileResponse(INTERFACES_PATH / "web" / "scripts.js")
 
+@app.get("/debug-path")
+def debug_path():
+    return PlainTextResponse(str(INTERFACES_PATH / "web" / "scripts.js"))
+
 @app.get("/latest.jpg")
 def latest_jpg():
     path = TEMP_PATH / "latest.jpg"
