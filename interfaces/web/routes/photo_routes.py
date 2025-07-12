@@ -5,7 +5,8 @@ import os
 import json
 import logging
 
-from config.config_paths import INTERFACES_PATH, PHOTO_SCRIPT, TEMP_PATH
+from config.config_paths import INTERFACES_PATH, TEMP_PATH
+from timelapse.functions.take_photo import take_photo
 from timelapse.sessionmgmt.session_manager import get_active_session
 
 logger = logging.getLogger(__name__)
@@ -41,14 +42,8 @@ def photo():
         logger.warning("❌ Cannot take test photo: session is active.")
         return PlainTextResponse('❌ Session in progress. Stop it before taking a test photo.', status_code=400)
 
-    result = subprocess.run(
-        ['/bin/bash', str(PHOTO_SCRIPT)],
-        capture_output=True,
-        text=True
-    )
-    logger.debug(result.stdout)
-    logger.error(result.stderr)
-    if result.returncode == 0:
+    success = take_photo()
+    if success:
         logger.debug("✅ Photo taken successfully")
         return PlainTextResponse('📸 Photo taken.')
     else:
