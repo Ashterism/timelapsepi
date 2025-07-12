@@ -3,7 +3,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TimelapsePi</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="container">
@@ -16,7 +16,7 @@
     <div class="accordion">
       <button class="accordion-button">📸 Status</button>
       <div class="accordion-content">
-        <button onclick="takePhoto()">📸 Take Test Photo</button>
+          <p>Status settings will go here...</p>
       </div>
     </div>
 
@@ -25,6 +25,8 @@
       <div class="accordion-content">
         <img id="photo" src="" style="width: 100%; max-width: 400px;" alt="No photo yet" onerror="this.onerror=null; this.src='/interfaces/web/no-preview.png'; this.alt='No preview available';">
         <div id="fileInfo" style="font-size: 0.9rem; color: #555; margin-top: 0.5rem;"></div>
+        <button onclick="takePhoto()">📸 Take Test Photo</button>
+
       </div>
     </div>
 
@@ -43,7 +45,7 @@
     </div>
   </main>
 
-  <script src="/scripts.js"></script>
+  <script src="scripts.js"></script>
   
 </body>
 </html>

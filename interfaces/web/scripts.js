@@ -24,21 +24,6 @@ async function takePhoto() {
   }
 }
 
-// Polls the server every second until the timestamp changes, indicating a new photo is available
-function pollForNewPhoto(btn) {
-  fetch('/latest-timestamp')
-    .then(res => res.text())
-    .then(newTimestamp => {
-      if (newTimestamp !== lastTimestamp) {
-        document.getElementById('photo').src = `/latest.jpg?${Date.now()}`;
-        resetButton(btn);
-      } else {
-        setTimeout(() => pollForNewPhoto(btn), 1000);
-      }
-    })
-    .catch(() => resetButton(btn));
-}
-
 // Resets the button state after photo has been updated or if an error occurs
 function resetButton(btn) {
   btn.disabled = false;
@@ -50,13 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const buttons = document.querySelectorAll(".accordion-button");
   buttons.forEach(button => {
     button.addEventListener("click", () => {
-      button.classList.toggle("active");
-      const content = button.nextElementSibling;
-      if (content.style.maxHeight) {
-        content.style.maxHeight = null;
-      } else {
-        content.style.maxHeight = content.scrollHeight + "px";
-      }
+      const accordion = button.closest(".accordion");
+      accordion.classList.toggle("open");
     });
   });
 });
