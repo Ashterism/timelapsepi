@@ -16,14 +16,14 @@ logger.debug("✅ photo_routes.py router loaded")
 
 @router.get("/latest.jpg")
 def latest_jpg():
-    path = TEMP_PATH / "latest.jpg"
+    path = TEMP_PATH / "latestjpg" / "latest.jpg"
     if not os.path.exists(path):
         return PlainTextResponse('', status_code=404)
     return FileResponse(path)
 
 @router.get("/latest-timestamp")
 def latest_timestamp():
-    path = TEMP_PATH / "latest.json"
+    path = TEMP_PATH / "latestjpg" / "latest.json"
     if not os.path.exists(path):
         return PlainTextResponse('', status_code=404)
     try:
