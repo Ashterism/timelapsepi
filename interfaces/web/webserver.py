@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, HTMLResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
@@ -41,9 +40,9 @@ def index():
 def style():
     return FileResponse(INTERFACES_PATH / "web" / "style.css")
 
-@app.get("/photo.js")
-def photo_js():
-    return FileResponse(INTERFACES_PATH / "web" / "photo.js")
+@app.get("/scripts.js")
+def scripts_js():
+    return FileResponse(INTERFACES_PATH / "web" / "scripts.js")
 
 @app.get("/latest.jpg")
 def latest_jpg():
