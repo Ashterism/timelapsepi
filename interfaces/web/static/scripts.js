@@ -85,3 +85,21 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Failed to fetch status:", err);
     });
 });
+
+// Fetch /latest.json on page load
+document.addEventListener("DOMContentLoaded", function () {
+  // Fetch latest.json to show photo metadata on initial load
+  fetch('/latest.json')
+    .then(res => res.json())
+    .then(meta => {
+      document.getElementById("meta-timestamp").textContent = meta.timestamp || "unknown";
+      document.getElementById("meta-iso").textContent = meta.settings.iso || "unknown";
+      document.getElementById("meta-shutter").textContent = meta.settings.shutter_speed || "unknown";
+      document.getElementById("meta-aperture").textContent = meta.settings.aperture || "unknown";
+      document.getElementById("meta-filesize").textContent = meta.settings.file_size || "unknown";
+      document.getElementById("meta-resolution").textContent = `${meta.settings.image_width}×${meta.settings.image_height}` || "unknown";
+    })
+    .catch(err => {
+      console.warn("Metadata not available:", err);
+    });
+});
