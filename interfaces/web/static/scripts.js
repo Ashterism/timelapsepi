@@ -142,11 +142,11 @@ async function startTimelapse() {
     alert("❌ Interval is required.");
     return;
   }
-  if (endType === "count" && (!count || isNaN(count))) {
+  if (endType === "photo_count" && (!count || isNaN(count))) {
     alert("❌ Valid photo count is required.");
     return;
   }
-  if (endType === "time" && !endTime) {
+  if (endType === "end_time" && !endTime) {
     alert("❌ End time is required.");
     return;
   }
@@ -155,8 +155,8 @@ async function startTimelapse() {
     interval,
     start_time: startTime || null,
     end_type: endType,
-    count: endType === "count" ? parseInt(count) : null,
-    end_time: endType === "time" ? endTime : null,
+    count: endType === "photo_count" ? parseInt(count) : null,
+    end_time: endType === "end_time" ? endTime : null,
     folder: folder || null,
   };
 
@@ -231,8 +231,8 @@ function validateTimelapseInputs() {
   const endTime = document.getElementById('end-time-input').value;
 
   const valid = interval && (
-    (endType === "count" && count) ||
-    (endType === "time" && endTime)
+    (endType === "photo_count" && count) ||
+    (endType === "end_time" && endTime)
   );
 
   document.querySelector('button[onclick="startTimelapse()"]').disabled = !valid;
