@@ -70,6 +70,13 @@ document.addEventListener("DOMContentLoaded", function () {
   menuIcon.addEventListener("click", () => {
     sideMenu.classList.toggle("open");
   });
+
+  document.addEventListener("click", function (event) {
+    const isClickInside = sideMenu.contains(event.target) || menuIcon.contains(event.target);
+    if (!isClickInside) {
+      sideMenu.classList.remove("open");
+    }
+  });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
