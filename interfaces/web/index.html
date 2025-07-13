@@ -60,8 +60,8 @@
           <label for="start-time">Start Time <span class="hint">(ISO or blank)</span></label>
           <input type="datetime-local" id="start-time" name="start-time" />
 
-          <label>End Condition:</label>
           <div class="radio-row">
+            <span class="inline-label">End Condition:</span>
             <label><input type="radio" id="end-count" name="end-type" value="count" checked /> Number of Photos</label>
             <label><input type="radio" id="end-time" name="end-type" value="time" /> End Time</label>
           </div>
@@ -76,7 +76,7 @@
             <input type="datetime-local" id="end-time-input" name="end-time-input" />
           </div>
 
-          <label for="folder-name">Folder Name <span class="hint">(optional)</span></label>
+          <label for="folder-name">Folder Name <span class="hint">(leave blank for timestamp)</span></label>
           <input type="text" id="folder-name" name="folder-name" placeholder="Leave blank to auto-generate" />
 
           <button onclick="startTimelapse()">🚀 Start Timelapse</button>

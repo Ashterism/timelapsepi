@@ -176,10 +176,16 @@ main.container {
   font-size: 0.95rem;
   margin-top: 0.8rem;
   margin-bottom: 0.3rem;
+  white-space: nowrap;
+  text-align: left;
 }
 
 .form-block input {
   width: 100%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
   padding: 0.4rem;
   font-size: 0.9rem;
   border-radius: 4px;
@@ -219,4 +225,15 @@ main.container {
   align-items: center;
   font-size: 0.9rem;
   color: #eee;
+}
+
+.inline-label {
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-size: 0.95rem;
+}
+
+label .hint {
+  color: #aaa;
+  font-weight: normal;
 }
