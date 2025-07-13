@@ -127,10 +127,36 @@ document.addEventListener("DOMContentLoaded", function () {
 // TIMELAPSE ///
 
 async function startTimelapse() {
-  const res = await fetch('/start', { method: 'POST' });
-  const text = await res.text();
-  alert(text);
-  fetchSessionInfo();
+  const interval = document.getElementById('interval').value;
+  const startTime = document.getElementById('start-time').value;
+  const endType = document.querySelector('input[name="end-type"]:checked').value;
+  const count = document.getElementById('end-count-input').value;
+  const endTime = document.getElementById('end-time-input').value;
+  const folder = document.getElementById('folder').value;
+
+  const config = {
+    interval,
+    start_time: startTime || null,
+    end_type: endType,
+    count: endType === "count" ? parseInt(count) : null,
+    end_time: endType === "time" ? endTime : null,
+    folder: folder || null,
+  };
+
+  try {
+    const res = await fetch('/start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(config)
+    });
+
+    const text = await res.text();
+    alert(text);
+    fetchSessionInfo();
+  } catch (err) {
+    console.error("Error starting timelapse:", err);
+    alert("❌ Failed to start timelapse.");
+  }
 }
 
 async function stopTimelapse() {

@@ -37,6 +37,38 @@ def prompt_interval():
         print("⚠️ Invalid interval format.")
         sys.exit(1)
 
+def start_session_from_config(config: dict) -> Path:
+    folder_path = Path(config["folder"])
+    folder_path.mkdir(parents=True, exist_ok=True)
+
+    config_path = folder_path / "timelapse_config.json"
+    with open(config_path, "w") as f:
+        json.dump(config, f, indent=2)
+
+    set_active_session(folder_path)
+    log(f"Active session set: {folder_path}", "timelapse_start.log")
+
+    process = subprocess.Popen([
+        "python3", str(RUNNER_SCRIPT), str(config_path)
+    ])
+    pid_file = folder_path / "runner.pid"
+    with open(pid_file, "w") as f:
+        f.write(str(process.pid))
+
+    log(f"Runner PID saved: {process.pid}", "timelapse_start.log")
+
+    metadata = {
+        "status": "running",
+        "started": datetime.datetime.now().isoformat(),
+        "ended": None,
+        "interval_seconds": config["interval_seconds"]
+    }
+    metadata_path = folder_path / "metadata.json"
+    with open(metadata_path, "w") as f:
+        json.dump(metadata, f, indent=2)
+
+    return folder_path
+
 def main():
     print("🎞  Timelapse Setup")
 
@@ -87,39 +119,7 @@ def main():
         }
     }
 
-    config_path = folder_path / "timelapse_config.json"
-    with open(config_path, "w") as f:
-        json.dump(config, f, indent=2)
-
-    print(f"✅ Config saved: {config_path}")
-
-    # Mark this session as active by writing to active_session.json
-    set_active_session(folder_path)
-    log(f"Active session set: {folder_path}", "timelapse_start.log")
-
-    print("🚀 Launching timelapse runner...")
-
-    # Launch the runner and save its PID
-    process = subprocess.Popen([
-        "python3", str(RUNNER_SCRIPT), str(config_path)
-    ])
-
-    pid_file = folder_path / "runner.pid"
-    with open(pid_file, "w") as f:
-        f.write(str(process.pid))
-
-    log(f"Runner PID saved: {process.pid}", "timelapse_start.log")
-
-    # Write metadata.json to track session state
-    metadata = {
-        "status": "running",
-        "started": datetime.datetime.now().isoformat(),
-        "ended": None,
-        "interval_seconds": interval_sec
-    }
-    metadata_path = folder_path / "metadata.json"
-    with open(metadata_path, "w") as f:
-        json.dump(metadata, f, indent=2)
+    start_session_from_config(config)
 
 if __name__ == "__main__":
     main()
