@@ -37,7 +37,7 @@ def stop_runner(session_folder):
         log(f"❌ Error stopping PID {pid}: {e}", "timelapse_stop.log")
         sys.exit(1)
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) != 2 and not (len(sys.argv) == 2 and sys.argv[1] == "--auto"):
         print("Usage: python3 stop_timelapse.py <path_to_session_folder>")
         sys.exit(1)
@@ -60,3 +60,6 @@ if __name__ == "__main__":
             sys.exit(0)
     else:
         stop_runner(sys.argv[1])
+
+if __name__ == "__main__":
+    main()
