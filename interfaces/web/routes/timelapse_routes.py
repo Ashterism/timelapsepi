@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import PlainTextResponse
 import logging
+from config.config_paths import SESSIONS_PATH
+import datetime
 
 from timelapse.sessionmgmt.session_manager import get_active_session
 from timelapse.functions.start_timelapse import start_session_from_config
@@ -22,12 +24,18 @@ async def start(request: Request):
         h, m, s = map(int, interval_str.strip().split(":"))
         interval_sec = h * 3600 + m * 60 + s
 
+        folder_name = config_json.get("folder")
+        if not folder_name:
+            folder_name = datetime.datetime.now().strftime("session_%Y%m%d_%H%M%S")
+        folder_path = str(SESSIONS_PATH / folder_name)
+
+
         mode = config_json.get("end_type")
 
         config_dict = {
             "interval_sec": interval_sec,
             "start_time": config_json.get("start_time"),
-            "folder_name": config_json.get("folder")
+            "folder": folder_path
         }
 
         if mode == "photo_count":
