@@ -223,16 +223,18 @@ main.container {
 .radio-row {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  justify-content: flex-start;
   gap: 1.2rem;
-  margin: 0.5rem 0 1rem;
+  margin-left: 0;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
 
 .radio-row label {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   font-size: 0.9rem;
   color: #eee;
 }
@@ -246,4 +248,10 @@ main.container {
 label .hint {
   color: #aaa;
   font-weight: normal;
+}
+
+/* Placeholder styling for greyed-out text in inputs */
+.placeholder-grey::placeholder {
+  color: #888;
+  font-size: 0.9rem;
 }

@@ -3,10 +3,12 @@ from pathlib import Path
 
 from config.config_paths import TEMP_PATH
 
-# TEMP DEBUG
-from config.config_paths import TEMP_PATH
-print(f"[DEBUG] TEMP_PATH = {TEMP_PATH}")
-# TEMP DEBUG
+# Debugging utility
+DEBUG_MODE = False
+
+def debug(*args, **kwargs):
+    if DEBUG_MODE:
+        print(*args, **kwargs)
 
 # Path to the temporary JSON file tracking the active session
 ACTIVE_SESSION_FILE = TEMP_PATH / "active_session.json"
@@ -30,7 +32,7 @@ def get_active_session() -> Path | None:
 # Set the active session by saving its path to disk
 def set_active_session(session_path: Path):
     """Save the active session path to file."""
-    print("🛠 Writing active session to file:", ACTIVE_SESSION_FILE)  # Debug line added
+    debug("🛠 Writing active session to file:", ACTIVE_SESSION_FILE)
     ACTIVE_SESSION_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(ACTIVE_SESSION_FILE, "w") as f:
         json.dump({"session_path": str(session_path)}, f)

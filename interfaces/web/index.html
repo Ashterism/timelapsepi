@@ -55,9 +55,9 @@
       <div class="accordion-content">
         <div class="form-block">
           <label for="interval">Interval <span class="hint">(hh:mm:ss)</span></label>
-          <input type="text" id="interval" name="interval" placeholder="00:01:00" />
+          <input type="text" id="interval" name="interval" placeholder="00:01:00" class="placeholder-grey" />
 
-          <label for="start-time">Start Time <span class="hint">(ISO or blank)</span></label>
+          <label for="start-time">Start Time <span class="hint">(ISO or blank for now)</span></label>
           <input type="datetime-local" id="start-time" name="start-time" class="placeholder-grey" placeholder="25/04/2025, 13:00" />
 
           <label for="end-count">End Condition:</label>
@@ -71,16 +71,16 @@
 
           <div id="end-count-group">
             <label for="photo-count">Number of Photos:</label>
-            <input type="number" id="photo-count" name="photo-count" placeholder="e.g., 1200" />
+            <input type="number" id="photo-count" name="photo-count" placeholder="e.g., 1200" class="placeholder-grey" />
           </div>
 
           <div id="end-time-group" style="display:none;">
             <label for="end-time-input">End Time:</label>
-            <input type="datetime-local" id="end-time-input" name="end-time-input" class="placeholder-grey" placeholder="25/04/2025, 13:00" />
+            <input type="datetime-local" id="end-time-input" name="end-time-input" class="placeholder-grey" placeholder="25/04/2025, 15:00" />
           </div>
 
           <label for="folder-name">Folder Name <span class="hint">(leave blank for timestamp)</span></label>
-          <input type="text" id="folder-name" name="folder-name" placeholder="Leave blank to auto-generate" />
+          <input type="text" id="folder-name" name="folder-name" placeholder="Leave blank to auto-generate" class="placeholder-grey" />
 
           <button onclick="startTimelapse()">🚀 Start Timelapse</button>
           <button onclick="stopTimelapse()">🛑 Stop Timelapse</button>
