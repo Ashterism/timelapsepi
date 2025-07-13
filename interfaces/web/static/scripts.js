@@ -122,3 +122,43 @@ document.addEventListener("DOMContentLoaded", function () {
       console.warn("Metadata not available:", err);
     });
 });
+
+
+// TIMELAPSE ///
+
+async function startTimelapse() {
+  const res = await fetch('/start', { method: 'POST' });
+  const text = await res.text();
+  alert(text);
+  fetchSessionInfo();
+}
+
+async function stopTimelapse() {
+  const res = await fetch('/stop', { method: 'POST' });
+  const text = await res.text();
+  alert(text);
+  fetchSessionInfo();
+}
+
+async function fetchSessionInfo() {
+  try {
+    const res = await fetch('/sessions');
+    const sessions = await res.json();
+
+    const activeRes = await fetch('/status');
+    const activeText = await activeRes.text();
+    const match = activeText.match(/Session: (.*?)<br>/);
+    const active = match ? match[1] : "None";
+    document.getElementById("active-session").textContent = active;
+
+    const list = document.getElementById("session-list");
+    list.innerHTML = '';
+    sessions.forEach(sess => {
+      const li = document.createElement("li");
+      li.textContent = sess;
+      list.appendChild(li);
+    });
+  } catch (err) {
+    console.error("Error loading session info:", err);
+  }
+}

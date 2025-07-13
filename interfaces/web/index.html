@@ -53,7 +53,15 @@
     <div class="accordion">
       <button class="accordion-button">⚙️ Timelapse Config</button>
       <div class="accordion-content">
-        <p>Timelapse settings will go here...</p>
+        <div class="timelapse-controls">
+          <p><strong>Session:</strong> <span id="active-session">Loading...</span></p>
+          <button onclick="startTimelapse()">🚀 Start Timelapse</button>
+          <button onclick="stopTimelapse()">🛑 Stop Timelapse</button>
+          <p><strong>All Sessions:</strong></p>
+          <ul id="session-list">
+            <li>Loading...</li>
+          </ul>
+        </div>
       </div>
     </div>
 
