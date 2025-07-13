@@ -54,29 +54,29 @@
       <button class="accordion-button">⚙️ Timelapse Config</button>
       <div class="accordion-content">
         <div class="form-block">
-          <label for="interval"><strong>Interval (hh:mm:ss):</strong></label>
+          <label for="interval">Interval <span class="hint">(hh:mm:ss)</span></label>
           <input type="text" id="interval" name="interval" placeholder="00:01:00" />
 
-          <label for="start-time"><strong>Start Time (ISO or blank):</strong></label>
+          <label for="start-time">Start Time <span class="hint">(ISO or blank)</span></label>
           <input type="datetime-local" id="start-time" name="start-time" />
 
-          <label><strong>End Condition:</strong></label><br>
-          <input type="radio" id="end-count" name="end-type" value="count" checked />
-          <label for="end-count">Number of Photos</label>
-          <input type="radio" id="end-time" name="end-type" value="time" />
-          <label for="end-time">End Time</label>
+          <label>End Condition:</label>
+          <div class="radio-row">
+            <label><input type="radio" id="end-count" name="end-type" value="count" checked /> Number of Photos</label>
+            <label><input type="radio" id="end-time" name="end-type" value="time" /> End Time</label>
+          </div>
 
           <div id="end-count-group">
-            <label for="photo-count"><strong>Number of Photos:</strong></label>
-            <input type="number" id="photo-count" name="photo-count" />
+            <label for="photo-count">Number of Photos:</label>
+            <input type="number" id="photo-count" name="photo-count" placeholder="e.g., 1200" />
           </div>
 
           <div id="end-time-group" style="display:none;">
-            <label for="end-time-input"><strong>End Time:</strong></label>
+            <label for="end-time-input">End Time:</label>
             <input type="datetime-local" id="end-time-input" name="end-time-input" />
           </div>
 
-          <label for="folder-name"><strong>Folder Name (optional):</strong></label>
+          <label for="folder-name">Folder Name <span class="hint">(optional)</span></label>
           <input type="text" id="folder-name" name="folder-name" placeholder="Leave blank to auto-generate" />
 
           <button onclick="startTimelapse()">🚀 Start Timelapse</button>
