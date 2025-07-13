@@ -146,9 +146,12 @@ async function startTimelapse() {
     alert("❌ Valid photo count is required.");
     return;
   }
-  if (endType === "end_time" && !endTime) {
-    alert("❌ End time is required.");
-    return;
+  if (endType === "end_time") {
+    const isoDatetimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+    if (!endTime || !isoDatetimeRegex.test(endTime)) {
+      alert("❌ End time must be in format YYYY-MM-DDTHH:MM (e.g. 2025-04-25T15:00)");
+      return;
+    }
   }
 
   const config = {
