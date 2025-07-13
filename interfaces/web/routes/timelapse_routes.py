@@ -22,7 +22,7 @@ async def start(request: Request):
         h, m, s = map(int, interval_str.strip().split(":"))
         interval_sec = h * 3600 + m * 60 + s
 
-        mode = config_json.get("mode")
+        mode = config_json.get("end_type")
 
         config_dict = {
             "interval_sec": interval_sec,
@@ -31,7 +31,7 @@ async def start(request: Request):
         }
 
         if mode == "photo_count":
-            config_dict["photo_count"] = config_json.get("photo_count")
+            config_dict["photo_count"] = config_json.get("count")
         elif mode == "end_time":
             config_dict["end_time"] = config_json.get("end_time")
 
