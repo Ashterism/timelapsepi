@@ -130,9 +130,26 @@ async function startTimelapse() {
   const interval = document.getElementById('interval').value;
   const startTime = document.getElementById('start-time').value;
   const endType = document.querySelector('input[name="end-type"]:checked').value;
-  const count = document.getElementById('end-count-input').value;
+  // Use correct id for count input
+  const count = document.getElementById('photo-count').value;
   const endTime = document.getElementById('end-time-input').value;
-  const folder = document.getElementById('folder').value;
+  // Folder input may be 'folder' or 'folder-name'
+  const folderInput = document.getElementById('folder') || document.getElementById('folder-name');
+  const folder = folderInput ? folderInput.value : null;
+
+  // Validation logic before sending request
+  if (!interval) {
+    alert("❌ Interval is required.");
+    return;
+  }
+  if (endType === "count" && (!count || isNaN(count))) {
+    alert("❌ Valid photo count is required.");
+    return;
+  }
+  if (endType === "time" && !endTime) {
+    alert("❌ End time is required.");
+    return;
+  }
 
   const config = {
     interval,
@@ -142,6 +159,9 @@ async function startTimelapse() {
     end_time: endType === "time" ? endTime : null,
     folder: folder || null,
   };
+
+  // Disable start button
+  document.querySelector('button[onclick="startTimelapse()"]').disabled = true;
 
   try {
     const res = await fetch('/start', {
@@ -153,9 +173,13 @@ async function startTimelapse() {
     const text = await res.text();
     alert(text);
     fetchSessionInfo();
+    // Re-enable start button
+    document.querySelector('button[onclick="startTimelapse()"]').disabled = false;
   } catch (err) {
     console.error("Error starting timelapse:", err);
     alert("❌ Failed to start timelapse.");
+    // Re-enable start button
+    document.querySelector('button[onclick="startTimelapse()"]').disabled = false;
   }
 }
 
@@ -190,10 +214,35 @@ async function fetchSessionInfo() {
 }
 
 // Timelapse toggles
-  document.querySelectorAll('input[name="end-type"]').forEach(el => {
-    el.addEventListener('change', () => {
-      const isCount = document.getElementById('end-count').checked;
-      document.getElementById('end-count-group').style.display = isCount ? 'block' : 'none';
-      document.getElementById('end-time-group').style.display = isCount ? 'none' : 'block';
-    });
+document.querySelectorAll('input[name="end-type"]').forEach(el => {
+  el.addEventListener('change', () => {
+    const isCount = document.getElementById('end-count').checked;
+    document.getElementById('end-count-group').style.display = isCount ? 'block' : 'none';
+    document.getElementById('end-time-group').style.display = isCount ? 'none' : 'block';
   });
+});
+
+// Timelapse form validation & dynamic button enable/disable
+function validateTimelapseInputs() {
+  const interval = document.getElementById('interval').value;
+  const endType = document.querySelector('input[name="end-type"]:checked').value;
+  // Use correct id for count input
+  const count = document.getElementById('end-count-input') ? document.getElementById('end-count-input').value : document.getElementById('photo-count').value;
+  const endTime = document.getElementById('end-time-input').value;
+
+  const valid = interval && (
+    (endType === "count" && count) ||
+    (endType === "time" && endTime)
+  );
+
+  document.querySelector('button[onclick="startTimelapse()"]').disabled = !valid;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll('#interval, #end-count-input, #end-time-input, input[name="end-type"], #photo-count').forEach(el => {
+    el.addEventListener('input', validateTimelapseInputs);
+    el.addEventListener('change', validateTimelapseInputs);
+  });
+
+  validateTimelapseInputs();
+});

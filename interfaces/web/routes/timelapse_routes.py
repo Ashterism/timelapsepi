@@ -16,9 +16,31 @@ async def start(request: Request):
     if session:
         return PlainTextResponse("❌ Session already running.", status_code=400)
 
-    config = await request.json()
     try:
-        result = start_session_from_config(config)
+        config_json = await request.json()
+        interval_str = config_json.get("interval", "")
+        h, m, s = map(int, interval_str.strip().split(":"))
+        interval_sec = h * 3600 + m * 60 + s
+
+        mode = config_json.get("mode")
+
+        config_dict = {
+            "interval_sec": interval_sec,
+            "start_time": config_json.get("start_time"),
+            "folder_name": config_json.get("folder_name")
+        }
+
+        if mode == "photo_count":
+            config_dict["photo_count"] = config_json.get("photo_count")
+        elif mode == "end_time":
+            config_dict["end_time"] = config_json.get("end_time")
+
+        if mode == "photo_count" and not config_dict.get("photo_count"):
+            return PlainTextResponse("❌ Photo count required.", status_code=400)
+        if mode == "end_time" and not config_dict.get("end_time"):
+            return PlainTextResponse("❌ End time required.", status_code=400)
+
+        result = start_session_from_config(config_dict)
     except Exception as e:
         logger.error(f"Failed to start session from config: {e}")
         return PlainTextResponse("❌ Failed to start session.", status_code=500)
