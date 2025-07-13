@@ -136,14 +136,14 @@ def run_start():
                 if status.get("completed", False):
                     print("✅ Timelapse run completed.")
                 else:
-                    print("⏳ Timelapse is still running...")
+                    print("⏳ Timelapse is running...")
             else:
                 print("📸 Timelapse launched — waiting for first photo...")
         except Exception as e:
             print("⚠️ Could not determine session status.")
             cli_log(f"Session status error: {e}")
 
-        input("Press Enter to return to menu...")
+        input("Press Enter if you wish to return to menu...")
     except Exception as e:
         print(f"❌ Failed to start: {e}")
         cli_log(f"Failed to start: {e}")
