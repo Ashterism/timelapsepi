@@ -27,7 +27,7 @@ async def start(request: Request):
         config_dict = {
             "interval_sec": interval_sec,
             "start_time": config_json.get("start_time"),
-            "folder_name": config_json.get("folder_name")
+            "folder_name": config_json.get("folder")
         }
 
         if mode == "photo_count":
