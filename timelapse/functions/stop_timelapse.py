@@ -4,7 +4,7 @@ import os
 import signal
 import sys
 from pathlib import Path
-from log_util import log
+from timelapse.functions.log_util import log
 
 from config.config_paths import LOGS_PATH
 from timelapse.sessionmgmt.session_manager import clear_active_session
