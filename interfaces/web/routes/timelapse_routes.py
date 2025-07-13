@@ -3,7 +3,7 @@ from fastapi.responses import PlainTextResponse
 import logging
 
 from timelapse.sessionmgmt.session_manager import get_active_session
-from timelapse.functions.start_timelapse import start_session
+from timelapse.functions.start_timelapse import main as start_session 
 from timelapse.functions.stop_timelapse import stop_session
 from timelapse.sessionmgmt.session_list import list_sessions
 
