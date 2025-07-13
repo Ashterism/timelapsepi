@@ -251,7 +251,7 @@ label .hint {
 }
 
 /* Placeholder styling for greyed-out text in inputs */
-.placeholder-grey::placeholder {
+input::placeholder {
   color: #888;
   font-size: 0.9rem;
 }
