@@ -168,3 +168,16 @@ main.container {
 .side-menu a:hover {
   background-color: #333;
 }
+
+/* System status font sizing (for .metadata-block) */
+#system-status p,
+#system-status span {
+  font-size: 1rem;
+}
+
+@media (max-width: 480px) {
+  #system-status p,
+  #system-status span {
+    font-size: 0.85rem;
+  }
+}

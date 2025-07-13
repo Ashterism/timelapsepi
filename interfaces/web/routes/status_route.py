@@ -11,14 +11,9 @@ router = APIRouter()
 def get_battery_info():
     try:
         pj = PiJuice(1, 0x14)
-        status = pj.status.GetChargeLevel()
-        if status['error'] == 'NO_ERROR':
-            return {
-                "level": status['data'],
-                "charging": pj.status.GetStatus()['data']['powerInput'] != "NOT_PRESENT"
-            }
-        else:
-            return {"level": None, "charging": None}
+        level = pj.status.GetChargeLevel().get("data")
+        charging = pj.status.GetStatus().get("data", {}).get("powerInput") != "NOT_PRESENT"
+        return {"level": level, "charging": charging}
     except Exception:
         return {"level": None, "charging": None}
 
