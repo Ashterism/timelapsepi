@@ -162,3 +162,12 @@ async function fetchSessionInfo() {
     console.error("Error loading session info:", err);
   }
 }
+
+// Timelapse toggles
+  document.querySelectorAll('input[name="end-type"]').forEach(el => {
+    el.addEventListener('change', () => {
+      const isCount = document.getElementById('end-count').checked;
+      document.getElementById('end-count-group').style.display = isCount ? 'block' : 'none';
+      document.getElementById('end-time-group').style.display = isCount ? 'none' : 'block';
+    });
+  });
