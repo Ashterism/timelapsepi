@@ -12,6 +12,12 @@ from timelapse.sessionmgmt.session_list import list_sessions
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
+DEBUG_MODE = True
+
+def debug(msg):
+    if DEBUG_MODE:
+        print(f"[DEBUG] {msg}")
+
 @router.post("/start")
 async def start(request: Request):
     session = get_active_session()
@@ -20,6 +26,8 @@ async def start(request: Request):
 
     try:
         config_json = await request.json()
+        from timelapse.functions.start_timelapse import debug
+        debug(f"Config received in /start route: {config_json}")
         interval_str = config_json.get("interval", "")
         h, m, s = map(int, interval_str.strip().split(":"))
         interval_sec = h * 3600 + m * 60 + s

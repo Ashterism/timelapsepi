@@ -43,6 +43,7 @@ def prompt_interval():
         sys.exit(1)
 
 def start_session_from_config(config: dict) -> Path:
+    debug(f"Received config in start_session_from_config: {config}")
     config_path = Path(config["folder"]) / "timelapse_config.json"
     with open(config_path, "w") as f:
         json.dump(config, f, indent=2)
@@ -172,6 +173,8 @@ def main_from_web(config: dict) -> Path:
             "photos_taken": 0
         }
     }
+
+    debug(f"Final config being sent to session starter: {final_config}")
 
     return start_session_from_config(final_config)
 
