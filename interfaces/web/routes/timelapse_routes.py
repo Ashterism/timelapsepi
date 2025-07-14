@@ -28,38 +28,40 @@ async def start(request: Request):
         config_json = await request.json()
         from timelapse.functions.start_timelapse import debug
         debug(f"Config received in /start route: {config_json}")
+
         interval_str = config_json.get("interval", "")
+        if not interval_str:
+            return PlainTextResponse("❌ Interval is required.", status_code=400)
         h, m, s = map(int, interval_str.strip().split(":"))
         interval_sec = h * 3600 + m * 60 + s
 
-        folder_name = config_json.get("folder")
+        folder_name = config_json.get("folder", "").strip()
         if not folder_name:
             folder_name = datetime.datetime.now().strftime("session_%Y%m%d_%H%M%S")
         folder_path = str(SESSIONS_PATH / folder_name)
 
-
         mode = config_json.get("end_type")
+        if not mode:
+            return PlainTextResponse("❌ End type is required.", status_code=400)
 
         config_dict = {
-            "interval_sec": interval_sec,
+            "interval": interval_str,
             "start_time": config_json.get("start_time"),
-            "folder": folder_path
+            "folder": folder_name,
+            "end_type": mode,
+            "count": config_json.get("count"),
+            "end_time": config_json.get("end_time")
         }
 
-        if mode == "photo_count":
-            config_dict["photo_count"] = config_json.get("count")
-        elif mode == "end_time":
-            config_dict["end_time"] = config_json.get("end_time")
-
-        if mode == "photo_count" and not config_dict.get("photo_count"):
+        if mode == "photo_count" and not config_dict["count"]:
             return PlainTextResponse("❌ Photo count required.", status_code=400)
-        if mode == "end_time" and not config_dict.get("end_time"):
+        if mode == "end_time" and not config_dict["end_time"]:
             return PlainTextResponse("❌ End time required.", status_code=400)
 
         result = main_from_web(config_dict)
     except Exception as e:
         logger.error(f"Failed to start session from config: {e}")
-        return PlainTextResponse("❌ Failed to start session.", status_code=500)
+        return PlainTextResponse("❌ Failed to start timelapse.", status_code=500)
 
     if result:
         return PlainTextResponse("🚀 Session started.")
