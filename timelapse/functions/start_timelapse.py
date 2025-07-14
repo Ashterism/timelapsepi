@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+DEBUG_MODE = True
+
+def debug(msg):
+    if DEBUG_MODE:
+        print(f"[DEBUG] {msg}")
+
 # Add repo root to sys.path dynamically
 import sys
 from pathlib import Path
@@ -57,7 +63,7 @@ def start_session_from_config(config: dict) -> Path:
         "status": "running",
         "started": datetime.datetime.now().isoformat(),
         "ended": None,
-        "interval_seconds": config["interval_seconds"]
+        "interval_sec": config["interval_sec"]
     }
     metadata_path = Path(config["folder"]) / "metadata.json"
     with open(metadata_path, "w") as f:
@@ -103,7 +109,7 @@ def main():
     config = {
         "id": str(uuid.uuid4()),
         "created": datetime.datetime.now().isoformat(),
-        "interval_seconds": interval_sec,
+        "interval_sec": interval_sec,
         "start_time": start_time,
         "end_condition": end_condition,
         "photo_count": count,
@@ -118,6 +124,7 @@ def main():
     start_session_from_config(config)
 
 def main_from_web(config: dict) -> Path:
+    debug(f"Incoming config in main_from_web: {config}")
     if get_active_session():
         print("❌ A session is already active. Stop it before starting a new one.")
         sys.exit(1)
@@ -154,7 +161,7 @@ def main_from_web(config: dict) -> Path:
     final_config = {
         "id": str(uuid.uuid4()),
         "created": datetime.datetime.now().isoformat(),
-        "interval_seconds": interval_sec,
+        "interval_sec": interval_sec,
         "start_time": start_time,
         "end_condition": end_condition,
         "photo_count": count,
