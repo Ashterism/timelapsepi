@@ -37,20 +37,17 @@ def prompt_interval():
         sys.exit(1)
 
 def start_session_from_config(config: dict) -> Path:
-    folder_path = Path(config["folder"])
-    folder_path.mkdir(parents=True, exist_ok=True)
-
-    config_path = folder_path / "timelapse_config.json"
+    config_path = Path(config["folder"]) / "timelapse_config.json"
     with open(config_path, "w") as f:
         json.dump(config, f, indent=2)
 
-    set_active_session(folder_path)
-    log(f"Active session set: {folder_path}", "timelapse_start.log")
+    set_active_session(Path(config["folder"]))
+    log(f"Active session set: {Path(config['folder'])}", "timelapse_start.log")
 
     process = subprocess.Popen([
         "python3", str(RUNNER_SCRIPT), str(config_path)
     ])
-    pid_file = folder_path / "runner.pid"
+    pid_file = Path(config["folder"]) / "runner.pid"
     with open(pid_file, "w") as f:
         f.write(str(process.pid))
 
@@ -62,11 +59,11 @@ def start_session_from_config(config: dict) -> Path:
         "ended": None,
         "interval_seconds": config["interval_seconds"]
     }
-    metadata_path = folder_path / "metadata.json"
+    metadata_path = Path(config["folder"]) / "metadata.json"
     with open(metadata_path, "w") as f:
         json.dump(metadata, f, indent=2)
 
-    return folder_path
+    return Path(config["folder"])
 
 def main():
     print("🎞  Timelapse Setup")
@@ -119,6 +116,57 @@ def main():
     }
 
     start_session_from_config(config)
+
+def main_from_web(config: dict) -> Path:
+    if get_active_session():
+        print("❌ A session is already active. Stop it before starting a new one.")
+        sys.exit(1)
+
+    SESSIONS_PATH.mkdir(parents=True, exist_ok=True)
+
+    interval_str = config.get("interval")
+    try:
+        h, m, s = map(int, interval_str.strip().split(":"))
+        interval_sec = h * 3600 + m * 60 + s
+    except Exception:
+        print("⚠️ Invalid interval format.")
+        sys.exit(1)
+
+    start_time = config.get("start_time") or datetime.datetime.now().isoformat()
+    end_type = config.get("end_type")
+    count = config.get("count")
+    end_time = config.get("end_time")
+
+    if end_type == "photo_count":
+        end_condition = "count"
+    elif end_type == "end_time":
+        end_condition = "time"
+    else:
+        print("⚠️ Invalid end type.")
+        sys.exit(1)
+
+    folder = config.get("folder", "").strip()
+    if not folder:
+        folder = datetime.datetime.now().strftime("session_%Y%m%d_%H%M%S")
+    folder_path = SESSIONS_PATH / folder
+    folder_path.mkdir(parents=True, exist_ok=True)
+
+    final_config = {
+        "id": str(uuid.uuid4()),
+        "created": datetime.datetime.now().isoformat(),
+        "interval_seconds": interval_sec,
+        "start_time": start_time,
+        "end_condition": end_condition,
+        "photo_count": count,
+        "end_time": end_time,
+        "folder": str(folder_path),
+        "status": {
+            "started": False,
+            "photos_taken": 0
+        }
+    }
+
+    return start_session_from_config(final_config)
 
 if __name__ == "__main__":
     main()

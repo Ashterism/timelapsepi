@@ -5,7 +5,7 @@ from config.config_paths import SESSIONS_PATH
 import datetime
 
 from timelapse.sessionmgmt.session_manager import get_active_session
-from timelapse.functions.start_timelapse import start_session_from_config
+from timelapse.functions.start_timelapse import main_from_web
 from timelapse.functions.stop_timelapse import main as stop_session
 from timelapse.sessionmgmt.session_list import list_sessions
 
@@ -48,7 +48,7 @@ async def start(request: Request):
         if mode == "end_time" and not config_dict.get("end_time"):
             return PlainTextResponse("❌ End time required.", status_code=400)
 
-        result = start_session_from_config(config_dict)
+        result = main_from_web(config_dict)
     except Exception as e:
         logger.error(f"Failed to start session from config: {e}")
         return PlainTextResponse("❌ Failed to start session.", status_code=500)
