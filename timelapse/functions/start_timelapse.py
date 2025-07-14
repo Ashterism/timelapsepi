@@ -64,7 +64,7 @@ def start_session_from_config(config: dict) -> Path:
         "status": "running",
         "started": datetime.datetime.now().isoformat(),
         "ended": None,
-        "interval_sec": config["interval_sec"]
+        "interval_seconds": config["interval_seconds"]
     }
     metadata_path = Path(config["folder"]) / "metadata.json"
     with open(metadata_path, "w") as f:
@@ -84,7 +84,7 @@ def main():
     # Ensure sessions folder exists
     SESSIONS_PATH.mkdir(parents=True, exist_ok=True)
 
-    interval_sec = prompt_interval()
+    interval_seconds = prompt_interval()
 
     start_time = prompt_time("Start time (ISO format or blank for now): ", default_now=True)
 
@@ -110,7 +110,7 @@ def main():
     config = {
         "id": str(uuid.uuid4()),
         "created": datetime.datetime.now().isoformat(),
-        "interval_sec": interval_sec,
+        "interval_seconds": interval_seconds,
         "start_time": start_time,
         "end_condition": end_condition,
         "photo_count": count,
@@ -135,7 +135,7 @@ def main_from_web(config: dict) -> Path:
     interval_str = config.get("interval")
     try:
         h, m, s = map(int, interval_str.strip().split(":"))
-        interval_sec = h * 3600 + m * 60 + s
+        interval_seconds = h * 3600 + m * 60 + s
     except Exception:
         print("⚠️ Invalid interval format.")
         sys.exit(1)
@@ -162,7 +162,7 @@ def main_from_web(config: dict) -> Path:
     final_config = {
         "id": str(uuid.uuid4()),
         "created": datetime.datetime.now().isoformat(),
-        "interval_sec": interval_sec,
+        "interval_seconds": interval_seconds,
         "start_time": start_time,
         "end_condition": end_condition,
         "photo_count": count,

@@ -33,7 +33,7 @@ async def start(request: Request):
         if not interval_str:
             return PlainTextResponse("❌ Interval is required.", status_code=400)
         h, m, s = map(int, interval_str.strip().split(":"))
-        interval_sec = h * 3600 + m * 60 + s
+        interval_seconds = h * 3600 + m * 60 + s
 
         folder_name = config_json.get("folder", "").strip()
         if not folder_name:
