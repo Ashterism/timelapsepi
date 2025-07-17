@@ -12,6 +12,8 @@ import shutil
 from config.config_paths import TEMP_PATH
 from timelapse.functions.log_util import log
 
+from timelapse.sessionmgmt.session_manager import get_active_session
+
 LATEST_DIR = TEMP_PATH / "latestjpg"
 LATEST_IMAGE = LATEST_DIR / "latest.jpg"
 LATEST_METADATA = LATEST_DIR / "latest.json"
@@ -23,6 +25,15 @@ def take_photo(config=None):
     timestamp = datetime.now().isoformat()
     filename = datetime.now().strftime("%Y%m%d_%H%M%S.jpg")
     temp_photo_path = LATEST_DIR / filename
+
+    # Insert: Ensure config is a dict and get folder from active session if needed
+    if config is None:
+        config = {}
+
+    if "folder" not in config:
+        active_session = get_active_session()
+        if active_session:
+            config["folder"] = str(active_session)
 
     # Take photo to timestamped temp location
     cmd = ["libcamera-jpeg", "-o", str(temp_photo_path)]
