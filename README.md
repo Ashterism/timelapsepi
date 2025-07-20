@@ -60,6 +60,12 @@ Update current packages:
 - install python dependencies
 > sudo pip3 install firebase-admin python-dotenv
 
+### Install Camera + Metadata Tools
+
+```bash
+sudo apt update
+sudo apt install libcamera-apps exiftool
+
 
 ---
 
