@@ -58,6 +58,12 @@ UPDATES
 Update current packages:
 - sudo apt full-upgrade
 - install python dependencies
+- install pip3
+
+```all sudo apt update
+sudo apt install python3-pip
+```
+
 > sudo pip3 install firebase-admin python-dotenv
 
 ### Install Camera + Metadata Tools
