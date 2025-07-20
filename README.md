@@ -21,7 +21,13 @@ Also see: https://github.com/PiSupply/PiJuice/blob/master/Software/README.md
 
 It logs power, battery, and system data using PiJuice, stores it locally, and (when connected) uploads it to Firebase Firestore for remote monitoring — e.g. via: [Ashterix | Pi Status](https://ashterix.com/status)
 
-Recommended: Pi Zero 2 W with Raspberry Pi OS Lite (64-Bit) (at time of writing was Debian Bookworm)
+## Setup
+
+Recommended: Pi Zero 2 W with Raspberry Pi OS Lite (64-Bit) (at time of writing was Debian Bookworm).
+
+Customise OS settings to:
+- set your desired username and password
+- preset the wifi username and password
 
 ---
 
