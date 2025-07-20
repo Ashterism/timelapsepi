@@ -65,7 +65,7 @@ Update current packages:
 ```bash
 sudo apt update
 sudo apt install libcamera-apps exiftool
-
+```
 
 ---
 
