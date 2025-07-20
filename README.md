@@ -53,32 +53,13 @@ WantedBy=multi-user.target
 Save (write out) and then enable:
 > sudo systemctl enable wifi-powersave-off.service
 
----
+UPDATES
 
-## 📦 Repo Contents
+Update current packages:
+- sudo apt full-upgrade
+- install python dependencies
+> sudo pip3 install firebase-admin python-dotenv
 
-- `log_status.py` — Logs system + PiJuice data as JSON
-- `upload_status.py` — Uploads log files to Firebase
-- `tma1.sh` — Cron-triggered script that coordinates logging, uploads, Git sync, hotspot/wifi checks
-- `timelapsepi.py` — CLI to view + toggle config flags (e.g. logging, uploads, hotspot)
-- `scripts/` — Contains stub or modular scripts (e.g. Git pull, start hotspot)
-- `_local/` — Stores logs locally (ignored by Git)
-- `status.json` — Most recent system snapshot (for debug/quick UI display)
-- `config.env` — Toggles behaviour (logging, Firebase, Git, Wi-Fi mode)
-- `web/webserver.py` — FastAPI webserver to trigger captures and monitor status
-- `functions/photo.sh` — Captures photo + writes metadata  
-- `functions/webserver.sh` — Starts/stops Flask server for remote control
-
----
-
-## 🔧 Requirements
-
-Assumes working directory is `/home/pi/timelapse/`.
-
-If using a different path, update:
-
-- Paths in `tma1.sh`, `log_status.py`, `upload_status.py`
-- Cronjob (see below)
 
 ---
 
@@ -162,6 +143,32 @@ Make sure it's executable:
 > chmod +x /home/pi/timelapse/tma1.sh
 
 ---
+
+## 📦 Repo Contents
+
+- `log_status.py` — Logs system + PiJuice data as JSON
+- `upload_status.py` — Uploads log files to Firebase
+- `tma1.sh` — Cron-triggered script that coordinates logging, uploads, Git sync, hotspot/wifi checks
+- `timelapsepi.py` — CLI to view + toggle config flags (e.g. logging, uploads, hotspot)
+- `scripts/` — Contains stub or modular scripts (e.g. Git pull, start hotspot)
+- `_local/` — Stores logs locally (ignored by Git)
+- `status.json` — Most recent system snapshot (for debug/quick UI display)
+- `config.env` — Toggles behaviour (logging, Firebase, Git, Wi-Fi mode)
+- `web/webserver.py` — FastAPI webserver to trigger captures and monitor status
+- `functions/photo.sh` — Captures photo + writes metadata  
+- `functions/webserver.sh` — Starts/stops Flask server for remote control
+
+---
+
+## 🔧 Requirements
+
+Assumes working directory is `/home/pi/timelapse/`.
+
+If using a different path, update:
+
+- Paths in `tma1.sh`, `log_status.py`, `upload_status.py`
+- Cronjob (see below)
+
 
 ## 🔧 Config via `config.env`
 
