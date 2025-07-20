@@ -36,17 +36,19 @@ Disable powersavings (to prevent issues with ssh dropping out):
 > sudo nano /etc/systemd/system/wifi-powersave-off.service
 
 then paste:
-> [Unit]
-> Description=Disable WiFi Power Save
-> After=network.target
-> 
-> [Service]
-> Type=oneshot
-> ExecStart=/sbin/iw dev wlan0 set power_save off
-> RemainAfterExit=yes
->
-> [Install]
-> WantedBy=multi-user.target
+'''ini
+[Unit]
+Description=Disable WiFi Power Save
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/iw dev wlan0 set power_save off
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+'''
 
 Save (write out) and then enable:
 > sudo systemctl enable wifi-powersave-off.service
