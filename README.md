@@ -157,13 +157,13 @@ Add:
 
 ``` */15 * * * * cd /home/ash/timelapse && /bin/bash tma1.sh 2>&1 | ts '[%Y-%m-%d %H:%M:%S]' >> /home/ash/timelapse/data/logs/cron.log ```
 
-[!IMPORTANT] Change /home/ash... to suit your directories...
+*Important* Change /home/ash... to suit your directories...
 
 This runs the script using bash, ensures the working directory is correct, and adds per-line timestamps using `ts` from `moreutils`.
 
 Make sure it's executable, e.g:
 
-``` chmod +x /home/<your pi nam>/timelapse/tma1.sh ```
+``` chmod +x /home/ash/timelapse/tma1.sh ```
 
 
 ---
