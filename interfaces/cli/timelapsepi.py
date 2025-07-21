@@ -24,6 +24,12 @@ from timelapse.functions.log_util import log
 config = dotenv_values(CONFIG_PATH)
 WIFI_MODES = ["client", "hotspot", "none"]
 
+# DEBUG OPTION
+DEBUG_MODE = False
+def debug(msg):
+    if DEBUG_MODE:
+        print(f"[DEBUG] {msg}")
+
 # CLI logger
 def cli_log(msg):
     log(msg, "timelapsepi.log")
@@ -195,7 +201,7 @@ def run_test_photo():
         latest_path = TEMP_PATH / "latestjpg" / "latest.jpg"
         metadata_path = TEMP_PATH / "latestjpg" / "latest.json"
 
-        print(f"[DEBUG] Looking for: {metadata_path}")
+        debug(f"[DEBUG] Looking for: {metadata_path}")
         
         if not metadata_path.exists():
             print("❌ Photo taken but metadata missing.")
