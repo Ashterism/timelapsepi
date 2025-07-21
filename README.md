@@ -140,7 +140,7 @@ git clone https://github.com/ashterism/timelapsepi.git timelapse
 cd timelapsepi
 ```
 
-📁 This creates the expected working directory at /home/<your pi name>/timelapse e.g. /home/pimelapse/timelapse.
+📁 This creates the expected working directory at /home/<user>/timelapse e.g. /home/ash/timelapse.
 Update paths accordingly in cron and config if using a different location.
 
 ---
@@ -153,9 +153,9 @@ Edit crontab to run the main script every 15 minutes:
 
 Add:
 
-> */15 * * * * cd /home/<your pi name>/timelapse && /bin/bash tma1.sh 2>&1 | ts '[%Y-%m-%d %H:%M:%S]' >> /home/<your pi name>/timelapse/data/logs/cron.log
-> e.g.
-> > */15 * * * * cd /home/pimelapse/timelapse && /bin/bash tma1.sh 2>&1 | ts '[%Y-%m-%d %H:%M:%S]' >> /home/pimelapse/timelapse/data/logs/cron.log
+> */15 * * * * cd /home/ash/timelapse && /bin/bash tma1.sh 2>&1 | ts '[%Y-%m-%d %H:%M:%S]' >> /home/ash/timelapse/data/logs/cron.log
+
+!! Change /home/ash... to suit your directories...
 
 This runs the script using bash, ensures the working directory is correct, and adds per-line timestamps using `ts` from `moreutils`.
 
