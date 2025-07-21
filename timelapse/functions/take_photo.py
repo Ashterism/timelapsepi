@@ -46,7 +46,7 @@ def take_photo(config=None):
     # Update latest.jpg
     shutil.copy2(temp_photo_path, LATEST_IMAGE)
     log(f"[INFO] Test photo captured: {LATEST_IMAGE}")
-    write_metadata(timestamp, temp_photo_path)
+    write_metadata(timestamp, LATEST_IMAGE)
 
     # If it's a timelapse, also save to session folder
     if config and "folder" in config:
