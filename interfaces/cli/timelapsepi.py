@@ -42,21 +42,20 @@ def cli_log(msg):
 def print_menu():
     print("\n📋 timelapsepi: Status + Control")
     print("────────────────────────────────────")
-    for key, val in config.items():
-        if key == "WIFI_MODE":
-            print(f"[→] WIFI_MODE: {val}")
-        else:
-            print(f"[{'✓' if val == 'true' else '✗'}] {key}")
-    print("\nCommands:")
+
+    print("\n🕒 Timelapse Controls:")
+    print("  test      → take test photo")
     print("  start     → begin new timelapse")
     print("  stop      → stop active session")
-    print("  status    → view session status")
-    print("  test      → take test photo")
+    print("  status    → view timelapse session status")
+
+    print("\n⚙️ System Controls:")
+    print("  sysstatus → view current system config")
     print("  preset    → switch to a predefined mode")
-    print("  toggle X  → toggle a config.env flag (e.g. LOGGING_ENABLED)")
-    print("  refresh   → reload config.env")
-    print("  clear     → clear the screen")
-    print("  exit      → quit CLI\n")
+    print("  custom    → define a custom preset or toggle multiple values")
+
+    print("\n🚪 Exit:")
+    print("  exit      → quit CLI")
     
 #
 # ─────────────────────────────────────────
@@ -269,12 +268,14 @@ def main():
             parts = cmd.split(" ", 1)
             flag = parts[1].strip().upper() if len(parts) > 1 else None
             toggle_flag(flag)
-        elif cmd == "refresh":
-            global config
-            config = dotenv_values(CONFIG_PATH)
-            print_menu()
-        elif cmd == "clear":
-            os.system("clear")
+        elif cmd == "sysstatus":
+            print("\n🌐 Current config settings:")
+            for key, val in config.items():
+                print(f"  {key} = {val}")
+            print()
+        elif cmd == "custom":
+            print("🚧 Custom config editing not implemented yet.")
+            print("You can manually edit config.env for now.")
         else:
             print("❓ Unknown command.")
             print_menu()
