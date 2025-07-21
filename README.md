@@ -83,7 +83,7 @@ sudo systemctl enable wifi-powersave-off.service
 
 ---
 
-## 🔄 System Updates & Python Dependencies
+## 🔄 System updates & dependencies
 
 Update system packages and install `pip3`:
 
@@ -98,6 +98,13 @@ Install Python dependencies:
 ```bash
 sudo pip3 install --break-system-packages firebase-admin python-dotenv
 ```
+
+Install uvicorn fastapi
+```
+pip3 install --break-system-packages uvicorn fastapi
+```
+then run:
+```export PATH="$HOME/.local/bin:$PATH"```
 
 ---
 
