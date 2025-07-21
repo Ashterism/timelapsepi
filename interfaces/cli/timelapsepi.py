@@ -194,6 +194,8 @@ def run_test_photo():
 
         latest_path = TEMP_PATH / "latestjpg" / "latest.jpg"
         metadata_path = TEMP_PATH / "latestjpg" / "latest.json"
+
+        print(f"[DEBUG] Looking for: {metadata_path}")
         
         if not metadata_path.exists():
             print("❌ Photo taken but metadata missing.")
