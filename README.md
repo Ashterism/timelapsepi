@@ -155,6 +155,21 @@ DOWNLOAD CODEBASE?
 
 ---
 
+## 📥 Step ?: Clone the Repository
+
+Before beginning setup, download the code from GitHub:
+
+```bash
+cd ~
+git clone https://github.com/ashterism/timelapsepi.git
+cd timelapsepi
+```
+
+📁 This creates the expected working directory at /home/<your pi name>/timelapse e.g. /home/pimelapse/timelapse.
+Update paths accordingly in cron and config if using a different location.
+
+---
+
 ## 🔁 Cron Setup
 
 Edit crontab to run the main script every 15 minutes:
