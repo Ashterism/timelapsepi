@@ -5,13 +5,13 @@ Notes
 - pijuice buttons need access to the home directory for buttons to work - after bookworm requires you to run chmod 750 /home/ash (where ash=home directory)
   
 
+# 📸 timelapsepi
 
-# timelapsepi
+> **Power-resilient Raspberry Pi logging and timelapse system**  
+> Designed for use with Firebase, and solar or battery power (PiJuice Zero recommended).
 
-> Power-resilient Raspberry Pi logging and status system with PiJuice zero + Firebase
-> Timelapse tool
-
-Also see: https://github.com/PiSupply/PiJuice/blob/master/Software/README.md
+Monitor system and power status remotely, and capture timelapse photos.  
+Also see: [PiJuice Software README](https://github.com/PiSupply/PiJuice/blob/master/Software/README.md)
 
 ---
 
@@ -19,23 +19,48 @@ Also see: https://github.com/PiSupply/PiJuice/blob/master/Software/README.md
 
 `timelapsepi` is a modular Raspberry Pi logging system designed for remote, solar-powered operation.
 
-It logs power, battery, and system data using PiJuice, stores it locally, and (when connected) uploads it to Firebase Firestore for remote monitoring — e.g. via: [Ashterix | Pi Status](https://ashterix.com/status)
+- Logs power, battery, and system data using **PiJuice Zero**
+- Stores data locally, and (when connected) uploads to **Firebase Firestore**
+- Status can be viewed remotely via: [Ashterix | Pi Status](https://ashterix.com/status)
 
-## Setup
+Use with or without PiJuice—power from solar, battery packs, or mains.
 
-Recommended: Pi Zero 2 W with Raspberry Pi OS Lite (64-Bit) (at time of writing was Debian Bookworm).
+---
 
-Customise OS settings to:
-- set your desired username and password
-- preset the wifi username and password
+## 🛠️ Setup
 
-Connect to the pi
-> ssh <username>@<piname>.local (e.g. ash@pimelapse.local)
+**Recommended Hardware:**  
+- Raspberry Pi Zero 2 W  
+- Raspberry Pi OS Lite (64-bit, Bookworm)
 
-Disable powersavings (to prevent issues with ssh dropping out):
-> sudo nano /etc/systemd/system/wifi-powersave-off.service
+### 📡 Initial Configuration
 
-then paste:
+Customise OS settings during flashing:
+- Set your desired **username** and **password**
+- Pre-configure **Wi-Fi credentials**
+
+Once booted, connect to the Pi:
+
+```bash
+ssh <username>@<hostname>.local
+# Example:
+ssh ash@pimelapse.local
+```
+
+---
+
+### 🔋 Disable Wi-Fi Power Saving
+
+Prevents SSH dropouts due to Wi-Fi sleep mode.
+
+Create the service:
+
+```bash
+sudo nano /etc/systemd/system/wifi-powersave-off.service
+```
+
+Paste in the following:
+
 ```ini
 [Unit]
 Description=Disable WiFi Power Save
@@ -50,23 +75,35 @@ RemainAfterExit=yes
 WantedBy=multi-user.target
 ```
 
-Save (write out) and then enable:
-> sudo systemctl enable wifi-powersave-off.service
+Save and enable it:
 
-UPDATES
+```bash
+sudo systemctl enable wifi-powersave-off.service
+```
 
-Update current packages:
-- sudo apt full-upgrade
-- install python dependencies
-- install pip3
+---
 
-```all sudo apt update
+## 🔄 System Updates & Python Dependencies
+
+Update system packages and install `pip3`:
+
+```bash
+sudo apt update
+sudo apt full-upgrade
 sudo apt install python3-pip
 ```
 
-> sudo pip3 install firebase-admin python-dotenv
+Install Python dependencies:
 
-### Install Camera + Metadata Tools
+```bash
+sudo pip3 install firebase-admin python-dotenv
+```
+
+---
+
+## 📷 Install Camera & Metadata Tools
+
+Required for photo capture and EXIF tagging:
 
 ```bash
 sudo apt update
@@ -74,36 +111,7 @@ sudo apt install libcamera-apps exiftool
 ```
 
 ---
-
-### 1. Install PiJuice software
-
-> sudo apt-get update
-> sudo apt-get install pijuice-base
-
----
-
-### 2. Enable I2C for PiJuice
-
-> sudo raspi-config
-
-# Interface Options > I2C > Enable
-
----
-
-### 3. Install Python dependencies
-
-> sudo pip3 install firebase-admin python-dotenv
-
----
-
-### 4. Create `_local/logs` directory
-
-```bash
-mkdir -p /home/pi/timelapse/_local/logs
-```
-
----
-
+???
 ### 5. Set up Firebase
 
 - Go to https://console.firebase.google.com and create a project
@@ -123,15 +131,26 @@ Edit `upload_status.py` if using a different path:
 
 ---
 
-### 6. Install Camera + Metadata Tools
 
-```bash
-sudo apt update
-sudo apt install libcamera-apps exiftool
-```
+This setup forms the foundation for running `timelapsepi`—whether you're capturing sunrise sequences or remotely monitoring off-grid deployments.
 
-- `libcamera-jpeg` is used to capture photos from the Pi Camera Module
-- `exiftool` generates metadata for each image as a `.json` file
+---
+### OPTIONAL
+### Install PiJuice software
+
+> sudo apt-get update
+> sudo apt-get install pijuice-base
+
+---
+
+### Enable I2C for PiJuice
+
+> sudo raspi-config
+
+# Interface Options > I2C > Enable
+
+---
+
 
 ---
 
