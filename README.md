@@ -96,7 +96,7 @@ sudo apt install python3-pip
 Install Python dependencies:
 
 ```bash
-sudo pip3 install firebase-admin python-dotenv
+sudo pip3 install --break-system-packages firebase-admin python-dotenv
 ```
 
 ---
@@ -147,10 +147,11 @@ This setup forms the foundation for running `timelapsepi`—whether you're captu
 
 > sudo raspi-config
 
-# Interface Options > I2C > Enable
+From the pi terminal, run pijuice and then go to > Interface Options > I2C > Enable
 
 ---
 
+DOWNLOAD CODEBASE?
 
 ---
 
