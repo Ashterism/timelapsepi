@@ -145,9 +145,11 @@ Update paths accordingly in cron and config if using a different location.
 
 ---
 
-## 🔁 Step 2: Cron Setup
+### 🔁 Step 2: Cron Setup
+First, install 'ts':
+> sudo apt install moreutils
 
-Edit crontab to run the main script every 15 minutes:
+Then *edit crontab* to run the main script every 15 minutes:
 
 > crontab -e
 
@@ -155,18 +157,14 @@ Add:
 
 > */15 * * * * cd /home/ash/timelapse && /bin/bash tma1.sh 2>&1 | ts '[%Y-%m-%d %H:%M:%S]' >> /home/ash/timelapse/data/logs/cron.log
 
-!! Change /home/ash... to suit your directories...
+![Important] Change /home/ash... to suit your directories...
 
 This runs the script using bash, ensures the working directory is correct, and adds per-line timestamps using `ts` from `moreutils`.
 
-To install `ts`, run:
-sudo apt install moreutils
-
-Make sure it's executable:
+Make sure it's executable, e.g:
 
 > chmod +x /home/<your pi nam>/timelapse/tma1.sh
->  e.g.
-> chmod +x /home/pimelapse/timelapse/tma1.sh
+
 
 ---
 # OLDER CONTENT NEEDS UPDATING
