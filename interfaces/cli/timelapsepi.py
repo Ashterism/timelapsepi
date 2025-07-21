@@ -192,6 +192,9 @@ def run_test_photo():
             print("❌ Photo capture failed.")
             return
 
+        latest_path = TEMP_PATH / "latestjpg" / "latest.jpg"
+        metadata_path = TEMP_PATH / "latestjpg" / "latest.json"
+        
         if not metadata_path.exists():
             print("❌ Photo taken but metadata missing.")
             return
