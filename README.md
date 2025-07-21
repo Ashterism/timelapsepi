@@ -111,31 +111,7 @@ sudo apt install libcamera-apps exiftool
 ```
 
 ---
-???
-### 5. Set up Firebase
-
-- Go to https://console.firebase.google.com and create a project
-- Enable Firestore (start in test mode)
-- Go to: Project Settings > Service Accounts > Generate Private Key
-- Save the `.json` key to:
-
-```
-/home/pi/firebase-creds.json
-```
-
-> 🔒 **Never commit this file to Git!**
-
-Edit `upload_status.py` if using a different path:
-
-> cred = credentials.Certificate("/home/pi/firebase-creds.json")
-
----
-
-
-This setup forms the foundation for running `timelapsepi`—whether you're capturing sunrise sequences or remotely monitoring off-grid deployments.
-
----
-### OPTIONAL
+### OPTIONAL (but recommended)
 ### Install PiJuice software
 
 > sudo apt-get update
@@ -151,16 +127,14 @@ From the pi terminal, run pijuice and then go to > Interface Options > I2C > Ena
 
 ---
 
-DOWNLOAD CODEBASE?
-
----
-
 ## 📥 Step ?: Clone the Repository
 
 Before beginning setup, download the code from GitHub:
 
 ```bash
 cd ~
+sudo apt update
+sudo apt install git
 git clone https://github.com/ashterism/timelapsepi.git
 cd timelapsepi
 ```
