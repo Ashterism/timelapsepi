@@ -136,7 +136,7 @@ Before beginning setup, download the code from GitHub:
 cd ~
 sudo apt update
 sudo apt install git
-git clone https://github.com/ashterism/timelapsepi.git
+git clone https://github.com/ashterism/timelapsepi.git timelapse
 cd timelapsepi
 ```
 
