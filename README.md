@@ -127,7 +127,8 @@ From the pi terminal, run pijuice and then go to > Interface Options > I2C > Ena
 
 ---
 
-## 📥 Step ?: Clone the Repository
+## 📥 Set up the code base
+### Step 1: Clone the Repository
 
 Before beginning setup, download the code from GitHub:
 
@@ -144,7 +145,7 @@ Update paths accordingly in cron and config if using a different location.
 
 ---
 
-## 🔁 Cron Setup
+## 🔁 Step 2: Cron Setup
 
 Edit crontab to run the main script every 15 minutes:
 
@@ -152,7 +153,9 @@ Edit crontab to run the main script every 15 minutes:
 
 Add:
 
-> */15 * * * * cd /home/ash/timelapse && /bin/bash tma1.sh 2>&1 | ts '[%Y-%m-%d %H:%M:%S]' >> /home/ash/timelapse/data/logs/cron.log
+> */15 * * * * cd /home/<your pi name>/timelapse && /bin/bash tma1.sh 2>&1 | ts '[%Y-%m-%d %H:%M:%S]' >> /home/<your pi name>/timelapse/data/logs/cron.log
+> e.g.
+> > */15 * * * * cd /home/pimelapse/timelapse && /bin/bash tma1.sh 2>&1 | ts '[%Y-%m-%d %H:%M:%S]' >> /home/pimelapse/timelapse/data/logs/cron.log
 
 This runs the script using bash, ensures the working directory is correct, and adds per-line timestamps using `ts` from `moreutils`.
 
@@ -161,7 +164,9 @@ sudo apt install moreutils
 
 Make sure it's executable:
 
-> chmod +x /home/pi/timelapse/tma1.sh
+> chmod +x /home/<your pi nam>/timelapse/tma1.sh
+>  e.g.
+> chmod +x /home/pimelapse/timelapse/tma1.sh
 
 ---
 
