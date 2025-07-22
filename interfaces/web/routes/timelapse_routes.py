@@ -60,8 +60,11 @@ async def start(request: Request):
 
         result = main_from_web(config_dict)
     except Exception as e:
-        logger.error(f"Failed to start session from config: {e}")
-        return PlainTextResponse("❌ Failed to start timelapse.", status_code=500)
+        import traceback
+        from timelapse.functions.start_timelapse import debug
+        debug(f"❌ Exception in /start: {e}")
+        debug(traceback.format_exc())
+        return PlainTextResponse("💥 Server error. Check logs.", status_code=500)
 
     if result:
         return PlainTextResponse("🚀 Session started.")
