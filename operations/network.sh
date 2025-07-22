@@ -13,6 +13,7 @@ bring_up_wifi() {
     return
   fi
   log "[INFO] Wi-Fi mode: client - bringing up wlan0"
+  sudo systemctl start wpa_supplicant
   if ! timeout 30s sudo /sbin/ifconfig wlan0 up; then
     log "[ERROR] wlan0 up timed out at $(date)"
   fi

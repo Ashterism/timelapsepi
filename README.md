@@ -141,6 +141,11 @@ wpa_passphrase=timelapse123
 wpa_key_mgmt=WPA-PSK
 rsn_pairwise=CCMP
 ```
+Then set default path: ```sudo nano /etc/default/hostapd```
+
+and add:
+```DAEMON_CONF="/etc/hostapd/hostapd.conf"```
+
 then get it all running:
 ```sudo systemctl unmask hostapd```
 ```sudo systemctl enable hostapd```
