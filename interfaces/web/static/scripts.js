@@ -191,6 +191,12 @@ async function stopTimelapse() {
   const text = await res.text();
   alert(text);
   fetchSessionInfo();
+  // Reset start button state immediately
+  const startBtn = document.querySelector('button[onclick="startTimelapse()"]');
+  if (startBtn) {
+    startBtn.disabled = false;
+    startBtn.textContent = "🚀 Start Timelapse";
+  }
 }
 
 async function fetchSessionInfo() {
@@ -211,6 +217,18 @@ async function fetchSessionInfo() {
       li.textContent = sess;
       list.appendChild(li);
     });
+
+    // Update start button state
+    const startBtn = document.querySelector('button[onclick="startTimelapse()"]');
+    if (startBtn) {
+      if (active !== "None") {
+        startBtn.disabled = true;
+        startBtn.textContent = "Session in Progress";
+      } else {
+        startBtn.disabled = false;
+        startBtn.textContent = "🚀 Start Timelapse";
+      }
+    }
   } catch (err) {
     console.error("Error loading session info:", err);
   }
