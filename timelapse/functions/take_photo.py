@@ -1,4 +1,5 @@
 # take_photo.py — shared photo capture logic for CLI and Webapp
+# FOR TEST PHOTOS
 
 import os
 import json
