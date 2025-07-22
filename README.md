@@ -5,13 +5,13 @@ Notes
 - pijuice buttons need access to the home directory for buttons to work - after bookworm requires you to run chmod 750 /home/ash (where ash=home directory)
   
 
+# 📸 timelapsepi
 
-# timelapsepi
+> **Power-resilient Raspberry Pi logging and timelapse system**  
+> Designed for use with Firebase, and solar or battery power (PiJuice Zero recommended).
 
-> Power-resilient Raspberry Pi logging and status system with PiJuice zero + Firebase
-> Timelapse tool
-
-Also see: https://github.com/PiSupply/PiJuice/blob/master/Software/README.md
+Monitor system and power status remotely, and capture timelapse photos.  
+Also see: [PiJuice Software README](https://github.com/PiSupply/PiJuice/blob/master/Software/README.md)
 
 ---
 
@@ -19,9 +19,162 @@ Also see: https://github.com/PiSupply/PiJuice/blob/master/Software/README.md
 
 `timelapsepi` is a modular Raspberry Pi logging system designed for remote, solar-powered operation.
 
-It logs power, battery, and system data using PiJuice, stores it locally, and (when connected) uploads it to Firebase Firestore for remote monitoring — e.g. via: [Ashterix | Pi Status](https://ashterix.com/status)
+- Logs power, battery, and system data using **PiJuice Zero**
+- Stores data locally, and (when connected) uploads to **Firebase Firestore**
+- Status can be viewed remotely via: [Ashterix | Pi Status](https://ashterix.com/status)
+
+Use with or without PiJuice—power from solar, battery packs, or mains.
 
 ---
+
+## 🛠️ Setup
+
+**Recommended Hardware:**  
+- Raspberry Pi Zero 2 W  
+- Raspberry Pi OS Lite (64-bit, Bookworm)
+
+### 📡 Initial Configuration
+
+Customise OS settings during flashing:
+- Set your desired **username** and **password**
+- Pre-configure **Wi-Fi credentials**
+
+Once booted, connect to the Pi:
+
+```bash
+ssh <username>@<hostname>.local
+# Example:
+ssh ash@pimelapse.local
+```
+
+---
+
+### 🔋 Disable Wi-Fi Power Saving
+
+Prevents SSH dropouts due to Wi-Fi sleep mode.
+
+Create the service:
+
+```bash
+sudo nano /etc/systemd/system/wifi-powersave-off.service
+```
+
+Paste in the following:
+
+```ini
+[Unit]
+Description=Disable WiFi Power Save
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/iw dev wlan0 set power_save off
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Save and enable it:
+
+```bash
+sudo systemctl enable wifi-powersave-off.service
+```
+
+---
+
+## 🔄 System updates & dependencies
+
+Update system packages and install `pip3`:
+
+```bash
+sudo apt update
+sudo apt full-upgrade
+sudo apt install python3-pip
+```
+
+Install Python dependencies:
+
+```bash
+sudo pip3 install --break-system-packages firebase-admin python-dotenv
+```
+
+Install uvicorn fastapi
+```
+pip3 install --break-system-packages uvicorn fastapi
+```
+then run:
+```export PATH="$HOME/.local/bin:$PATH"```
+
+---
+
+## 📷 Install Camera & Metadata Tools
+
+Required for photo capture and EXIF tagging:
+
+```bash
+sudo apt update
+sudo apt install libcamera-apps exiftool
+```
+
+---
+### OPTIONAL (but recommended)
+### Install PiJuice software
+
+> sudo apt-get update
+> sudo apt-get install pijuice-base
+
+---
+
+### Enable I2C for PiJuice
+
+> sudo raspi-config
+
+From the pi terminal, run pijuice and then go to > Interface Options > I2C > Enable
+
+---
+
+## 📥 Set up the code base
+### Step 1: Clone the Repository
+
+Before beginning setup, download the code from GitHub:
+
+```bash
+cd ~
+sudo apt update
+sudo apt install git
+git clone https://github.com/ashterism/timelapsepi.git timelapse
+cd timelapsepi
+```
+
+📁 This creates the expected working directory at /home/<user>/timelapse e.g. /home/ash/timelapse.
+Update paths accordingly in cron and config if using a different location.
+
+---
+
+### 🔁 Step 2: Cron Setup
+First, install 'ts':
+``` sudo apt install moreutils ```
+
+Then *edit crontab* to run the main script every 15 minutes:
+
+``` crontab -e ```
+
+Add:
+
+``` */15 * * * * cd /home/ash/timelapse && /bin/bash tma1.sh 2>&1 | ts '[%Y-%m-%d %H:%M:%S]' >> /home/ash/timelapse/data/logs/cron.log ```
+
+*Important* Change /home/ash... to suit your directories...
+
+This runs the script using bash, ensures the working directory is correct, and adds per-line timestamps using `ts` from `moreutils`.
+
+Make sure it's executable, e.g:
+
+``` chmod +x /home/ash/timelapse/tma1.sh ```
+
+
+---
+# OLDER CONTENT NEEDS UPDATING
 
 ## 📦 Repo Contents
 
@@ -48,88 +201,6 @@ If using a different path, update:
 - Paths in `tma1.sh`, `log_status.py`, `upload_status.py`
 - Cronjob (see below)
 
----
-
-### 1. Install PiJuice software
-
-> sudo apt-get update
-> sudo apt-get install pijuice-base
-
----
-
-### 2. Enable I2C for PiJuice
-
-> sudo raspi-config
-
-# Interface Options > I2C > Enable
-
----
-
-### 3. Install Python dependencies
-
-> sudo pip3 install firebase-admin python-dotenv
-
----
-
-### 4. Create `_local/logs` directory
-
-```bash
-mkdir -p /home/pi/timelapse/_local/logs
-```
-
----
-
-### 5. Set up Firebase
-
-- Go to https://console.firebase.google.com and create a project
-- Enable Firestore (start in test mode)
-- Go to: Project Settings > Service Accounts > Generate Private Key
-- Save the `.json` key to:
-
-```
-/home/pi/firebase-creds.json
-```
-
-> 🔒 **Never commit this file to Git!**
-
-Edit `upload_status.py` if using a different path:
-
-> cred = credentials.Certificate("/home/pi/firebase-creds.json")
-
----
-
-### 6. Install Camera + Metadata Tools
-
-```bash
-sudo apt update
-sudo apt install libcamera-apps exiftool
-```
-
-- `libcamera-jpeg` is used to capture photos from the Pi Camera Module
-- `exiftool` generates metadata for each image as a `.json` file
-
----
-
-## 🔁 Cron Setup
-
-Edit crontab to run the main script every 15 minutes:
-
-> crontab -e
-
-Add:
-
-> */15 * * * * cd /home/ash/timelapse && /bin/bash tma1.sh 2>&1 | ts '[%Y-%m-%d %H:%M:%S]' >> /home/ash/timelapse/data/logs/cron.log
-
-This runs the script using bash, ensures the working directory is correct, and adds per-line timestamps using `ts` from `moreutils`.
-
-To install `ts`, run:
-sudo apt install moreutils
-
-Make sure it's executable:
-
-> chmod +x /home/pi/timelapse/tma1.sh
-
----
 
 ## 🔧 Config via `config.env`
 

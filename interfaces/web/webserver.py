@@ -49,14 +49,8 @@ def debug_path():
 
 @app.get("/health")
 def health():
-    try:
-        latest_image = TEMP_PATH / "latestjpg" / "latest.jpg"
-        if latest_image.exists():
-            return PlainTextResponse("OK")
-        else:
-            return PlainTextResponse("File missing", status_code=500)
-    except Exception as e:
-        return PlainTextResponse(f"Health check error: {str(e)}", status_code=500)
+    return PlainTextResponse("OK")
+    
 
 @app.get("/webserverlog")
 def show_log():
