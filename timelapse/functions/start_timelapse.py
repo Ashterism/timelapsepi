@@ -127,8 +127,8 @@ def main():
 def main_from_web(config: dict) -> Path:
     debug(f"Incoming config in main_from_web: {config}")
     if get_active_session():
-        print("❌ A session is already active. Stop it before starting a new one.")
-        sys.exit(1)
+        debug("❌ A session is already active.")
+        return False
 
     SESSIONS_PATH.mkdir(parents=True, exist_ok=True)
 
@@ -136,9 +136,9 @@ def main_from_web(config: dict) -> Path:
     try:
         h, m, s = map(int, interval_str.strip().split(":"))
         interval_seconds = h * 3600 + m * 60 + s
-    except Exception:
-        print("⚠️ Invalid interval format.")
-        sys.exit(1)
+    except Exception as e:
+        debug(f"⚠️ Failed to parse interval: {interval_str}. Error: {e}")
+        return False
 
     start_time = config.get("start_time") or datetime.datetime.now().isoformat()
     end_type = config.get("end_type")
@@ -150,8 +150,8 @@ def main_from_web(config: dict) -> Path:
     elif end_type == "end_time":
         end_condition = "time"
     else:
-        print("⚠️ Invalid end type.")
-        sys.exit(1)
+        debug(f"⚠️ Invalid end_type: {end_type}")
+        return False
 
     folder = config.get("folder", "").strip()
     if not folder:

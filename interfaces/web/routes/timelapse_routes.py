@@ -12,7 +12,7 @@ from timelapse.sessionmgmt.session_list import list_sessions
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
-DEBUG_MODE = True
+DEBUG_MODE = False
 
 def debug(msg):
     if DEBUG_MODE:
