@@ -117,6 +117,38 @@ sudo apt update
 sudo apt install libcamera-apps exiftool
 ```
 
+## Set up Hotspot capability
+Install hostapd for hotspot and dnsmasq functionality:
+```
+sudo apt-get install hostapd dnsmasq
+```
+then run: ```sudo systemctl unmask hostapd```
+
+```
+sudo nano /etc/hostapd/hostapd.conf
+```
+then paste in:
+```
+interface=wlan0
+driver=nl80211
+ssid=PiTimeLapse
+hw_mode=g
+channel=6
+auth_algs=1
+wmm_enabled=0
+wpa=2
+wpa_passphrase=timelapse123
+wpa_key_mgmt=WPA-PSK
+rsn_pairwise=CCMP
+```
+then get it all running:
+```sudo systemctl unmask hostapd```
+```sudo systemctl enable hostapd```
+```sudo systemctl restart hostapd```
+
+
+
+
 ---
 ### OPTIONAL (but recommended)
 ### Install PiJuice software
