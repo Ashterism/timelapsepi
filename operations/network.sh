@@ -13,6 +13,13 @@ bring_up_wifi() {
     return
   fi
   log "[INFO] Wi-Fi mode: client - bringing up wlan0"
+  sudo systemctl stop hostapd
+  sudo systemctl disable hostapd
+  sudo systemctl enable wpa_supplicant
+
+  sudo ip link set wlan0 down
+  sudo ip addr flush dev wlan0
+  sudo ip link set wlan0 up
   sudo systemctl start wpa_supplicant
   if ! timeout 30s sudo /sbin/ifconfig wlan0 up; then
     log "[ERROR] wlan0 up timed out at $(date)"
@@ -73,6 +80,11 @@ enable_hotspot() {
 
   log "[INFO] Starting hotspot mode..."
   sudo systemctl stop wpa_supplicant
+  sudo systemctl disable wpa_supplicant
+  sudo systemctl enable hostapd
+  sudo systemctl enable dnsmasq
+
+  sudo iw dev wlan0 disconnect 2>/dev/null || true
   sudo ip link set wlan0 down
   sudo ip addr flush dev wlan0
   sudo ip addr add 192.168.4.1/24 dev wlan0
