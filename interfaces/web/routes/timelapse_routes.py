@@ -12,7 +12,7 @@ from timelapse.sessionmgmt.session_list import list_sessions
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
-DEBUG_MODE = False
+DEBUG_MODE = True
 
 def debug(msg):
     if DEBUG_MODE:
@@ -35,7 +35,7 @@ async def start(request: Request):
         h, m, s = map(int, interval_str.strip().split(":"))
         interval_seconds = h * 3600 + m * 60 + s
 
-        folder_name = config_json.get("folder", "").strip()
+        folder_name = (config_json.get("folder") or "").strip()
         if not folder_name:
             folder_name = datetime.datetime.now().strftime("session_%Y%m%d_%H%M%S")
         folder_path = str(SESSIONS_PATH / folder_name)
