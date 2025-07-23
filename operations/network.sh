@@ -81,8 +81,16 @@ enable_hotspot() {
   log "[INFO] Starting hotspot mode..."
   sudo systemctl stop wpa_supplicant
   sudo systemctl disable wpa_supplicant
-  sudo systemctl enable hostapd
-  sudo systemctl enable dnsmasq
+  if systemctl is-enabled hostapd &> /dev/null; then
+    log "[INFO] hostapd already enabled - skipping enable"
+  else
+    sudo systemctl enable hostapd
+  fi
+  if systemctl is-enabled dnsmasq &> /dev/null; then
+    log "[INFO] dnsmasq already enabled - skipping enable"
+  else
+    sudo systemctl enable dnsmasq
+  fi
 
   sudo iw dev wlan0 disconnect 2>/dev/null || true
   sudo ip link set wlan0 down
