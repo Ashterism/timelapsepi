@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# run these 2 lines once from pi terminal
+# nmcli dev wifi connect "SSID" password "yourpassword"
+# nmcli con modify hotspot wifi-sec.psk "yourHotspotPassword"
+
 CONFIG_FILE="$(dirname "$0")/network_mode.conf"
 LOG_TAG="[network_mode]"
 
