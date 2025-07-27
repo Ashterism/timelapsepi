@@ -267,3 +267,89 @@ document.addEventListener("DOMContentLoaded", function () {
 
   validateTimelapseInputs();
 });
+
+// Dropdown for the sessions 
+// Populates dropdown with existing sessions
+<select id="sessionDropdown">
+  <option value="">Select a session</option>
+</select>
+
+// Fetches session list 
+  fetch('/sessions')
+    .then(res => res.json())
+    .then(sessions => {
+      const dropdown = document.getElementById('sessionDropdown');
+      sessions.forEach(session => {
+        const option = document.createElement('option');
+        option.value = session.path;
+        option.textContent = session.path.split('/').pop(); // show folder name only
+        dropdown.appendChild(option);
+      });
+    });
+
+// Fetches data about selected session
+document.addEventListener("DOMContentLoaded", function () {
+  const dropdown = document.getElementById('sessionDropdown');
+  dropdown.addEventListener('change', async function () {
+    const sessionPath = this.value;
+    if (!sessionPath) {
+      document.getElementById('sessionDetails').style.display = 'none';
+      return;
+    }
+
+    try {
+      // Fetch session metadata based on selected session (path)
+      const encodedPath = encodeURIComponent(sessionPath);
+      const res = await fetch(`/session-metadata?path=${encodedPath}`);
+      const meta = await res.json();
+
+      // Display session metadata in UI
+      document.getElementById("detail-started").textContent = meta.start_time || "-";
+      document.getElementById("detail-folder").textContent = meta.ended || "-";
+      document.getElementById("detail-interval").textContent = meta.interval || "-";
+      document.getElementById("detail-imagecount").textContent = meta.image_count ?? "-";
+
+      document.getElementById('sessionDetails').style.display = 'block';
+    } catch (err) {
+      console.error("Failed to fetch session metadata:", err);
+      alert("❌ Could not load session metadata.");
+      document.getElementById('sessionDetails').style.display = 'none';
+    }
+
+    // Clear and hide the image preview area before loading (new) images
+    const previewWrapper = document.getElementById('imagePreview');
+    const previewGrid = document.getElementById('imageGrid');
+
+    previewGrid.innerHTML = '';
+    previewWrapper.style.display = 'none';
+
+    // Initialise / reset Glightbox for image preview functionality
+    if (window.glightbox) {
+      window.glightbox.destroy();
+    }
+    window.glightbox = GLightbox({ selector: '.glightbox' });
+
+    // Fetch and display images for the selected session
+    const imgRes = await fetch(`/session-images?path=${encodedPath}`);
+    const imgData = await imgRes.json();
+
+    if (imgData.images && imgData.images.length > 0) {
+      imgData.images.forEach(filename => {
+      const link = document.createElement('a');
+      link.href = `${sessionPath}/${filename}`;
+      link.className = 'glightbox';
+      link.setAttribute('data-gallery', 'session');
+
+      const img = document.createElement('img');
+      img.src = `${sessionPath}/${filename}`;
+      img.alt = filename;
+      img.style.height = '80px';
+      img.style.cursor = 'pointer';
+
+      link.appendChild(img);
+      previewGrid.appendChild(link);
+      });
+      previewWrapper.style.display = 'block';
+    }
+  });
+});

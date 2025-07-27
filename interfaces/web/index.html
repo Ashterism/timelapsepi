@@ -5,8 +5,11 @@
   <title>TimelapsePi</title>
   <link rel="stylesheet" href="/static/style.css">
   <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
 </head>
 <body>
+  <!-- GLightbox JS -->
+<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
   <main class="container">
     <div id="sideMenu" class="side-menu">
       <ul>
@@ -45,9 +48,7 @@
           <p><strong>File Size:</strong> <span id="meta-filesize">Loading...</span></p>
           <p><strong>Resolution:</strong> <span id="meta-resolution">Loading...</span></p>
         </div>
-
         <button onclick="takePhoto()">📸 Take Test Photo</button>
-
       </div>
     </div>
 
@@ -102,15 +103,33 @@
         <p>list of images taken - option to select one and open lightbox</p>
       </div>
     </div>
-  </main>
 
     <div class="accordion">
       <button class="accordion-button">📁 Timelapse archive</button>
       <div class="accordion-content">
         <p>This section has drop down of folders of sessions.
-        and then the same functionality as above to thumbnail
-        future functionality is select one and create timelapse
+        <br> and then the same functionality as above to thumbnail
+        <br>future functionality is select one and create timelapse
         </p>
+
+        <!-- Dropdown -->
+        <label for="sessionDropdown">Select a Session:</label>
+        <select id="sessionDropdown">
+          <option value="">-- Choose a session --</option>
+        </select>
+
+        <div id="sessionDetails" class="metadata-block" style="display:none;">
+          <p><strong>Folder:</strong> <span id="detail-folder">-</span></p>
+          <p><strong>Started:</strong> <span id="detail-started">-</span></p>
+          <p><strong>Interval:</strong> <span id="detail-interval">-</span></p>
+          <p><strong>Image Count:</strong> <span id="detail-imagecount">-</span></p>
+        </div>
+
+        <div id="imagePreview" style="margin-top:1rem; display:none;">
+          <h4>Images</h4>
+          <div id="imageGrid" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+        </div>
+
       </div>
     </div>
   </main>
