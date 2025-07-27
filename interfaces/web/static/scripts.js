@@ -64,35 +64,27 @@ function resetButton(btn) {
   btn.textContent = "Take Test Photo";
 }
 
-// Accordion logic with exclusive open behavior
+// Accordion logic: only one open at a time
 document.addEventListener("DOMContentLoaded", function () {
   const buttons = document.querySelectorAll(".accordion-button");
   buttons.forEach(button => {
     button.addEventListener("click", () => {
       const clickedAccordion = button.closest(".accordion");
-
-      // Close all accordions
       document.querySelectorAll(".accordion").forEach(acc => {
-        if (acc !== clickedAccordion) {
-          acc.classList.remove("open");
-        }
+        if (acc !== clickedAccordion) acc.classList.remove("open");
       });
-
-      // Toggle clicked accordion
       clickedAccordion.classList.toggle("open");
     });
   });
 });
 
-// Slide-out menu toggle
+// Menu toggle logic
 document.addEventListener("DOMContentLoaded", function () {
   const menuIcon = document.querySelector(".menu-icon");
   const sideMenu = document.getElementById("sideMenu");
-
   menuIcon.addEventListener("click", () => {
     sideMenu.classList.toggle("open");
   });
-
   document.addEventListener("click", function (event) {
     const isClickInside = sideMenu.contains(event.target) || menuIcon.contains(event.target);
     if (!isClickInside) {
