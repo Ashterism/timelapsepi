@@ -110,24 +110,23 @@ main.container {
 
 /* Removed this rule — handled via max-height now */
 
-.accordion-content {
-  background-color: #1f1f1f;
-  padding: 0 1rem;
-  border-radius: 0 0 5px 5px;
-  border-top: none;
-  color: #eee;
-  overflow: hidden;
-  max-height: 0;
-  display: none;
-  transition: max-height 0.3s ease-out, padding 0.3s ease-out;
-  text-align: center;
-  font-size: 0.85rem;
-  line-height: 0.4rem;
-}
+ .accordion-content {
+   background-color: #1f1f1f;
+   padding: 1rem;
+   border-radius: 0 0 5px 5px;
+   border-top: none;
+   color: #eee;
+   overflow: hidden;
+   max-height: 0;
+   display: none;
+   transition: max-height 0.3s ease-out;
+   text-align: center;
+   font-size: 0.85rem;
+   line-height: 0.4rem;
+ }
 
 .accordion.open .accordion-content {
   display: block;
-  padding: 1rem;
   max-height: 1000px;
 }
 
@@ -282,4 +281,12 @@ input::placeholder {
   display: flex;
   gap: 2rem;
   justify-content: space-between;
+}
+
+.meta-col-left,
+.meta-col-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
