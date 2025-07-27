@@ -299,11 +299,7 @@ document.addEventListener("DOMContentLoaded", function () {
   validateTimelapseInputs();
 });
 
-// Dropdown for the sessions 
-// Populates dropdown with existing sessions
-<select id="sessionDropdown">
-  <option value="">Select a session</option>
-</select>
+// SESSIONS DROPDOWN //
 
 // Fetches session list 
   fetch('/sessions')
