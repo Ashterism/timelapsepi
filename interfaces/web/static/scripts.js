@@ -64,13 +64,22 @@ function resetButton(btn) {
   btn.textContent = "Take Test Photo";
 }
 
-// Accordion logic
+// Accordion logic with exclusive open behavior
 document.addEventListener("DOMContentLoaded", function () {
   const buttons = document.querySelectorAll(".accordion-button");
   buttons.forEach(button => {
     button.addEventListener("click", () => {
-      const accordion = button.closest(".accordion");
-      accordion.classList.toggle("open");
+      const clickedAccordion = button.closest(".accordion");
+
+      // Close all accordions
+      document.querySelectorAll(".accordion").forEach(acc => {
+        if (acc !== clickedAccordion) {
+          acc.classList.remove("open");
+        }
+      });
+
+      // Toggle clicked accordion
+      clickedAccordion.classList.toggle("open");
     });
   });
 });
