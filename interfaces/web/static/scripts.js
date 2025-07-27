@@ -26,7 +26,20 @@ async function takePhoto() {
       // Fetch and show metadata
       const metaRes = await fetch('/latest.json');
       const meta = await metaRes.json();
-      document.getElementById("meta-timestamp").textContent = meta.timestamp || "unknown";
+      const raw = meta.timestamp;
+      let formatted = "unknown";
+      if (raw) {
+        const date = new Date(raw);
+        formatted = date.toLocaleString(undefined, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        });
+      }
+      document.getElementById("meta-timestamp").textContent = formatted;
       document.getElementById("meta-iso").textContent = meta.settings.iso || "unknown";
       document.getElementById("meta-shutter").textContent = meta.settings.shutter_speed || "unknown";
       document.getElementById("meta-aperture").textContent = meta.settings.aperture || "unknown";
@@ -111,7 +124,20 @@ document.addEventListener("DOMContentLoaded", function () {
   fetch('/latest.json')
     .then(res => res.json())
     .then(meta => {
-      document.getElementById("meta-timestamp").textContent = meta.timestamp || "unknown";
+      const raw = meta.timestamp;
+      let formatted = "unknown";
+      if (raw) {
+        const date = new Date(raw);
+        formatted = date.toLocaleString(undefined, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        });
+      }
+      document.getElementById("meta-timestamp").textContent = formatted;
       document.getElementById("meta-iso").textContent = meta.settings.iso || "unknown";
       document.getElementById("meta-shutter").textContent = meta.settings.shutter_speed || "unknown";
       document.getElementById("meta-aperture").textContent = meta.settings.aperture || "unknown";

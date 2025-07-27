@@ -29,9 +29,15 @@
       <button class="accordion-button">📸 Status</button>
       <div class="accordion-content">
         <div id="system-status" class="metadata-block">
-          <p><strong>Battery:</strong> <span id="battery-status">Loading...</span></p>
-          <p><strong>Connection:</strong> <span id="connection-status">Loading...</span></p>
-          <p><strong>IP:</strong> <span id="ip-address">Loading...</span></p>
+          <p class="meta-label"><strong>IP:</strong> <span id="ip-address">Loading...</span></p>
+          <div style="display: flex; gap: 2rem;">
+            <div style="flex: 1;">
+              <p class="meta-label"><strong>Battery:</strong> <span id="battery-status">Loading...</span></p>
+            </div>
+            <div style="flex: 1;">
+              <p class="meta-label"><strong>Connection:</strong> <span id="connection-status">Loading...</span></p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -41,12 +47,18 @@
       <div class="accordion-content">
         <img id="preview-img" src="/latest.jpg" style="width: 100%; max-width: 400px;" alt="No photo yet" onerror="this.onerror=null; this.src='/static/no-preview.png'; this.alt='No preview available';">
         <div id="photo-metadata" class="metadata-block">
-          <p><strong>Timestamp:</strong> <span id="meta-timestamp">Loading...</span></p>
-          <p><strong>ISO:</strong> <span id="meta-iso">Loading...</span></p>
-          <p><strong>Shutter:</strong> <span id="meta-shutter">Loading...</span></p>
-          <p><strong>Aperture:</strong> <span id="meta-aperture">Loading...</span></p>
-          <p><strong>File Size:</strong> <span id="meta-filesize">Loading...</span></p>
-          <p><strong>Resolution:</strong> <span id="meta-resolution">Loading...</span></p>
+          <p class="meta-label"><strong>Timestamp:</strong> <span id="meta-timestamp">Loading...</span></p>
+          <div class="meta-columns" style="display: flex; gap: 2rem;">
+            <div class="meta-col-left">
+              <p class="meta-label"><strong>ISO:</strong> <span id="meta-iso">Loading...</span></p>
+              <p class="meta-label"><strong>Shutter:</strong> <span id="meta-shutter">Loading...</span></p>
+              <p class="meta-label"><strong>Aperture:</strong> <span id="meta-aperture">Loading...</span></p>
+            </div>
+            <div class="meta-col-right">
+              <p class="meta-label"><strong>File Size:</strong> <span id="meta-filesize">Loading...</span></p>
+              <p class="meta-label"><strong>Resolution:</strong> <span id="meta-resolution">Loading...</span></p>
+            </div>
+          </div>
         </div>
         <button onclick="takePhoto()">📸 Take Test Photo</button>
       </div>
@@ -118,10 +130,10 @@
         </select>
 
         <div id="sessionDetails" class="metadata-block" style="display:none;">
-          <p><strong>Folder:</strong> <span id="detail-folder">-</span></p>
-          <p><strong>Started:</strong> <span id="detail-started">-</span></p>
-          <p><strong>Interval:</strong> <span id="detail-interval">-</span></p>
-          <p><strong>Image Count:</strong> <span id="detail-imagecount">-</span></p>
+          <p class="meta-label"><strong>Folder:</strong> <span id="detail-folder">-</span></p>
+          <p class="meta-label"><strong>Started:</strong> <span id="detail-started">-</span></p>
+          <p class="meta-label"><strong>Interval:</strong> <span id="detail-interval">-</span></p>
+          <p class="meta-label"><strong>Image Count:</strong> <span id="detail-imagecount">-</span></p>
         </div>
 
         <div id="imagePreview" style="margin-top:1rem; display:none;">

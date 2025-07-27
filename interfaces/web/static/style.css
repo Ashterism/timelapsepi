@@ -258,3 +258,9 @@ input::placeholder {
   color: #888;
   font-size: 0.9rem;
 }
+/* Utility class for metadata labels */
+.meta-label {
+  font-size: 0.95rem;
+  color: #eee;
+  text-align: left;
+}
