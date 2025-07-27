@@ -29,7 +29,6 @@
       <button class="accordion-button">📸 Status</button>
       <div class="accordion-content">
         <div id="system-status" class="metadata-block">
-          <p class="meta-label"><strong>IP:</strong> <span id="ip-address">Loading...</span></p>
           <div style="display: flex; gap: 2rem;">
             <div style="flex: 1;">
               <p class="meta-label"><strong>Battery:</strong> <span id="battery-status">Loading...</span></p>
@@ -38,6 +37,7 @@
               <p class="meta-label"><strong>Connection:</strong> <span id="connection-status">Loading...</span></p>
             </div>
           </div>
+          <p class="meta-label"><strong>IP:</strong> <span id="ip-address">Loading...</span></p>
         </div>
       </div>
     </div>
@@ -48,7 +48,7 @@
         <img id="preview-img" src="/latest.jpg" style="width: 100%; max-width: 400px;" alt="No photo yet" onerror="this.onerror=null; this.src='/static/no-preview.png'; this.alt='No preview available';">
         <div id="photo-metadata" class="metadata-block">
           <p class="meta-label"><strong>Timestamp:</strong> <span id="meta-timestamp">Loading...</span></p>
-          <div class="meta-columns" style="display: flex; gap: 2rem;">
+          <div class="meta-columns">
             <div class="meta-col-left">
               <p class="meta-label"><strong>ISO:</strong> <span id="meta-iso">Loading...</span></p>
               <p class="meta-label"><strong>Shutter:</strong> <span id="meta-shutter">Loading...</span></p>
@@ -98,18 +98,15 @@
 
           <button onclick="startTimelapse()">🚀 Start Timelapse</button>
           <button onclick="stopTimelapse()">🛑 Stop Timelapse</button>
-
-          <p><strong>All Sessions:</strong></p>
-          <ul id="session-list">
-            <li>Loading...</li>
-          </ul>
+          
         </div>
       </div>
     </div>
 
    <div class="accordion">
-    <button class="accordion-button">🗂️ Timelapse Gallery</button>
+    <button class="accordion-button">📽️ Active Timelapse</button>
       <div class="accordion-content">
+        <p>ONLY VISIBLE WHEN ACTIVE - hide preview and config</p>
         <p>This section shows the iamges from the timelapse.</p>
         <p>Including number of images taken so far</p>
         <p>list of images taken - option to select one and open lightbox</p>
