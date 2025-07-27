@@ -136,15 +136,19 @@ document.addEventListener("DOMContentLoaded", function () {
       const raw = meta.timestamp;
       let formatted = "unknown";
       if (raw) {
-        const date = new Date(raw);
-        formatted = date.toLocaleString(undefined, {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit'
-        });
+        // Remove microseconds if present
+        const cleaned = raw.split('.')[0]; // just "2025-07-26T14:43:06"
+        const date = new Date(cleaned);
+        if (!isNaN(date)) {
+          formatted = date.toLocaleString(undefined, {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          });
+        }
       }
       document.getElementById("meta-timestamp").textContent = formatted;
       document.getElementById("meta-iso").textContent = meta.settings.iso || "unknown";
