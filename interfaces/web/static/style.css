@@ -131,7 +131,6 @@ main.container {
   justify-content: space-between;
 }
 
-/* Removed this rule — handled via max-height now */
 .accordion-content {
   background-color: #1f1f1f;
   padding: 1rem;
@@ -181,9 +180,32 @@ main.container {
 }
 
 /* FORM STYLES */
+.label {
+  font-size: 0.95rem;
+  color: #eee;
+  font-weight: normal;
+}
+
+.label-key {
+  font-weight: bold;
+  margin-right: 0.3rem;
+}
+
+.label-value {
+  /* Optional styling for label values */
+}
+
+.form-block label,
+.inline-label,
+.radio-row label {
+  composes: label;
+  font-size: 0.95rem;
+  color: #eee;
+  font-weight: normal;
+}
+
 .form-block label {
   display: block;
-  font-size: 0.95rem;
   margin-top: 1.1rem;
   margin-bottom: 0.5rem;
   white-space: nowrap;
@@ -197,11 +219,11 @@ main.container {
   margin-right: auto;
   display: block;
   padding: 0.3rem;
-  font-size: 0.9rem;
   border-radius: 4px;
   border: 1px solid #444;
   background-color: #111;
   color: #eee;
+  font-size: 0.9rem;
 }
 
 .form-block input[type="text"],
@@ -227,7 +249,7 @@ main.container {
 }
 
 .hint {
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   font-weight: normal;
   color: #aaa;
 }
@@ -247,8 +269,6 @@ main.container {
 .radio-row label {
   display: flex;
   align-items: baseline;
-  font-size: 0.9rem;
-  color: #eee;
   margin-left: 0rem;
   margin-right: 1rem;
 }
@@ -256,15 +276,9 @@ main.container {
 .inline-label {
   display: inline-block;
   margin-right: 0.5rem;
-  font-size: 0.95rem;
 }
 
 /* METADATA STYLES */
-.meta-label {
-  font-size: 0.95rem;
-  color: #eee;
-  text-align: left;
-}
 
 .accordion-content > * {
   max-width: 480px;

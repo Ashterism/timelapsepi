@@ -6,6 +6,24 @@
   <link rel="stylesheet" href="/static/style.css">
   <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+  <style>
+    /* Typographic system for form and metadata elements */
+    .label {
+      font-size: 1rem;
+      color: #333333;
+    }
+    .hint {
+      font-size: 1rem;
+      color: #666666;
+    }
+    .label-key {
+      font-weight: bold;
+      margin-right: 0.3rem;
+    }
+    .label-value {
+      /* empty for now, can be styled later if needed */
+    }
+  </style>
 </head>
 <body>
   <!-- GLightbox JS -->
@@ -31,13 +49,13 @@
         <div id="system-status" class="metadata-block">
           <div style="display: flex; gap: 2rem;">
             <div style="flex: 1;">
-              <p class="meta-label"><strong>Battery:</strong> <span id="battery-status">Loading...</span></p>
+              <p class="label"><span class="label-key">Battery:</span> <span id="battery-status" class="label-value">Loading...</span></p>
             </div>
             <div style="flex: 1;">
-              <p class="meta-label"><strong>Connection:</strong> <span id="connection-status">Loading...</span></p>
+              <p class="label"><span class="label-key">Connection:</span> <span id="connection-status" class="label-value">Loading...</span></p>
             </div>
           </div>
-          <p class="meta-label"><strong>IP:</strong> <span id="ip-address">Loading...</span></p>
+          <p class="label"><span class="label-key">IP:</span> <span id="ip-address" class="label-value">Loading...</span></p>
         </div>
       </div>
     </div>
@@ -47,16 +65,16 @@
       <div class="accordion-content">
         <img id="preview-img" src="/latest.jpg" style="width: 100%; max-width: 400px;" alt="No photo yet" onerror="this.onerror=null; this.src='/static/no-preview.png'; this.alt='No preview available';">
         <div id="photo-metadata" class="metadata-block">
-          <p class="meta-label"><strong>Timestamp:</strong> <span id="meta-timestamp">Loading...</span></p>
+          <p class="label"><span class="label-key">Timestamp:</span> <span id="meta-timestamp" class="label-value">Loading...</span></p>
           <div class="meta-columns">
             <div class="meta-col-left">
-              <p class="meta-label"><strong>ISO:</strong> <span id="meta-iso">Loading...</span></p>
-              <p class="meta-label"><strong>Shutter:</strong> <span id="meta-shutter">Loading...</span></p>
-              <p class="meta-label"><strong>Aperture:</strong> <span id="meta-aperture">Loading...</span></p>
+              <p class="label"><span class="label-key">ISO:</span> <span id="meta-iso" class="label-value">Loading...</span></p>
+              <p class="label"><span class="label-key">Shutter:</span> <span id="meta-shutter" class="label-value">Loading...</span></p>
+              <p class="label"><span class="label-key">Aperture:</span> <span id="meta-aperture" class="label-value">Loading...</span></p>
             </div>
             <div class="meta-col-right">
-              <p class="meta-label"><strong>File Size:</strong> <span id="meta-filesize">Loading...</span></p>
-              <p class="meta-label"><strong>Resolution:</strong> <span id="meta-resolution">Loading...</span></p>
+              <p class="label"><span class="label-key">File Size:</span> <span id="meta-filesize" class="label-value">Loading...</span></p>
+              <p class="label"><span class="label-key">Resolution:</span> <span id="meta-resolution" class="label-value">Loading...</span></p>
             </div>
           </div>
         </div>
@@ -68,32 +86,32 @@
       <button class="accordion-button">⚙️ Timelapse Config</button>
       <div class="accordion-content">
         <div class="form-block">
-          <label for="interval">Interval <span class="hint">(hh:mm:ss)</span></label>
+          <label for="interval" class="label">Interval <span class="hint">(hh:mm:ss)</span></label>
           <input type="text" id="interval" name="interval" placeholder="00:01:00" />
 
-          <label for="start-time">Start Time <span class="hint">(ISO or blank for now)</span></label>
+          <label for="start-time" class="label">Start Time <span class="hint">(ISO or blank for now)</span></label>
           <input type="text" id="start-time" name="start-time" placeholder="2025-04-25T13:00" />
 
-          <label for="end-count">End Condition:</label>
+          <label for="end-count" class="label">End Condition:</label>
           <div class="radio-row">
             <input type="radio" id="end-count" name="end-type" value="photo_count" checked />
-            <label for="end-count">Number of Photos</label>
+            <label for="end-count" class="label">Number of Photos</label>
 
             <input type="radio" id="end-time" name="end-type" value="end_time" />
-            <label for="end-time">End Time</label>
+            <label for="end-time" class="label">End Time</label>
           </div>
 
           <div id="end-count-group">
-            <label for="photo-count">Number of Photos:</label>
+            <label for="photo-count" class="label">Number of Photos:</label>
             <input type="number" id="photo-count" name="photo-count" placeholder="e.g., 1200" />
           </div>
 
           <div id="end-time-group" style="display:none;">
-            <label for="end-time-input">End Time:</label>
+            <label for="end-time-input" class="label">End Time:</label>
             <input type="text" id="end-time-input" name="end-time-input" placeholder="2025-04-25T15:00" />
           </div>
 
-          <label for="folder-name">Folder Name <span class="hint">(leave blank for timestamp)</span></label>
+          <label for="folder-name" class="label">Folder Name <span class="hint">(leave blank for timestamp)</span></label>
           <input type="text" id="folder-name" name="folder-name" placeholder="Leave blank to auto-generate" />
 
           <button onclick="startTimelapse()">🚀 Start Timelapse</button>
@@ -123,17 +141,17 @@
         <p>future functionality is select one and create timelapse</p>
 
         <!-- Dropdown -->
-        <label for="sessionDropdown">Select a Session <span class="hint">(choose from previous runs)</span></label>
+        <label for="sessionDropdown" class="label">Select a Session <span class="hint">(choose from previous runs)</span></label>
         <br>
         <select id="sessionDropdown" class="form-input">
           <option value="">-- Choose a session --</option>
         </select>
 
         <div id="sessionDetails" class="metadata-block" style="display:none;">
-          <p class="meta-label"><strong>Folder:</strong> <span id="detail-folder">-</span></p>
-          <p class="meta-label"><strong>Started:</strong> <span id="detail-started">-</span></p>
-          <p class="meta-label"><strong>Interval:</strong> <span id="detail-interval">-</span></p>
-          <p class="meta-label"><strong>Image Count:</strong> <span id="detail-imagecount">-</span></p>
+          <p class="label"><span class="label-key">Folder:</span> <span id="detail-folder" class="label-value">-</span></p>
+          <p class="label"><span class="label-key">Started:</span> <span id="detail-started" class="label-value">-</span></p>
+          <p class="label"><span class="label-key">Interval:</span> <span id="detail-interval" class="label-value">-</span></p>
+          <p class="label"><span class="label-key">Image Count:</span> <span id="detail-imagecount" class="label-value">-</span></p>
         </div>
 
         <div id="imagePreview" style="margin-top:1rem; display:none;">
