@@ -2,7 +2,7 @@
 
 CONFIG_FILE="$(dirname "$0")/network_mode.conf"
 LOG_TAG="[network_mode]"
-DEBUG=false
+DEBUG=true
 
 log() {
   if $DEBUG; then
@@ -68,8 +68,7 @@ EOF
 
 restart_services() {
   systemctl restart NetworkManager
-  systemctl restart dhcpcd
-  log "Restarted NetworkManager and dhcpcd"
+  log "Restarted NetworkManager"
 }
 
 MODE="$1"
