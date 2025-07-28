@@ -118,17 +118,16 @@ sudo apt install libcamera-apps exiftool
 ```
 
 ## Set up Hotspot capability
-Install hostapd for hotspot and dnsmasq functionality:
-```
-sudo apt-get install hostapd dnsmasq
-```
-then run: ```sudo systemctl unmask hostapd```
+### 1. Install required packages
 
+```bash
+sudo apt update
+sudo apt install hostapd dnsmasq
+sudo systemctl unmask hostapd
+sudo systemctl disable hostapd
 ```
-sudo nano /etc/hostapd/hostapd.conf
-```
-then paste in:
-```
+
+```ini
 interface=wlan0
 driver=nl80211
 ssid=PiTimeLapse
@@ -141,17 +140,61 @@ wpa_passphrase=timelapse123
 wpa_key_mgmt=WPA-PSK
 rsn_pairwise=CCMP
 ```
-Then set default path: ```sudo nano /etc/default/hostapd```
 
-and add:
+This configures a WPA2-secured hotspot with SSID PiTimeLapse and password timelapse123.
+
+### 3. Configure the default hostapd path
+
+Edit `/etc/default/hostapd`:
+
+```bash
+sudo nano /etc/default/hostap
+```
+
+Add or modify the line:
 ```DAEMON_CONF="/etc/hostapd/hostapd.conf"```
 
-then get it all running:
-```sudo systemctl unmask hostapd```
-```sudo systemctl enable hostapd```
-```sudo systemctl restart hostapd```
+### 4. How the hotspot is managed
+
+The **toggle script (`network_mode.sh`)** fully manages switching between hotspot and Wi-Fi client modes. It:
+
+- Dynamically edits `/etc/NetworkManager/conf.d/unmanaged.conf` to disable or enable NetworkManager control of `wlan0`.
+- Dynamically adds or removes the static IP configuration for `wlan0` in `/etc/dhcpcd.conf`.
+- Starts and stops the `hostapd` and `dnsmasq` services as needed.
+- Restarts `NetworkManager` to apply changes.
+
+Because of this, **you do not need to manually edit system config files** after initial setup.
+
+### 5. Enabling hotspot mode
+
+Run the toggle script with sudo:
+
+```bash
+sudo ./operations/network_mode.sh hotspot
+```
+This will:
+	•	Disable NetworkManager on wlan0.
+	•	Assign a static IP to wlan0.
+	•	Start hotspot services (hostapd and dnsmasq).
+
+You can then connect to the PiTimeLapse Wi-Fi network using the configured password
+
+### 6. Returning to Wi-Fi client mode
+Run:
+```bash
+sudo ./operations/network_mode.sh wifi
+```
+### 7. Important notes
+- Always run the toggle script with `sudo` to allow it to modify system configs and services.
+- The toggle script backs up any config files it modifies before changing them.
+- You can enable debug mode in the script by setting `DEBUG=true` at the top for verbose logging during troubleshooting.
+- After initial setup, reboot your Pi to ensure a clean network state.
+- You do not need to manually edit any network config files unless you want custom advanced configurations.
 
 
+---
+
+This setup allows seamless switching between hotspot and Wi-Fi client modes, enabling reliable off-grid operation and remote control.
 
 
 ---
