@@ -300,8 +300,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // SESSIONS DROPDOWN //
-
-// Fetches session list 
+document.addEventListener("DOMContentLoaded", function () {
   fetch('/sessions')
     .then(res => res.json())
     .then(sessions => {
@@ -313,6 +312,7 @@ document.addEventListener("DOMContentLoaded", function () {
         dropdown.appendChild(option);
       });
     });
+});
 
 // Fetches data about selected session
 document.addEventListener("DOMContentLoaded", function () {
