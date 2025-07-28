@@ -103,6 +103,13 @@ case "$MODE" in
     # Remove wlan0 unmanaged from NetworkManager
     set_unmanaged_conf no
 
+    # Delay to allow NetworkManager to auto-reconnect automatically once wlan0 is managed again
+    sleep 5
+
+    # Optional: Log the connection state of wlan0 after delay
+    status=$(nmcli device status | grep wlan0)
+    log "wlan0 status after enabling managed mode: $status"
+
     # Flush manual IP if any
     ip addr flush dev wlan0
 
