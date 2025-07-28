@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# run these 2 lines once from pi terminal
-# nmcli dev wifi connect "SSID" password "yourpassword"
-# nmcli con modify hotspot wifi-sec.psk "yourHotspotPassword"
-
 CONFIG_FILE="$(dirname "$0")/network_mode.conf"
 LOG_TAG="[network_mode]"
 
@@ -34,14 +30,42 @@ fi
 case "$MODE" in
   wifi)
     log "🔁 Switching to Wi-Fi client mode ($WIFI_NAME)"
-    nmcli con down "$HOTSPOT_NAME" 2>/dev/null
+
+    # Stop manual hotspot services
+    systemctl stop hostapd
+    systemctl stop dnsmasq
+
+    # Remove manual IP config on wlan0
+    ip addr flush dev wlan0
+
+    # Re-enable NetworkManager control on wlan0
+    nmcli dev set wlan0 managed yes
+
+    # Restart NetworkManager so it re-scans wlan0
+    systemctl restart NetworkManager
+
+    # Activate Wi-Fi connection
     nmcli con up "$WIFI_NAME"
     ;;
+
   hotspot)
     log "📡 Switching to hotspot mode ($HOTSPOT_NAME)"
+
+    # Stop Wi-Fi client connection
     nmcli con down "$WIFI_NAME" 2>/dev/null
-    nmcli con up "$HOTSPOT_NAME"
+
+    # Disable NetworkManager control on wlan0
+    nmcli dev set wlan0 managed no
+
+    # Assign static IP for hotspot
+    ip addr add 192.168.4.1/24 dev wlan0
+    ip link set wlan0 up
+
+    # Start manual hotspot services
+    systemctl start hostapd
+    systemctl start dnsmasq
     ;;
+
   off)
     log "📴 Disabling all wireless interfaces"
     nmcli radio wifi off
