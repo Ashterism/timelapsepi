@@ -336,13 +336,16 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("detail-interval").textContent = meta.interval || "-";
       document.getElementById("detail-imagecount").textContent = meta.image_count ?? "-";
 
+      // Load session images (thumbnail + dropdown + preview)
+      await loadSessionImages(sessionPath);
+
       document.getElementById('sessionDetails').style.display = 'block';
     } catch (err) {
       console.error("Failed to fetch session metadata:", err);
       alert("❌ Could not load session metadata.");
       document.getElementById('sessionDetails').style.display = 'none';
     }
-
+   
     // Clear and hide the image preview area before loading (new) images
     const previewWrapper = document.getElementById('imagePreview');
     const previewGrid = document.getElementById('imageGrid');
@@ -380,3 +383,81 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+// Loading the image in timelapse archive
+async function loadSessionImages(folder) {
+  const encodedPath = encodeURIComponent(folder);
+  const previewWrapper = document.getElementById('imagePreview');
+  const latestImageLink = document.getElementById('latestImageLink');
+  const latestImage = document.getElementById('latestImage');
+  const imageSelector = document.getElementById('imageSelector');
+  const selectedImagePreview = document.getElementById('selectedImagePreview');
+  const selectedImageLink = document.getElementById('selectedImageLink');
+  const selectedImage = document.getElementById('selectedImage');
+
+  try {
+    const response = await fetch(`/session-images?path=${encodedPath}`);
+    const imgData = await response.json();
+
+    if (!imgData.images || imgData.images.length === 0) {
+      previewWrapper.style.display = 'none';
+      return;
+    }
+
+    previewWrapper.style.display = 'block';
+
+    // Set latest image
+    const latestFilename = imgData.images[imgData.images.length - 1];
+    const latestImageUrl = `${folder}/${latestFilename}`;
+    latestImageLink.href = latestImageUrl;
+    latestImage.src = latestImageUrl;
+
+    // Populate dropdown
+    imageSelector.innerHTML = '';
+    imgData.images.forEach(filename => {
+      const option = document.createElement('option');
+      option.value = filename;
+      option.textContent = filename;
+      imageSelector.appendChild(option);
+    });
+
+    // Set preview to first image by default
+    const firstImage = imgData.images[0];
+    if (firstImage) {
+      const firstImageUrl = `${folder}/${firstImage}`;
+      selectedImageLink.href = firstImageUrl;
+      selectedImage.src = firstImageUrl;
+      selectedImagePreview.style.display = 'block';
+      imageSelector.value = firstImage;
+    } else {
+      selectedImagePreview.style.display = 'none';
+    }
+
+    // On dropdown change, update preview and lightbox link
+    imageSelector.onchange = function () {
+      const selectedFilename = this.value;
+      if (selectedFilename) {
+        const selectedUrl = `${folder}/${selectedFilename}`;
+        selectedImageLink.href = selectedUrl;
+        selectedImage.src = selectedUrl;
+        selectedImagePreview.style.display = 'block';
+        if (window.glightbox) {
+          window.glightbox.destroy();
+        }
+        window.glightbox = GLightbox({ selector: '.glightbox' });
+      } else {
+        selectedImagePreview.style.display = 'none';
+      }
+    };
+
+    // Initialize or reload GLightbox
+    if (window.glightbox) {
+      window.glightbox.destroy();
+    }
+    window.glightbox = GLightbox({ selector: '.glightbox' });
+
+  } catch (err) {
+    console.error("Failed to load session images:", err);
+    previewWrapper.style.display = 'none';
+  }
+}

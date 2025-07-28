@@ -134,11 +134,36 @@
           <p class="label"><span class="label-key">Started:</span> <span id="detail-started" class="label-value">-</span></p>
           <p class="label"><span class="label-key">Interval:</span> <span id="detail-interval" class="label-value">-</span></p>
           <p class="label"><span class="label-key">Image Count:</span> <span id="detail-imagecount" class="label-value">-</span></p>
+          <p class="label"><span class="label-key">Length:</span> <span id="detail-length" class="label-value">-</span></p>
+
         </div>
 
         <div id="imagePreview" style="margin-top:1rem; display:none;">
           <h4>Images</h4>
           <div id="imageGrid" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+        </div>
+
+        <div id="imagePreview" style="margin-top:1rem; display:none;">
+          <h4>Images</h4>
+
+          <div id="latestImageContainer" style="margin-bottom:1rem;">
+            <h5>Latest Image</h5>
+            <a href="" id="latestImageLink" class="glightbox">
+              <img id="latestImage" src="" alt="Latest timelapse image" style="max-width: 400px; cursor: pointer;">
+            </a>
+          </div>
+
+          <label for="imageSelector">Select Image:</label>
+          <select id="imageSelector" style="width: 100%; margin-bottom: 1rem;">
+            <!-- Options populated dynamically -->
+          </select>
+
+          <div id="selectedImagePreview" style="margin-top:1rem; display:none;">
+            <h5>Selected Image Preview</h5>
+            <a href="" id="selectedImageLink" class="glightbox">
+              <img id="selectedImage" src="" alt="Selected timelapse image" style="max-width: 400px; cursor: pointer;">
+            </a>
+          </div>
         </div>
 
       </div>
