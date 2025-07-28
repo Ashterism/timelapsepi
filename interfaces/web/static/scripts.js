@@ -331,8 +331,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const meta = await res.json();
 
       // Display session metadata in UI
-      document.getElementById("detail-started").textContent = meta.start_time || "-";
-      document.getElementById("detail-folder").textContent = meta.ended || "-";
+      document.getElementById("detail-started").textContent = meta.started || "-";
+      document.getElementById("detail-folder").textContent = meta.folder || "-";
       document.getElementById("detail-interval").textContent = meta.interval || "-";
       document.getElementById("detail-imagecount").textContent = meta.image_count ?? "-";
 
