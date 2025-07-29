@@ -63,6 +63,7 @@ def session_metadata(path: str = Query(...)):
         image_count = status.get("photos_taken")
 
     return {
+        "folder": folder,
         "started": started,
         "ended": ended,
         "interval": interval,

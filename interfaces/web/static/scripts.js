@@ -320,38 +320,19 @@ document.addEventListener("DOMContentLoaded", function () {
   dropdown.addEventListener('change', async function () {
     const sessionPath = this.value;
     if (!sessionPath) {
-      document.getElementById('sessionDetails').style.display = 'none';
+      const sessionDetails = document.getElementById('sessionDetails');
+      if (sessionDetails) sessionDetails.style.display = 'none';
       return;
     }
 
-    try {
-      // Fetch session metadata based on selected session (path)
-      const encodedPath = encodeURIComponent(sessionPath);
-      const res = await fetch(`/session-metadata?path=${encodedPath}`);
-      const meta = await res.json();
+    // Declare encodedPath at the top so it's available for all uses
+    const encodedPath = encodeURIComponent(sessionPath);
 
-      // Display session metadata in UI
-      document.getElementById("detail-started").textContent = meta.started || "-";
-      document.getElementById("detail-folder").textContent = meta.folder || "-";
-      document.getElementById("detail-interval").textContent = meta.interval || "-";
-      document.getElementById("detail-imagecount").textContent = meta.image_count ?? "-";
-
-      // Load session images (thumbnail + dropdown + preview)
-      await loadSessionImages(sessionPath);
-
-      document.getElementById('sessionDetails').style.display = 'block';
-    } catch (err) {
-      console.error("Failed to fetch session metadata:", err);
-      alert("❌ Could not load session metadata.");
-      document.getElementById('sessionDetails').style.display = 'none';
-    }
-   
     // Clear and hide the image preview area before loading (new) images
     const previewWrapper = document.getElementById('imagePreview');
     const previewGrid = document.getElementById('imageGrid');
-
-    previewGrid.innerHTML = '';
-    previewWrapper.style.display = 'none';
+    if (previewGrid) previewGrid.innerHTML = '';
+    if (previewWrapper) previewWrapper.style.display = 'none';
 
     // Initialise / reset Glightbox for image preview functionality
     if (window.glightbox) {
@@ -359,27 +340,63 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     window.glightbox = GLightbox({ selector: '.glightbox' });
 
-    // Fetch and display images for the selected session
-    const imgRes = await fetch(`/session-images?path=${encodedPath}`);
-    const imgData = await imgRes.json();
+    try {
+      // Fetch session metadata based on selected session (path)
+      const res = await fetch(`/session-metadata?path=${encodedPath}`);
+      if (!res.ok) throw new Error('Failed to fetch session metadata');
+      const meta = await res.json();
 
-    if (imgData.images && imgData.images.length > 0) {
-      imgData.images.forEach(filename => {
-      const link = document.createElement('a');
-      link.href = `${sessionPath}/${filename}`;
-      link.className = 'glightbox';
-      link.setAttribute('data-gallery', 'session');
+      // Display session metadata in UI, with null checks
+      const startedEl = document.getElementById("detail-started");
+      if (startedEl) startedEl.textContent = meta.started || "-";
+      const folderEl = document.getElementById("detail-folder");
+      if (folderEl) folderEl.textContent = meta.folder || "-";
+      const intervalEl = document.getElementById("detail-interval");
+      if (intervalEl) intervalEl.textContent = meta.interval || "-";
+      const imageCountEl = document.getElementById("detail-imagecount");
+      if (imageCountEl) imageCountEl.textContent = meta.image_count ?? "-";
 
-      const img = document.createElement('img');
-      img.src = `${sessionPath}/${filename}`;
-      img.alt = filename;
-      img.style.height = '80px';
-      img.style.cursor = 'pointer';
+      // Load session images (thumbnail + dropdown + preview)
+      await loadSessionImages(sessionPath);
 
-      link.appendChild(img);
-      previewGrid.appendChild(link);
-      });
-      previewWrapper.style.display = 'block';
+      const sessionDetails = document.getElementById('sessionDetails');
+      if (sessionDetails) sessionDetails.style.display = 'block';
+    } catch (err) {
+      console.error("Failed to fetch session metadata:", err);
+      // Do not break UI, just hide session details
+      const sessionDetails = document.getElementById('sessionDetails');
+      if (sessionDetails) sessionDetails.style.display = 'none';
+      return;
+    }
+
+    try {
+      // Fetch and display images for the selected session
+      const imgRes = await fetch(`/session-images?path=${encodedPath}`);
+      if (!imgRes.ok) throw new Error('Failed to fetch session images');
+      const imgData = await imgRes.json();
+
+      if (imgData.images && imgData.images.length > 0) {
+        imgData.images.forEach(filename => {
+          const link = document.createElement('a');
+          link.href = `${sessionPath}/${filename}`;
+          link.className = 'glightbox';
+          link.setAttribute('data-gallery', 'session');
+
+          const img = document.createElement('img');
+          img.src = `${sessionPath}/${filename}`;
+          img.alt = filename;
+          img.style.height = '80px';
+          img.style.cursor = 'pointer';
+
+          link.appendChild(img);
+          if (previewGrid) previewGrid.appendChild(link);
+        });
+        if (previewWrapper) previewWrapper.style.display = 'block';
+      }
+    } catch (err) {
+      console.error("Failed to fetch session images:", err);
+      // Don't break UI, just hide preview
+      if (previewWrapper) previewWrapper.style.display = 'none';
     }
   });
 });
