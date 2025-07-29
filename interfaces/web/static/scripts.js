@@ -318,8 +318,9 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const dropdown = document.getElementById('sessionDropdown');
   dropdown.addEventListener('change', async function () {
-    const sessionPath = this.value;
-    if (!sessionPath) {
+    const basePath = '/home/ash/timelapse/sessions';
+    const sessionPath = `${basePath}/${this.value}`;
+    if (!this.value) {
       const sessionDetails = document.getElementById('sessionDetails');
       if (sessionDetails) sessionDetails.style.display = 'none';
       return;
@@ -327,6 +328,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Declare encodedPath at the top so it's available for all uses
     const encodedPath = encodeURIComponent(sessionPath);
+    // Debug logs
+    console.log('Session dropdown changed. sessionPath:', sessionPath);
+    console.log('Encoded sessionPath:', encodedPath);
 
     // Clear and hide the image preview area before loading (new) images
     const previewWrapper = document.getElementById('imagePreview');
@@ -342,6 +346,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       // Fetch session metadata based on selected session (path)
+      console.log('Fetching /session-metadata?path=' + encodedPath);
       const res = await fetch(`/session-metadata?path=${encodedPath}`);
       if (!res.ok) throw new Error('Failed to fetch session metadata');
       const meta = await res.json();
@@ -371,6 +376,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       // Fetch and display images for the selected session
+      console.log('Fetching /session-images?path=' + encodedPath);
       const imgRes = await fetch(`/session-images?path=${encodedPath}`);
       if (!imgRes.ok) throw new Error('Failed to fetch session images');
       const imgData = await imgRes.json();
