@@ -242,7 +242,7 @@ Then *edit crontab* to run the main script every 15 minutes:
 
 Add:
 
-``` */15 * * * * cd /home/ash/timelapse && /bin/bash tma1.sh 2>&1 | ts '[%Y-%m-%d %H:%M:%S]' >> /home/ash/timelapse/data/logs/cron.log ```
+``` */15 * * * * { printf "[\%s] " "$(date '+\%Y-\%m-\%d \%H:\%M:\%S')"; cd /home/ash/timelapse && /bin/bash tma1.sh; } >> /home/ash/timelapse/data/logs/cron.log 2>&1 ```
 
 *Important* Change /home/ash... to suit your directories...
 

@@ -22,6 +22,10 @@ def list_session_images(path: str = Query(...)):
     ])
     return {"images": images}
 
+# test route
+@router.get("/test-hello")
+def test_hello():
+    return {"message": "Hello world"}
 
 # New route: /session-metadata
 @router.get("/session-metadata")
