@@ -318,92 +318,94 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const dropdown = document.getElementById('sessionDropdown');
   dropdown.addEventListener('change', async function () {
-    let sessionPath = this.value;
-    
-    const sessionPath = this.value; 
-    if (!this.value) {
-      const sessionDetails = document.getElementById('sessionDetails');
-      if (sessionDetails) sessionDetails.style.display = 'none';
-      return;
-    }
-
-    // Declare encodedPath at the top so it's available for all uses
-    const encodedPath = encodeURIComponent(sessionPath);
-    // Debug logs
-    console.log('Session dropdown changed. sessionPath:', sessionPath);
-    console.log('Encoded sessionPath:', encodedPath);
-
-    // Clear and hide the image preview area before loading (new) images
-    const previewWrapper = document.getElementById('imagePreview');
-    const previewGrid = document.getElementById('imageGrid');
-    if (previewGrid) previewGrid.innerHTML = '';
-    if (previewWrapper) previewWrapper.style.display = 'none';
-
-    // Initialise / reset Glightbox for image preview functionality
-    if (window.glightbox) {
-      window.glightbox.destroy();
-    }
-    window.glightbox = GLightbox({ selector: '.glightbox' });
-
     try {
-      // Fetch session metadata based on selected session (path)
-      console.log('Fetching /session-metadata?path=' + encodedPath);
-      const res = await fetch(`/session-metadata?path=${encodedPath}`);
-      if (!res.ok) throw new Error('Failed to fetch session metadata');
-      const meta = await res.json();
+      let sessionPath = this.value;
+      if (!this.value) {
+        const sessionDetails = document.getElementById('sessionDetails');
+        if (sessionDetails) sessionDetails.style.display = 'none';
+        return;
+      }
 
-      // Display session metadata in UI, with null checks
-      const startedEl = document.getElementById("detail-started");
-      if (startedEl) startedEl.textContent = meta.started || "-";
-      const folderEl = document.getElementById("detail-folder");
-      if (folderEl) folderEl.textContent = meta.folder || "-";
-      const intervalEl = document.getElementById("detail-interval");
-      if (intervalEl) intervalEl.textContent = meta.interval || "-";
-      const imageCountEl = document.getElementById("detail-imagecount");
-      if (imageCountEl) imageCountEl.textContent = meta.image_count ?? "-";
+      // Declare encodedPath at the top so it's available for all uses
+      const encodedPath = encodeURIComponent(sessionPath);
+      // Debug logs
+      console.log('Session dropdown changed. sessionPath:', sessionPath);
+      console.log('Encoded sessionPath:', encodedPath);
 
-      // Load session images (thumbnail + dropdown + preview)
-      await loadSessionImages(sessionPath);
+      // Clear and hide the image preview area before loading (new) images
+      const previewWrapper = document.getElementById('imagePreview');
+      const previewGrid = document.getElementById('imageGrid');
+      if (previewGrid) previewGrid.innerHTML = '';
+      if (previewWrapper) previewWrapper.style.display = 'none';
 
-      const sessionDetails = document.getElementById('sessionDetails');
-      if (sessionDetails) sessionDetails.style.display = 'block';
-    } catch (err) {
-      console.error("Failed to fetch session metadata:", err);
-      // Do not break UI, just hide session details
-      const sessionDetails = document.getElementById('sessionDetails');
-      if (sessionDetails) sessionDetails.style.display = 'none';
-      return;
-    }
+      // Initialise / reset Glightbox for image preview functionality
+      if (window.glightbox) {
+        window.glightbox.destroy();
+      }
+      window.glightbox = GLightbox({ selector: '.glightbox' });
 
-    try {
-      // Fetch and display images for the selected session
-      console.log('Fetching /session-images?path=' + encodedPath);
-      const imgRes = await fetch(`/session-images?path=${encodedPath}`);
-      if (!imgRes.ok) throw new Error('Failed to fetch session images');
-      const imgData = await imgRes.json();
+      try {
+        // Fetch session metadata based on selected session (path)
+        console.log('Fetching /session-metadata?path=' + encodedPath);
+        const res = await fetch(`/session-metadata?path=${encodedPath}`);
+        if (!res.ok) throw new Error('Failed to fetch session metadata');
+        const meta = await res.json();
 
-      if (imgData.images && imgData.images.length > 0) {
-        imgData.images.forEach(filename => {
-          const link = document.createElement('a');
-          link.href = `${sessionPath}/${filename}`;
-          link.className = 'glightbox';
-          link.setAttribute('data-gallery', 'session');
+        // Display session metadata in UI, with null checks
+        const startedEl = document.getElementById("detail-started");
+        if (startedEl) startedEl.textContent = meta.started || "-";
+        const folderEl = document.getElementById("detail-folder");
+        if (folderEl) folderEl.textContent = meta.folder || "-";
+        const intervalEl = document.getElementById("detail-interval");
+        if (intervalEl) intervalEl.textContent = meta.interval || "-";
+        const imageCountEl = document.getElementById("detail-imagecount");
+        if (imageCountEl) imageCountEl.textContent = meta.image_count ?? "-";
 
-          const img = document.createElement('img');
-          img.src = `${sessionPath}/${filename}`;
-          img.alt = filename;
-          img.style.height = '80px';
-          img.style.cursor = 'pointer';
+        // Load session images (thumbnail + dropdown + preview)
+        await loadSessionImages(sessionPath);
 
-          link.appendChild(img);
-          if (previewGrid) previewGrid.appendChild(link);
-        });
-        if (previewWrapper) previewWrapper.style.display = 'block';
+        const sessionDetails = document.getElementById('sessionDetails');
+        if (sessionDetails) sessionDetails.style.display = 'block';
+      } catch (err) {
+        console.error("Failed to fetch session metadata:", err);
+        // Do not break UI, just hide session details
+        const sessionDetails = document.getElementById('sessionDetails');
+        if (sessionDetails) sessionDetails.style.display = 'none';
+        return;
+      }
+
+      try {
+        // Fetch and display images for the selected session
+        console.log('Fetching /session-images?path=' + encodedPath);
+        const imgRes = await fetch(`/session-images?path=${encodedPath}`);
+        if (!imgRes.ok) throw new Error('Failed to fetch session images');
+        const imgData = await imgRes.json();
+
+        if (imgData.images && imgData.images.length > 0) {
+          imgData.images.forEach(filename => {
+            const link = document.createElement('a');
+            link.href = `${sessionPath}/${filename}`;
+            link.className = 'glightbox';
+            link.setAttribute('data-gallery', 'session');
+
+            const img = document.createElement('img');
+            img.src = `${sessionPath}/${filename}`;
+            img.alt = filename;
+            img.style.height = '80px';
+            img.style.cursor = 'pointer';
+
+            link.appendChild(img);
+            if (previewGrid) previewGrid.appendChild(link);
+          });
+          if (previewWrapper) previewWrapper.style.display = 'block';
+        }
+      } catch (err) {
+        console.error("Failed to fetch session images:", err);
+        // Don't break UI, just hide preview
+        if (previewWrapper) previewWrapper.style.display = 'none';
       }
     } catch (err) {
-      console.error("Failed to fetch session images:", err);
-      // Don't break UI, just hide preview
-      if (previewWrapper) previewWrapper.style.display = 'none';
+      console.error("Error in session dropdown change handler:", err);
     }
   });
 });
