@@ -32,7 +32,7 @@ def test_hello():
 def session_metadata(path: str = Query(...)):
     session_path = Path(path)
     if not session_path.exists() or not session_path.is_dir():
-        return JSONResponse(status_code=400, content={"error": "Invalid session path"})
+        raise HTTPException(status_code=404, detail="Invalid session path")
 
     metadata_json_path = session_path / "metadata.json"
     config_json_path = session_path / "timelapse_config.json"
@@ -40,12 +40,12 @@ def session_metadata(path: str = Query(...)):
         with open(metadata_json_path, "r") as f:
             metadata = json.load(f)
     except Exception as e:
-        return JSONResponse(status_code=404, content={"error": f"Could not read metadata.json: {str(e)}"})
+        raise HTTPException(status_code=404, detail=f"Could not read metadata.json: {str(e)}")
     try:
         with open(config_json_path, "r") as f:
             config = json.load(f)
     except Exception as e:
-        return JSONResponse(status_code=404, content={"error": f"Could not read timelapse_config.json: {str(e)}"})
+        raise HTTPException(status_code=404, detail=f"Could not read timelapse_config.json: {str(e)}")
 
     # Folder: from config, or fallback to folder name
     folder = config.get("folder") or session_path.name
