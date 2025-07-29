@@ -14,7 +14,7 @@ load_dotenv(CONFIG_PATH)
 app = FastAPI()
 
 from interfaces.web.routes.photo_routes import router as photo_router
-from interfaces.web.routes.timelapse_routes import router as timelapse_router
+from interfaces.web.routes.timelapse_routes import timelapse_router
 app.include_router(photo_router, prefix="")
 app.include_router(timelapse_router)
 

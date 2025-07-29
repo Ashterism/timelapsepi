@@ -11,6 +11,7 @@ from timelapse.sessionmgmt.session_list import list_sessions
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
+timelapse_router = router
 
 DEBUG_MODE = True
 
@@ -83,3 +84,4 @@ def stop():
 @router.get("/sessions")
 def sessions():
     return list_sessions()
+
