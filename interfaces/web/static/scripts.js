@@ -437,6 +437,7 @@ async function loadSessionImages(folder) {
     imageSelector.onchange = function () {
       const selectedFilename = this.value;
       if (selectedFilename) {
+        const encodedPath = encodeURIComponent(folder);
         const selectedUrl = `${folder}/${selectedFilename}`;
         selectedImageLink.href = selectedUrl;
         selectedImage.src = selectedUrl;
