@@ -187,10 +187,6 @@ main.container {
   font-weight: normal;
 }
 
-.label-key {
-  font-weight: bold;
-  margin-right: 0.3rem;
-}
 
 .label-value {
   /* Optional styling for label values */

@@ -47,16 +47,16 @@
       <div class="accordion-content">
         <img id="preview-img" src="/latest.jpg" style="width: 100%; max-width: 400px;" alt="No photo yet" onerror="this.onerror=null; this.src='/static/no-preview.png'; this.alt='No preview available';">
         <div id="photo-metadata" class="metadata-block">
-          <p class="label"><span class="label-key">Timestamp:</span> <span id="meta-timestamp" class="label-value">Loading...</span></p>
+          <p class="label">Timestamp: <span id="meta-timestamp" class="label-value">Loading...</span></p>
           <div class="meta-columns">
             <div class="meta-col-left">
-              <p class="label"><span class="label-key">ISO:</span> <span id="meta-iso" class="label-value">Loading...</span></p>
-              <p class="label"><span class="label-key">Shutter:</span> <span id="meta-shutter" class="label-value">Loading...</span></p>
-              <p class="label"><span class="label-key">Aperture:</span> <span id="meta-aperture" class="label-value">Loading...</span></p>
+              <p class="label">ISO: <span id="meta-iso" class="label-value">Loading...</span></p>
+              <p class="label">Shutter: <span id="meta-shutter" class="label-value">Loading...</span></p>
+              <p class="label">Aperture: <span id="meta-aperture" class="label-value">Loading...</span></p>
             </div>
             <div class="meta-col-right">
-              <p class="label"><span class="label-key">File Size:</span> <span id="meta-filesize" class="label-value">Loading...</span></p>
-              <p class="label"><span class="label-key">Resolution:</span> <span id="meta-resolution" class="label-value">Loading...</span></p>
+              <p class="label">File Size: <span id="meta-filesize" class="label-value">Loading...</span></p>
+              <p class="label">Resolution: <span id="meta-resolution" class="label-value">Loading...</span></p>
             </div>
           </div>
         </div>
@@ -122,29 +122,25 @@
         <p>and then the same functionality as above to thumbnail</p>
         <p>future functionality is select one and create timelapse</p>
 
-        <!-- Dropdown -->
-        <label for="sessionDropdown" class="label">Select a Session <span class="hint">(choose from previous runs)</span></label>
-        <br><p> </p>
-        <select id="sessionDropdown" class="form-input">
-          <option value="">-- Choose a session --</option>
-        </select>
+        <div class="form-block">
+          <label for="sessionDropdown" class="label">Select a Session <span class="hint">(choose from previous runs)</span></label>
+          <br><p> </p>
+          <select id="sessionDropdown" class="form-input">
+            <option value="">-- Choose a session --</option>
+          </select>
 
-        <!-- Sessions metadata -->
+          <div id="sessionDetails" class="metadata-block" style="display:none;">
+            <p class="label">Folder: <span id="detail-folder" class="label-value">-</span></p>
+            <p class="label">Started: <span id="detail-started" class="label-value">-</span></p>
+            <p class="label">Interval: <span id="detail-interval" class="label-value">-</span></p>
+            <p class="label">Image Count: <span id="detail-imagecount" class="label-value">-</span></p>
+            <p class="label">Length: <span id="detail-length" class="label-value">-</span></p>
+          </div>
 
-        <div id="sessionDetails" class="metadata-block" style="display:none;">
-          <p class="label"><span class="label-key">Folder:</span> <span id="detail-folder" class="label-value">-</span></p>
-          <p class="label"><span class="label-key">Started:</span> <span id="detail-started" class="label-value">-</span></p>
-          <p class="label"><span class="label-key">Interval:</span> <span id="detail-interval" class="label-value">-</span></p>
-          <p class="label"><span class="label-key">Image Count:</span> <span id="detail-imagecount" class="label-value">-</span></p>
-          <p class="label"><span class="label-key">Length:</span> <span id="detail-length" class="label-value">-</span></p>
-        </div>
-
-       <!-- Preview thumbnail of latest image -->
-
-        <div id="imagePreview" style="margin-top:1rem; display:none;">
-          <h4>Images</h4>
-          <div id="imageGrid" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
-        </div>
+          <div id="imagePreview" style="margin-top:1rem; display:none;">
+            <h4>Images</h4>
+            <div id="imageGrid" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+          </div>
 
           <div id="latestImageContainer" style="margin-bottom:1rem;">
             <h5>Latest Image</h5>
