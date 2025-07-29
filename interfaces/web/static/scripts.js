@@ -318,8 +318,11 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const dropdown = document.getElementById('sessionDropdown');
   dropdown.addEventListener('change', async function () {
+    let sessionPath = this.value;
     const basePath = '/home/ash/timelapse/sessions';
-    const sessionPath = `${basePath}/${this.value}`;
+    if (!sessionPath.startsWith(basePath)) {
+      sessionPath = `${basePath}/${sessionPath}`;
+    }
     if (!this.value) {
       const sessionDetails = document.getElementById('sessionDetails');
       if (sessionDetails) sessionDetails.style.display = 'none';
