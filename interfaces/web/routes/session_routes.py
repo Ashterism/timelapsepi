@@ -37,6 +37,8 @@ def session_metadata(path: str = Query(..., description="Name of the session fol
     print(f"Received path: {path}")
     print(f"Received path parameter: {path}")
     p = Path(path)
+    if not p.is_absolute():
+        p = Path(SESSIONS_DIR) / path
     print(f"Path exists: {p.exists()}")
     print(f"Is directory: {p.is_dir()}")
     if ".." in path:
