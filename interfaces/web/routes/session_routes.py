@@ -31,22 +31,26 @@ def test_hello():
 # New route: /session-metadata
 @router.get("/session-metadata")
 def session_metadata(path: str = Query(..., description="Name of the session folder")):
-    if ".." in path or "/" in path:
+    print(f"Received path: {path}")
+    if ".." in path:
         raise HTTPException(status_code=400, detail="Invalid session path: traversal not allowed")
     session_path = Path(SESSIONS_DIR) / path
     if not session_path.exists() or not session_path.is_dir():
         raise HTTPException(status_code=404, detail="Invalid session path")
+    print(f"Session path exists and is a directory: {session_path}")
 
     metadata_json_path = session_path / "metadata.json"
     config_json_path = session_path / "timelapse_config.json"
     try:
         with open(metadata_json_path, "r") as f:
             metadata = json.load(f)
+        print(f"Loaded metadata: {metadata}")
     except Exception as e:
         raise HTTPException(status_code=404, detail=f"Could not read metadata.json: {str(e)}")
     try:
         with open(config_json_path, "r") as f:
             config = json.load(f)
+        print(f"Loaded config: {config}")
     except Exception as e:
         raise HTTPException(status_code=404, detail=f"Could not read timelapse_config.json: {str(e)}")
 
