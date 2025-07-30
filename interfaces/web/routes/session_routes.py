@@ -32,19 +32,18 @@ def test_hello():
 @router.get("/session-metadata")
 def session_metadata(path: str = Query(..., description="Name of the session folder")):
     print(f"Received path: {path}")
+    print(f"Received path parameter: {path}")
+    p = Path(path)
+    print(f"Path exists: {p.exists()}")
+    print(f"Is directory: {p.is_dir()}")
     if ".." in path:
         raise HTTPException(status_code=400, detail="Invalid session path: traversal not allowed")
-    p = Path(path)
-    if p.is_absolute():
-        session_path = p
-    else:
-        session_path = Path(SESSIONS_DIR) / path
-    if not session_path.exists() or not session_path.is_dir():
+    if not p.exists() or not p.is_dir():
         raise HTTPException(status_code=404, detail="Invalid session path")
-    print(f"Session path exists and is a directory: {session_path}")
+    print(f"Session path exists and is a directory: {p}")
 
-    metadata_json_path = session_path / "metadata.json"
-    config_json_path = session_path / "timelapse_config.json"
+    metadata_json_path = p / "metadata.json"
+    config_json_path = p / "timelapse_config.json"
     try:
         with open(metadata_json_path, "r") as f:
             metadata = json.load(f)
@@ -59,7 +58,7 @@ def session_metadata(path: str = Query(..., description="Name of the session fol
         raise HTTPException(status_code=404, detail=f"Could not read timelapse_config.json: {str(e)}")
 
     # Folder: from config, or fallback to folder name
-    folder = config.get("folder") or session_path.name
+    folder = config.get("folder") or p.name
     # Started/ended from metadata
     started = metadata.get("started")
     ended = metadata.get("ended") if "ended" in metadata else None
