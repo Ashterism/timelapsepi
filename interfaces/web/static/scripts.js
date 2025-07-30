@@ -307,9 +307,11 @@ async function loadSessions() {
     const sessionDropdown = document.getElementById('sessionDropdown');
     sessionDropdown.innerHTML = '<option value="">-- Choose a session --</option>';
     sessions.forEach(session => {
+      const fullPath = session.path;
+      const folderName = fullPath.split('/').pop();
       const option = document.createElement('option');
-      option.value = session;
-      option.textContent = session.split('/').pop(); // Show folder name only
+      option.value = fullPath;
+      option.textContent = folderName;
       sessionDropdown.appendChild(option);
     });
   } catch (err) {
