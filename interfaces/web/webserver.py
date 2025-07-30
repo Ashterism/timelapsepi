@@ -96,6 +96,12 @@ def status():
     except Exception as e:
         return PlainTextResponse(f"🔴 Status error: {str(e)}")
 
+# Test route to check if root is working
+@app.get("/test-root")
+def test_root():
+    print("test-root route called")
+    return {"message": "Root test route is working"}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("interfaces.web.webserver:app", host="0.0.0.0", port=5000, reload=False)

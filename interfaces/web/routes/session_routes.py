@@ -7,6 +7,9 @@ from config_paths import SESSIONS_DIR
 
 router = APIRouter()
 
+print("session_routes.py loaded")
+
+
 @router.get("/sessions")
 def get_sessions():
     return list_sessions()
