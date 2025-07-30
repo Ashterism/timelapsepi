@@ -1,6 +1,7 @@
 // This script handles taking a new photo and updating the preview image
 
 let lastTimestamp = null;
+let photoSwipeGalleryItems = [];
 
 // Called when the "Take Test Photo" button is clicked
 // New version: disables the button, sends POST to /photo, then checks for new timestamp and updates the image.
@@ -414,20 +415,27 @@ async function loadSessionImages(folder) {
         selectedImageLink.href = selectedUrl;
         selectedImage.src = selectedUrl;
         selectedImagePreview.style.display = 'block';
-        if (window.glightbox) {
-          window.glightbox.destroy();
-        }
-        window.glightbox = GLightbox({ selector: '.glightbox' });
       } else {
         selectedImagePreview.style.display = 'none';
       }
     };
 
-    // Initialize or reload GLightbox
-    if (window.glightbox) {
-      window.glightbox.destroy();
-    }
-    window.glightbox = GLightbox({ selector: '.glightbox' });
+    // Initialize PhotoSwipe gallery items and bind click to open PhotoSwipe
+    photoSwipeGalleryItems = imgData.images.map(filename => ({
+      src: `/sessions/${folder}/${filename}`,
+      msrc: `/sessions/${folder}/${filename}`,
+      width: 1600,
+      height: 900,
+      alt: filename
+    }));
+
+    selectedImage.onclick = () => {
+      const selectedFilename = imageSelector.value;
+      const index = photoSwipeGalleryItems.findIndex(item => item.src.includes(selectedFilename));
+      if (index !== -1) {
+        openPhotoSwipe(index);
+      }
+    };
 
   } catch (err) {
     console.error('Failed to load session images:', err);
@@ -435,6 +443,16 @@ async function loadSessionImages(folder) {
     imageSelector.style.display = 'none';
     selectedImagePreview.style.display = 'none';
   }
+}
+
+function openPhotoSwipe(index) {
+  const options = {
+    index: index,
+    dataSource: photoSwipeGalleryItems,
+    pswpModule: PhotoSwipe
+  };
+  const pswp = new PhotoSwipe(options);
+  pswp.init();
 }
 
 // Initialize on page load
