@@ -93,6 +93,20 @@ def main():
     config["status"]["completed"] = True
     save_config(config, config_path)
 
+    # ✅ Update metadata.json to mark session complete
+    try:
+        metadata_path = Path(config["folder"]) / "metadata.json"
+        if metadata_path.exists():
+            with open(metadata_path, "r") as f:
+                metadata = json.load(f)
+            metadata["status"] = "complete"
+            metadata["ended"] = datetime.datetime.now().isoformat()
+            with open(metadata_path, "w") as f:
+                json.dump(metadata, f, indent=2)
+            log("✅ metadata.json updated with completion info", "timelapse_runner.log")
+    except Exception as e:
+        log(f"❌ Failed to update metadata.json: {e}", "timelapse_runner.log")
+
     from timelapse.sessionmgmt.session_manager import clear_active_session
     clear_active_session()
 
