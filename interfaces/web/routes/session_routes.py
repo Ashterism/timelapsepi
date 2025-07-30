@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from pathlib import Path
 import json
 from timelapse.sessionmgmt.session_list import list_sessions
-from config_paths import SESSIONS_DIR
+from config.config_paths import SESSIONS_PATH as SESSIONS_DIR
 
 router = APIRouter()
 
