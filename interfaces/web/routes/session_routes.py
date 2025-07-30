@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 from pathlib import Path
 import json
 from timelapse.sessionmgmt.session_list import list_sessions
+from config_paths import SESSIONS_DIR
 
 router = APIRouter()
 
@@ -29,8 +30,10 @@ def test_hello():
 
 # New route: /session-metadata
 @router.get("/session-metadata")
-def session_metadata(path: str = Query(...)):
-    session_path = Path(path)
+def session_metadata(path: str = Query(..., description="Name of the session folder")):
+    if ".." in path or "/" in path:
+        raise HTTPException(status_code=400, detail="Invalid session path: traversal not allowed")
+    session_path = Path(SESSIONS_DIR) / path
     if not session_path.exists() or not session_path.is_dir():
         raise HTTPException(status_code=404, detail="Invalid session path")
 
