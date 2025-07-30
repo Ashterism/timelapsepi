@@ -326,11 +326,13 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Declare encodedPath at the top so it's available for all uses
-      const encodedPath = encodeURIComponent(sessionPath);
+      // Only use the folder name for backend API calls
+      const sessionFolder = sessionPath.split('/').pop();
+      const encodedPath = encodeURIComponent(sessionFolder);
       // Debug logs
       console.log('Session dropdown changed. sessionPath:', sessionPath);
-      console.log('Encoded sessionPath:', encodedPath);
+      console.log('Session folder:', sessionFolder);
+      console.log('Encoded sessionFolder:', encodedPath);
 
       // Clear and hide the image preview area before loading (new) images
       const previewWrapper = document.getElementById('imagePreview');
@@ -345,7 +347,7 @@ document.addEventListener("DOMContentLoaded", function () {
       window.glightbox = GLightbox({ selector: '.glightbox' });
 
       try {
-        // Fetch session metadata based on selected session (path)
+        // Fetch session metadata based on selected session (folder)
         console.log('Fetching /session-metadata?path=' + encodedPath);
         const res = await fetch(`/session-metadata?path=${encodedPath}`);
         if (!res.ok) throw new Error('Failed to fetch session metadata');
@@ -362,7 +364,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (imageCountEl) imageCountEl.textContent = meta.image_count ?? "-";
 
         // Load session images (thumbnail + dropdown + preview)
-        await loadSessionImages(sessionPath);
+        await loadSessionImages(sessionFolder);
 
         const sessionDetails = document.getElementById('sessionDetails');
         if (sessionDetails) sessionDetails.style.display = 'block';
