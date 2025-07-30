@@ -349,9 +349,13 @@ document.getElementById('sessionDropdown').addEventListener('change', async func
   }
 });
 
+// Set this to match backend SESSIONS_PATH
+const BASE_SESSIONS_PATH = "/home/ash/timelapse/sessions";
+
 // Load images and populate image selector + preview
 async function loadSessionImages(folder) {
-  const encodedPath = encodeURIComponent(folder);
+  const fullSessionPath = `${BASE_SESSIONS_PATH}/${folder}`;
+  const encodedPath = encodeURIComponent(fullSessionPath);
   const previewWrapper = document.getElementById('imagePreview');
   const latestImageLink = document.getElementById('latestImageLink');
   const latestImage = document.getElementById('latestImage');
