@@ -26,6 +26,15 @@ app.include_router(status_router)
 
 app.mount("/static", StaticFiles(directory=INTERFACES_PATH / "web" / "static"), name="static")
 
+# Mount sessions static directory
+from config.config_paths import SESSIONS_PATH
+
+app.mount(
+    "/sessions",
+    StaticFiles(directory=SESSIONS_PATH),
+    name="sessions"
+)
+
 # Log to file
 logging.basicConfig(
     filename=LOGS_PATH / "webserver.log",

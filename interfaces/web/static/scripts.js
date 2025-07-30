@@ -379,7 +379,7 @@ async function loadSessionImages(folder) {
 
     // Set latest image
     const latestFilename = imgData.images[imgData.images.length - 1];
-    const latestImageUrl = `${folder}/${latestFilename}`;
+    const latestImageUrl = `/sessions/${folder}/${latestFilename}`;
     latestImageLink.href = latestImageUrl;
     latestImage.src = latestImageUrl;
 
@@ -395,7 +395,7 @@ async function loadSessionImages(folder) {
     // Set preview to first image by default
     const firstImage = imgData.images[0];
     if (firstImage) {
-      const firstImageUrl = `${folder}/${firstImage}`;
+      const firstImageUrl = `/sessions/${folder}/${firstImage}`;
       selectedImageLink.href = firstImageUrl;
       selectedImage.src = firstImageUrl;
       selectedImagePreview.style.display = 'block';
@@ -410,7 +410,7 @@ async function loadSessionImages(folder) {
     imageSelector.onchange = function () {
       const selectedFilename = this.value;
       if (selectedFilename) {
-        const selectedUrl = `${folder}/${selectedFilename}`;
+        const selectedUrl = `/sessions/${folder}/${selectedFilename}`;
         selectedImageLink.href = selectedUrl;
         selectedImage.src = selectedUrl;
         selectedImagePreview.style.display = 'block';
