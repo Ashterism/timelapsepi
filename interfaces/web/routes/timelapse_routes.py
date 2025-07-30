@@ -18,6 +18,10 @@ def debug(msg):
     if DEBUG_MODE:
         print(f"[DEBUG] {msg}")
 
+@router.get("/test-timelapse")
+def test_timelapse():
+    return {"message": "Timelapse router working"}
+
 @router.post("/start")
 async def start(request: Request):
     session = get_active_session()
