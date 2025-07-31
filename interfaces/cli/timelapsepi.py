@@ -146,7 +146,7 @@ def connection_menu():
         elif choice == "1":
             result = subprocess.run(["sudo", "./operations/network_mode.sh", "wifi"])
             if result.returncode == 0:
-                set_key(str(CONFIG_PATH), "WIFI_MODE", "client")
+                set_key(str(CONFIG_PATH), "WIFI_MODE", "client", quote_mode="never")
                 print("✅ Switched to Wi-Fi Client Mode.")
                 cli_log("Connection mode changed to Wi-Fi Client")
             else:
@@ -156,7 +156,7 @@ def connection_menu():
         elif choice == "2":
             result = subprocess.run(["sudo", "./operations/network_mode.sh", "hotspot"])
             if result.returncode == 0:
-                set_key(str(CONFIG_PATH), "WIFI_MODE", "hotspot")
+                set_key(str(CONFIG_PATH), "WIFI_MODE", "hotspot", quote_mode="never")
                 print("✅ Switched to Hotspot Mode.")
                 cli_log("Connection mode changed to Hotspot")
             else:
