@@ -93,7 +93,7 @@ case "$MODE" in
   wifi)
     if nmcli device status | grep -q "wlan0.*connected"; then
     log "[INFO] wlan0 is already connected - skipping bring up"
-    return
+    exit 0
     fi
     echo "$LOG_TAG 🔁 Switch ing to Wi-Fi client mode ($WIFI_NAME)"
    
