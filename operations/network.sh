@@ -8,10 +8,7 @@ is_ssh_session() {
  
  # Function: bring_up_wifi()
 bring_up_wifi() {
-    if nmcli device status | grep -q "wlan0.*connected"; then
-    log "[INFO] wlan0 is already connected - skipping bring up"
-    return
-  fi
+
   log "[INFO] Switching to Wi-Fi client mode via network_mode.sh"
   sudo ./operations/network_mode.sh wifi
   # Removed manual ifconfig wlan0 up as NetworkManager manages it
