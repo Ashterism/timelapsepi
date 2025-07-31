@@ -17,6 +17,7 @@ bring_up_wifi() {
 }
 
  # Function: check_internet()
+ # used to check whether to run git/firebase etc syncs
 check_internet() {
   ONLINE=false
   if ping -c 1 -W 5 8.8.8.8 > /dev/null 2>&1; then

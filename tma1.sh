@@ -31,6 +31,8 @@ if [ "$WIFI_MODE" == "client" ]; then
 elif [ "$WIFI_MODE" == "hotspot" ]; then
   log "[INFO] Wi-Fi mode: hotspot - enabling access point"
   enable_hotspot
+  config_webserver    # Handles webserver state according to config
+
 
 elif [ "$WIFI_MODE" == "none" ]; then
   log "[INFO] Wi-Fi mode: none - no connectivity mode active (silent logging only)"
