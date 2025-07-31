@@ -144,7 +144,7 @@ def connection_menu():
             print("↩️ Returning to main menu...")
             break
         elif choice == "1":
-            result = subprocess.run(["./operations/network_mode.sh", "wifi"])
+            result = subprocess.run(["sudo", "./operations/network_mode.sh", "wifi"])
             if result.returncode == 0:
                 set_key(str(CONFIG_PATH), "WIFI_MODE", "client")
                 print("✅ Switched to Wi-Fi Client Mode.")
@@ -154,7 +154,7 @@ def connection_menu():
                 cli_log("Failed to change connection mode to Wi-Fi Client")
             break
         elif choice == "2":
-            result = subprocess.run(["./operations/network_mode.sh", "hotspot"])
+            result = subprocess.run(["sudo", "./operations/network_mode.sh", "hotspot"])
             if result.returncode == 0:
                 set_key(str(CONFIG_PATH), "WIFI_MODE", "hotspot")
                 print("✅ Switched to Hotspot Mode.")
