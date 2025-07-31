@@ -91,7 +91,7 @@ fi
 
 case "$MODE" in
   wifi)
-    echo "$LOG_TAG 🔁 Switching to Wi-Fi client mode ($WIFI_NAME)"
+    echo "$LOG_TAG 🔁 Switch ing to Wi-Fi client mode ($WIFI_NAME)"
 
     # Stop manual hotspot services
     systemctl stop hostapd
