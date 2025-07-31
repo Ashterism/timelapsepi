@@ -120,8 +120,16 @@ case "$MODE" in
     # Restart services to apply changes
     restart_services
 
-    # Activate Wi-Fi connection
-    nmcli con up "$WIFI_NAME"
+    # Only bring up connection if it's not already connected
+    if ! nmcli -t -f DEVICE,STATE dev | grep -q "^wlan0:connected"; then
+      nmcli con up "$WIFI_NAME"
+      if [[ $? -ne 0 ]]; then
+        echo "$LOG_TAG ❌ Failed to bring up Wi-Fi connection: $WIFI_NAME"
+        exit 1
+      fi
+    else
+      log "wlan0 already connected — skipping nmcli con up"
+    fi
     ;;
 
   hotspot)
