@@ -53,6 +53,7 @@ def print_menu():
     print("  sysstatus → view current system config")
     print("  preset    → switch to a predefined mode")
     print("  custom    → define a custom preset or toggle multiple values")
+    print("  connection → toggle between wifi and hotspot mode")
 
     print("\n🚪 Exit:")
     print("  exit      → quit CLI")
@@ -120,6 +121,51 @@ def change_preset():
         else:
             print("❌ Invalid selection.")
             cli_log(f"Invalid preset selection: {choice}")
+
+#
+# ─────────────────────────────────────────
+# Section: Wi-Fi and Hotspot Connection Menu
+# ─────────────────────────────────────────
+#
+
+def connection_menu():
+    def show_connection_menu():
+        print("\n=================================")
+        print("CONNECTION MODES")
+        print("=================================")
+        print("1. Wi-Fi Client Mode")
+        print("2. Hotspot Mode")
+        print("0. Return to main menu")
+
+    while True:
+        show_connection_menu()
+        choice = input("Select connection mode [1-2] or 0 to return: ").strip()
+        if choice == "0":
+            print("↩️ Returning to main menu...")
+            break
+        elif choice == "1":
+            result = subprocess.run(["./operations/network_mode.sh", "wifi"])
+            if result.returncode == 0:
+                set_key(str(CONFIG_PATH), "WIFI_MODE", "client")
+                print("✅ Switched to Wi-Fi Client Mode.")
+                cli_log("Connection mode changed to Wi-Fi Client")
+            else:
+                print("❌ Failed to switch to Wi-Fi Client Mode.")
+                cli_log("Failed to change connection mode to Wi-Fi Client")
+            break
+        elif choice == "2":
+            result = subprocess.run(["./operations/network_mode.sh", "hotspot"])
+            if result.returncode == 0:
+                set_key(str(CONFIG_PATH), "WIFI_MODE", "hotspot")
+                print("✅ Switched to Hotspot Mode.")
+                cli_log("Connection mode changed to Hotspot")
+            else:
+                print("❌ Failed to switch to Hotspot Mode.")
+                cli_log("Failed to change connection mode to Hotspot")
+            break
+        else:
+            print("❌ Invalid selection.")
+            cli_log(f"Invalid connection mode selection: {choice}")
 
 #
 # ─────────────────────────────────────────
@@ -264,6 +310,8 @@ def main():
             run_test_photo()
         elif cmd == "preset":
             change_preset()
+        elif cmd == "connection":
+            connection_menu()
         elif cmd.startswith("toggle"):
             parts = cmd.split(" ", 1)
             flag = parts[1].strip().upper() if len(parts) > 1 else None
