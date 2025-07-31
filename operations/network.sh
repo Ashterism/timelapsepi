@@ -8,15 +8,13 @@ is_ssh_session() {
  
  # Function: bring_up_wifi()
 bring_up_wifi() {
-  if is_ssh_session; then
-    log "[INFO] SSH session detected - skipping wlan0 up"
+    if nmcli device status | grep -q "wlan0.*connected"; then
+    log "[INFO] wlan0 is already connected - skipping bring up"
     return
   fi
   log "[INFO] Switching to Wi-Fi client mode via network_mode.sh"
   sudo ./operations/network_mode.sh wifi
-  if ! timeout 30s sudo /sbin/ifconfig wlan0 up; then
-    log "[ERROR] wlan0 up timed out at $(date)"
-  fi
+  # Removed manual ifconfig wlan0 up as NetworkManager manages it
   ip a show wlan0 | grep -q "inet " || log "[WARN] wlan0 has no IP"
   sleep 5       
 }
