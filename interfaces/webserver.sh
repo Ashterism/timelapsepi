@@ -25,8 +25,7 @@ start_webserver() {
   mkdir -p "$ROOT_DIR/data/temp"
   mkdir -p "$ROOT_DIR/data/logs"
   LOG_FILE="$ROOT_DIR/data/logs/webserver.log"
-  nohup uvicorn interfaces.web.webserver:app --host 0.0.0.0 --port 5000 > "$LOG_FILE" 2>&1 &
-  echo $! > "$ROOT_DIR/data/temp/webserver.pid"
+  nohup "$UVICORN_PATH" interfaces.web.webserver:app --host 0.0.0.0 --port 5000 > "$LOG_FILE" 2>&1 &  echo $! > "$ROOT_DIR/data/temp/webserver.pid"
 }
 
 # FUNCTION: stop webserver
