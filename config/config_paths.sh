@@ -14,3 +14,5 @@ NETWORK_SH="$ROOT_DIR/operations/network.sh"
 DATA_SYNC_SH="$ROOT_DIR/operations/data_sync.sh"
 WEBSERVER_SH="$ROOT_DIR/interfaces/webserver.sh"
 MODE_CONTROL_SH="$ROOT_DIR/operations/mode_control.sh"
+
+export UVICORN_PATH=$(command -v uvicorn 2>/dev/null || echo "$HOME/.local/bin/uvicorn")
