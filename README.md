@@ -1,3 +1,7 @@
+[accessible at: timelapsepi.ashterix.com]
+ssh to pi with: ash@timelapsepi.local
+
+
 #
 Notes 
 - add samba?
