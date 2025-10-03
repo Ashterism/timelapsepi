@@ -1,4 +1,4 @@
-[accessible at: timelapsepi.ashterix.com]
+accessible at: timelapsepi.ashterix.com
 ssh to pi with: ash@timelapsepi.local
 
 
